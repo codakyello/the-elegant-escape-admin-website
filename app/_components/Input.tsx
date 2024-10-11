@@ -19,7 +19,7 @@ function Input({
 }) {
   return (
     <input
-      className="py-[.8rem] px-[1.2rem] bg-white border rounded-[var(--border-radius-sm)]"
+      className="py-[1rem] text-[1.4rem] md:text-[16px] px-[1.2rem] bg-white border rounded-[var(--border-radius-sm)]"
       name={name}
       type={type}
       id={id}
