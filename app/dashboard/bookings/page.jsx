@@ -1,6 +1,5 @@
 async function Page() {
-  //   await new Promise((resolve, _) => setTimeout(resolve, 5000));
-  return <div>Bookings</div>;
+  return <h1>Bookings</h1>;
 }
 
 export default Page;
