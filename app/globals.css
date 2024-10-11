@@ -226,7 +226,7 @@ img {
       transform: rotate(0deg);
     }
     100% {
-      transform: rotate(360deg); /* Full rotation */
+      transform: rotate(360deg);
     }
   }
 }
