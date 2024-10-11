@@ -186,6 +186,10 @@ img {
   border: 1px solid var(--color-grey-200);
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 @layer components {
   .spinner-mini {
     margin: 0;
