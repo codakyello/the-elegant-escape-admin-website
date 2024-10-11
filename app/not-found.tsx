@@ -5,7 +5,7 @@ import Button from "./_components/Button";
 function Page() {
   const router = useRouter();
   function moveBack() {
-    return () => router.back();
+    router.back();
   }
 
   return (
@@ -14,7 +14,7 @@ function Page() {
         <h1 className="mb-[3.2rem]">
           The page you are looking for could not be found 😢
         </h1>
-        <Button type="primary" onClick={moveBack}>
+        <Button type="primary" handleClick={moveBack}>
           &larr; Go back
         </Button>
       </div>
