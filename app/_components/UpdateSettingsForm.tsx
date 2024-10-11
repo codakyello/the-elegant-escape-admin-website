@@ -48,17 +48,19 @@ export default function UpdateSettingsForm({
           defaultValue={minBookingLength}
           disabled={loading}
           handleBlur={async (event: React.FocusEvent<HTMLInputElement>) => {
-            const value = event.currentTarget.value;
+            const value = Number(event.currentTarget.value);
             const name = event.currentTarget.name;
-            console.log(name);
 
-            if (!value || parseFloat(value) < 1) {
+            if (!value || value < 1) {
               return;
             }
+
             const token = getToken();
+
             const data = {
               [name]: value,
             };
+            setLoading(true);
             const result = await updateSetting(data, token);
             if (result.status === "error") {
               toast.error(result.message);
@@ -66,6 +68,7 @@ export default function UpdateSettingsForm({
               console.log(result);
               toast.success("Settings updated successfully");
             }
+            setLoading(false);
           }}
         />
       </FormRow>
@@ -83,18 +86,17 @@ export default function UpdateSettingsForm({
           defaultValue={maxBookingLength}
           disabled={loading}
           handleBlur={async (event: React.FocusEvent<HTMLInputElement>) => {
-            setLoading(true);
-            const value = event.currentTarget.value;
+            const value = Number(event.currentTarget.value);
             const name = event.currentTarget.name;
-            console.log(name);
 
-            if (!value || parseFloat(value) < 1) {
+            if (!value || value < 1) {
               return;
             }
             const token = getToken();
             const data = {
               [name]: value,
             };
+            setLoading(true);
             const result: UpdateSettingResult = await updateSetting(
               data,
               token
@@ -122,19 +124,20 @@ export default function UpdateSettingsForm({
           disabled={loading}
           defaultValue={maxGuestsPerBooking}
           handleBlur={async (event: React.FocusEvent<HTMLInputElement>) => {
-            setLoading(true);
-            const value = event.currentTarget.value;
+            const value = Number(event.currentTarget.value);
             const name = event.currentTarget.name;
-            console.log(name);
 
-            if (!value || parseFloat(value) < 1) {
+            if (!value || value < 1) {
               return;
             }
+
             const token = getToken();
             if (!token) return;
             const data = {
               [name]: value,
             };
+
+            setLoading(true);
             const result: UpdateSettingResult = await updateSetting(
               data,
               token
@@ -162,18 +165,18 @@ export default function UpdateSettingsForm({
           defaultValue={breakFastPrice}
           disabled={loading}
           handleBlur={async (event: React.FocusEvent<HTMLInputElement>) => {
-            setLoading(true);
-            const value = event.currentTarget.value;
+            const value = Number(event.currentTarget.value);
             const name = event.currentTarget.name;
-            console.log(name);
 
-            if (!value || parseFloat(value) < 1) {
+            if (!value || value < 1) {
               return;
             }
             const token = getToken();
             const data = {
               [name]: value,
             };
+
+            setLoading(true);
             const result: UpdateSettingResult = await updateSetting(
               data,
               token

@@ -13,11 +13,11 @@ function FormRow({
 }) {
   return (
     <div
-      className={`grid ${
+      className={`mb-5 grid gap-3 grid-cols-1  ${
         orientation === "vertical"
-          ? "gap-[.8rem]"
-          : "grid-cols-[24rem_.45fr] gap-[2.4rem] items-center"
-      }  py-[1.2rem] border-b border-[var(--color-grey-100)]`}
+          ? "md:gap-[.8rem]"
+          : "md:grid-cols-[24rem_.45fr] md:gap-[2.4rem] items-center"
+      }  md:py-[1.2rem] border-b border-[var(--color-grey-100)]`}
     >
       <label className={`font-medium`} htmlFor={htmlFor}>
         {label}

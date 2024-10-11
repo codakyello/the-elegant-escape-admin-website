@@ -4,7 +4,7 @@ import { eachDayOfInterval } from "date-fns";
 import { revalidatePath } from "next/cache";
 
 const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
-const DEV_URL = "http://localhost:3001/api/v1";
+// const DEV_URL = "http://localhost:3001/api/v1";
 
 /////////////
 // AUTH
@@ -410,8 +410,9 @@ export async function updateBooking(formData, bookingId) {
 }
 
 export async function updateSetting(data, token) {
+  if (!token) return;
   try {
-    const res = await fetch(`${DEV_URL}/settings`, {
+    const res = await fetch(`${URL}/settings`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

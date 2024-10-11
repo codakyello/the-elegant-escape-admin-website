@@ -31,13 +31,16 @@ export default function RootLayout({
         <AuthProvider>{children}</AuthProvider>
       </body>
       <Toaster
-        theme={"dark"}
+        theme={"light"}
         richColors
         position="top-center"
         offset="8px"
         closeButton={true}
         toastOptions={{
           duration: 3500,
+          classNames: {
+            title: "text-[1.6rem]",
+          },
         }}
       />
     </html>

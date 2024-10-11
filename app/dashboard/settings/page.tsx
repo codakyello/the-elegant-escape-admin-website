@@ -3,7 +3,7 @@ import { getSettings } from "@/app/_lib/data-service";
 import { Box } from "@chakra-ui/react";
 
 export const metadata = {
-  title: "Update hotel setting",
+  title: "Settings",
 };
 async function Page() {
   const settings = await getSettings();

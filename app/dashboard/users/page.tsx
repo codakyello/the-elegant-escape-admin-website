@@ -1,5 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import SignUpForm from "@/app/_components/SignUpForm";
+
+export const metadata = {
+  title: "Users",
+};
+
 export default function Page() {
   return (
     <Box className="flex flex-col gap-[3.2rem]">
