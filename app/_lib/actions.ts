@@ -1,10 +1,9 @@
 "use server";
 
 const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
-const DEV_URL = "http://localhost:3001/api/v1";
+// const DEV_URL = "http://localhost:3001/api/v1";
 
 export async function login(formData: FormData) {
-  console.log("login");
   // Safely extract email and password
   const email = formData.get("email") as string | null;
   const password = formData.get("password") as string | null;
@@ -17,7 +16,7 @@ export async function login(formData: FormData) {
   console.log(email, password);
 
   try {
-    const res = await fetch(`${DEV_URL}/admins/login`, {
+    const res = await fetch(`${URL}/admins/login`, {
       method: "POST",
       body: JSON.stringify({
         email,
@@ -59,7 +58,7 @@ export async function signUp(formData: FormData) {
   const confirmPassword = formData.get("confirmPassword");
 
   try {
-    const res = await fetch(`${DEV_URL}/admins/signUp`, {
+    const res = await fetch(`${URL}/admins/signUp`, {
       method: "POST",
       body: JSON.stringify({
         email,

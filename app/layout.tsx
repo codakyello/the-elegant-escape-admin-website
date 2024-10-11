@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Poppins, Sono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";

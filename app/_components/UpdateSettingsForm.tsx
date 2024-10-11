@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import FormRow from "./FormRow";
 import Input from "./Input";
 import { updateSetting } from "../_lib/data-service";

@@ -6,8 +6,6 @@ import { login } from "../_lib/actions";
 import { toast } from "sonner";
 import { useAuth } from "../_contexts/AuthProvider";
 import SpinnerMini from "@/app/_components/SpinnerMini";
-import { useRouter } from "next/navigation";
-import Button from "./Button";
 function LoginForm() {
   const { setUser } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
