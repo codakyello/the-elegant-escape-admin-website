@@ -1,4 +1,4 @@
-import { Poppins, Sono } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import AuthProvider from "./_contexts/AuthProvider";
@@ -8,10 +8,10 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"], // Specify the font weights you need
 });
 
-const sono = Sono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"], // Specify the font weights you need
-});
+// const sono = Sono({
+//   subsets: ["latin"],
+//   weight: ["400", "500", "600", "700"], // Specify the font weights you need
+// });
 
 export const metadata = {
   title: {
