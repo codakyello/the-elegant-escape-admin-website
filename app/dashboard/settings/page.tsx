@@ -10,7 +10,7 @@ async function Page() {
 
   if (!settings) return null;
   return (
-    <Box className="flex flex-col gap-[2.8rem]">
+    <Box className="flex flex-col gap-[2rem] md:gap-[3.2rem]">
       <h1>Update hotel settings</h1>
       <UpdateSettingsForm settings={settings} />
     </Box>

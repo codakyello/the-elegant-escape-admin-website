@@ -1,7 +1,7 @@
 "use server";
 
 const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
-// const DEV_URL = "http://localhost:3001/api/v1";
+const DEV_URL = "http://localhost:3001/api/v1";
 
 export async function login(formData: FormData) {
   // Safely extract email and password
@@ -25,6 +25,9 @@ export async function login(formData: FormData) {
       headers: {
         "Content-Type": "application/json",
       },
+      // next: {
+      //   revalidate: 5,
+      // },
     });
     console.log("not crashded");
 
@@ -50,24 +53,30 @@ export async function login(formData: FormData) {
   }
 }
 
-export async function signUp(formData: FormData) {
+export async function signUp(formData: FormData, token: string) {
   // always check if a user is authenticated before any mutations
   const email = formData.get("email");
   const password = formData.get("password");
   const name = formData.get("fullName");
   const confirmPassword = formData.get("confirmPassword");
+  const isRoot = formData.get("isRoot") === "on" ? true : false;
+  console.log("this is token", token);
 
+  let res;
   try {
-    const res = await fetch(`${URL}/admins/signUp`, {
+    // const token = getToken
+    res = await fetch(`${DEV_URL}/admins/signUp`, {
       method: "POST",
       body: JSON.stringify({
         email,
         password,
         name,
         confirmPassword,
+        isRoot,
       }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -78,15 +87,15 @@ export async function signUp(formData: FormData) {
 
     // Destructure token and user from response
     const {
-      token,
       data: { user },
     } = data;
+
     return { token, user };
   } catch (err: unknown) {
     console.log(err);
     // Improved error handling
     if (err instanceof Error) {
-      return { status: "error", message: err.message };
+      return { status: "error", statusCode: res?.status, message: err.message };
     } else {
       return { status: "error", message: "An unknown error occurred" };
     }

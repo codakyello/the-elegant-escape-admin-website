@@ -3,22 +3,26 @@ import { FormEvent, useState } from "react";
 import FormRow from "./FormRow";
 import Input from "./Input";
 import { signUp } from "../_lib/actions";
-import { toast } from "sonner";
 import Button from "./Button";
+import { Box } from "@chakra-ui/react";
+import { useAuth } from "../_contexts/AuthProvider";
+import { handleUnAuthorisedResponse, showToastMessage } from "../utils";
 
 function SignUpForm() {
+  const { getToken, setUser, user } = useAuth();
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
     const formData = new FormData(event.currentTarget);
-    const data = await signUp(formData);
-    if (data.status === "error") {
-      toast.error(data.message);
-    } else {
-      toast.success("User successfully created");
-    }
+
+    const token = getToken();
+    if (!token) return;
+    const data = await signUp(formData, token);
+
+    handleUnAuthorisedResponse(setUser, data);
+    showToastMessage(data, "User created successfully");
     setLoading(false);
   }
   return (
@@ -63,6 +67,17 @@ function SignUpForm() {
           id="confirm-password"
         />
       </FormRow>
+
+      {user?.isRoot ? (
+        <Box className="flex items-center gap-4 py-[1.5rem]">
+          <Input name="isRoot" id="isRoot" type="checkbox" />
+          <label htmlFor="isRoot" className="font-medium">
+            Make root admin?
+          </label>
+        </Box>
+      ) : (
+        ""
+      )}
 
       <div className=" flex gap-5 mt-5 justify-end">
         <Button type="cancel">Cancel</Button>

@@ -7,14 +7,21 @@ function Input({
   defaultValue,
   handleBlur,
   disabled,
+  checked,
+  onChange,
+  value,
 }: {
   name: string;
   type: string;
   id: string;
   placeholder?: string;
   required?: boolean;
+  defaultChecked?: boolean;
   defaultValue?: string | number;
   disabled?: boolean;
+  checked?: boolean;
+  value?: string | number;
+  onChange?: () => void;
   handleBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }) {
   return (
@@ -23,11 +30,14 @@ function Input({
       name={name}
       type={type}
       id={id}
+      value={value}
       required={required}
       placeholder={placeholder}
       defaultValue={defaultValue}
       onBlur={handleBlur}
       disabled={disabled}
+      checked={checked}
+      onChange={onChange}
     />
   );
 }

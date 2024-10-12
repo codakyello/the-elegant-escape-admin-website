@@ -11,25 +11,27 @@ import { useRouter } from "next/navigation";
 import { authorize } from "@/app/_lib/data-service";
 import { toast } from "sonner";
 
-AuthProvider.propTypes = {
-  children: PropTypes.any,
+type User = {
+  token: string;
+  isRoot: boolean;
+  _id: string;
+  email: string;
+  name: string;
+  image: string;
 };
 const AuthContext = createContext<
   | {
       user: User | null;
-      setUser: (user: User | null) => void;
-      logout: () => void;
       isAuthenticating: boolean;
       authenticated: boolean;
       isLogoutAction: boolean;
-      getToken: () => string | void;
+      logout: () => void;
+      setUser: (user: User | null) => void;
+      setToken: (token: string) => void;
+      getToken: () => string | void | null;
     }
   | undefined
 >(undefined);
-
-type User = {
-  token: string;
-};
 
 function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -37,16 +39,17 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [isLogoutAction, setLogoutAction] = useState(false);
+  const [token, setToken] = useState<string | any>(null);
 
   // Load user from localStorage on initial mount
   useEffect(() => {
     setIsAuthenticating(true);
     const storedUser = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
 
-    console.log("page changing");
-
-    if (storedUser) {
+    if (storedUser && token) {
       setUser(JSON.parse(storedUser));
+      setToken(JSON.parse(token));
     } else {
       setIsAuthenticating(false);
       // just addedd incase of braking changes
@@ -56,7 +59,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   // Check authenticated on mount and on router change
   useEffect(() => {
-    if (!user) {
+    if (!token) {
       setAuthenticated(false);
       return;
     }
@@ -64,7 +67,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     (async function authenticate() {
       setIsAuthenticating(true);
       try {
-        await authorize(user?.token);
+        await authorize(token);
         setAuthenticated(true);
       } catch {
         logout();
@@ -72,14 +75,17 @@ function AuthProvider({ children }: { children: ReactNode }) {
         setIsAuthenticating(false);
       }
     })();
-  }, [user]);
+  }, [token]);
 
   // Set User (only when user is not null)
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
     }
-  }, [user]);
+    if (token) {
+      localStorage.setItem("token", JSON.stringify(token));
+    }
+  }, [user, token]);
 
   // Logout function
   function logout() {
@@ -89,15 +95,15 @@ function AuthProvider({ children }: { children: ReactNode }) {
     setLogoutAction(true);
   }
 
-  function getToken(): string | void {
-    const storedUser = localStorage.getItem("user");
-    const user: User | null = storedUser ? JSON.parse(storedUser) : null;
-    if (!user) {
-      setUser(null);
+  function getToken(): string | null | void {
+    const storedToken = localStorage.getItem("token");
+    const token: string | null = storedToken ? JSON.parse(storedToken) : null;
+    if (!token) {
+      setToken(null);
       toast.error("You are not logged in!");
       return router.push("/login");
     }
-    return user.token;
+    return token;
   }
 
   return (
@@ -109,6 +115,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticating,
         authenticated,
         isLogoutAction,
+        setToken,
         getToken,
       }}
     >

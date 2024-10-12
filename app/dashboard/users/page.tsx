@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <Box className="flex flex-col gap-[3.2rem]">
+    <Box className="flex flex-col gap-[2rem] md:gap-[3.2rem]">
       <h1>Create a new user</h1>
       <SignUpForm />
     </Box>

@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useAuth } from "../_contexts/AuthProvider";
 import SpinnerMini from "@/app/_components/SpinnerMini";
 function LoginForm() {
-  const { setUser } = useAuth();
+  const { setUser, setToken } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -20,7 +20,8 @@ function LoginForm() {
     if (data.status === "error") {
       toast.error(data.message);
     } else {
-      setUser({ ...data.user, token: data.token });
+      setUser(data.user);
+      setToken(data.token);
     }
     setLoading(false);
   }

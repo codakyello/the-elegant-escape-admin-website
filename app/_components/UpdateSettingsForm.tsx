@@ -4,9 +4,9 @@ import FormRow from "./FormRow";
 import Input from "./Input";
 import { updateSetting } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
-import { toast } from "sonner";
+import { handleUnAuthorisedResponse, showToastMessage } from "../utils";
 
-type Setting = {
+export type Setting = {
   _id: string;
   minBookingLength: number;
   maxBookingLength: number;
@@ -14,11 +14,6 @@ type Setting = {
   maxGuestsPerBooking: number;
 };
 
-type UpdateSettingResult = {
-  status: "success" | "error";
-  message: string;
-  setting?: Setting;
-};
 export default function UpdateSettingsForm({
   settings,
 }: {
@@ -31,7 +26,7 @@ export default function UpdateSettingsForm({
     breakFastPrice,
     maxGuestsPerBooking,
   } = settings;
-  const { getToken } = useAuth();
+  const { getToken, setUser } = useAuth();
 
   return (
     <form className="flex flex-col py-[2.4rem] px-[4rem] bg-[var(--color-grey-0)] border border-[var(--color-grey-100)] text-[1.4rem] rounded-[var(--border-radius-md)]">
@@ -56,18 +51,16 @@ export default function UpdateSettingsForm({
             }
 
             const token = getToken();
+            if (!token) return;
 
             const data = {
               [name]: value,
             };
             setLoading(true);
             const result = await updateSetting(data, token);
-            if (result.status === "error") {
-              toast.error(result.message);
-            } else {
-              console.log(result);
-              toast.success("Settings updated successfully");
-            }
+
+            handleUnAuthorisedResponse(setUser, result);
+            showToastMessage(result, 'Settings updated successfully"');
             setLoading(false);
           }}
         />
@@ -93,19 +86,14 @@ export default function UpdateSettingsForm({
               return;
             }
             const token = getToken();
+            if (!token) return;
             const data = {
               [name]: value,
             };
             setLoading(true);
-            const result: UpdateSettingResult = await updateSetting(
-              data,
-              token
-            );
-            if (result.status === "error") {
-              toast.error(result.message);
-            } else {
-              toast.success("Settings updated successfully");
-            }
+            const result = await updateSetting(data, token);
+            handleUnAuthorisedResponse(setUser, result);
+            showToastMessage(result, 'Settings updated successfully"');
             setLoading(false);
           }}
         />
@@ -138,15 +126,9 @@ export default function UpdateSettingsForm({
             };
 
             setLoading(true);
-            const result: UpdateSettingResult = await updateSetting(
-              data,
-              token
-            );
-            if (result.status === "error") {
-              toast.error(result.message);
-            } else {
-              toast.success("Settings updated successfully");
-            }
+            const result = await updateSetting(data, token);
+            handleUnAuthorisedResponse(setUser, result);
+            showToastMessage(result, 'Settings updated successfully"');
             setLoading(false);
           }}
         />
@@ -172,20 +154,15 @@ export default function UpdateSettingsForm({
               return;
             }
             const token = getToken();
+            if (!token) return;
             const data = {
               [name]: value,
             };
 
             setLoading(true);
-            const result: UpdateSettingResult = await updateSetting(
-              data,
-              token
-            );
-            if (result.status === "error") {
-              toast.error(result.message);
-            } else {
-              toast.success("Settings updated successfully");
-            }
+            const result = await updateSetting(data, token);
+            handleUnAuthorisedResponse(setUser, result);
+            showToastMessage(result, 'Settings updated successfully"');
             setLoading(false);
           }}
         />

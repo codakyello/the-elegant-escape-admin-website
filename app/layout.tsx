@@ -15,7 +15,7 @@ const poppins = Poppins({
 
 export const metadata = {
   title: {
-    template: "%s /  The Elegant Escape",
+    template: "%s |  The Elegant Escape",
     default: "The Elegant Escape",
   },
 };
