@@ -3,12 +3,50 @@ import { Box } from "@chakra-ui/react";
 import Button from "./Button";
 import FormRow from "./FormRow";
 import Input from "./Input";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { updatePassword } from "../_lib/data-service";
+import { useAuth } from "../_contexts/AuthProvider";
+import { useHandleUnAuthorisedResponse, showToastMessage } from "../utils";
 
 export default function UpdatePasswordForm() {
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
+  const { getToken, setToken } = useAuth();
+  const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
 
-  function handleSubmit() {}
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    const formFields = Object.fromEntries(formData) as {
+      currPassword: FormDataEntryValue;
+      password: FormDataEntryValue;
+      confirmPassword: FormDataEntryValue;
+    };
+
+    const token = getToken();
+
+    if (!token) return;
+
+    setLoading(true);
+
+    const res = await updatePassword(formFields, token);
+    console.log("response is", res);
+    if (res.status !== "error") {
+      // save token in localstorage
+
+      setToken(res.token);
+    }
+
+    setLoading(false);
+
+    handleUnAuthorisedResponse(res?.statusCode);
+
+    showToastMessage(
+      res?.status,
+      res?.message,
+      "Password updated successfully"
+    );
+  }
   return (
     <form
       onSubmit={handleSubmit}
@@ -16,11 +54,10 @@ export default function UpdatePasswordForm() {
     >
       <FormRow
         orientation="horizontal"
-        label="Email address"
+        label="Current Password"
         htmlFor="my-currPassword"
       >
         <Input
-          disabled={true}
           required={true}
           type="password"
           name="currPassword"

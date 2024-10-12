@@ -6,11 +6,12 @@ import { signUp } from "../_lib/actions";
 import Button from "./Button";
 import { Box } from "@chakra-ui/react";
 import { useAuth } from "../_contexts/AuthProvider";
-import { handleUnAuthorisedResponse, showToastMessage } from "../utils";
+import { useHandleUnAuthorisedResponse, showToastMessage } from "../utils";
 
 function SignUpForm() {
   const { getToken, setUser, user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -19,10 +20,10 @@ function SignUpForm() {
 
     const token = getToken();
     if (!token) return;
-    const data = await signUp(formData, token);
+    const res = await signUp(formData, token);
 
-    handleUnAuthorisedResponse(setUser, data);
-    showToastMessage(data, "User created successfully");
+    handleUnAuthorisedResponse(res.statusCode);
+    showToastMessage(res.status, res.message, "User created successfully");
     setLoading(false);
   }
   return (

@@ -4,7 +4,7 @@ import FormRow from "./FormRow";
 import Input from "./Input";
 import { updateSetting } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
-import { handleUnAuthorisedResponse, showToastMessage } from "../utils";
+import { useHandleUnAuthorisedResponse, showToastMessage } from "../utils";
 
 export type Setting = {
   _id: string;
@@ -20,6 +20,7 @@ export default function UpdateSettingsForm({
   settings: Setting;
 }) {
   const [loading, setLoading] = useState(false);
+  const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
   const {
     minBookingLength,
     maxBookingLength,
@@ -57,10 +58,14 @@ export default function UpdateSettingsForm({
               [name]: value,
             };
             setLoading(true);
-            const result = await updateSetting(data, token);
+            const res = await updateSetting(data, token);
 
-            handleUnAuthorisedResponse(setUser, result);
-            showToastMessage(result, 'Settings updated successfully"');
+            handleUnAuthorisedResponse(res.statusCode);
+            showToastMessage(
+              res.status,
+              res.message,
+              'Settings updated successfully"'
+            );
             setLoading(false);
           }}
         />
@@ -91,9 +96,13 @@ export default function UpdateSettingsForm({
               [name]: value,
             };
             setLoading(true);
-            const result = await updateSetting(data, token);
-            handleUnAuthorisedResponse(setUser, result);
-            showToastMessage(result, 'Settings updated successfully"');
+            const res = await updateSetting(data, token);
+            handleUnAuthorisedResponse(res.statusCode);
+            showToastMessage(
+              res.status,
+              res.message,
+              'Settings updated successfully"'
+            );
             setLoading(false);
           }}
         />
@@ -126,9 +135,13 @@ export default function UpdateSettingsForm({
             };
 
             setLoading(true);
-            const result = await updateSetting(data, token);
-            handleUnAuthorisedResponse(setUser, result);
-            showToastMessage(result, 'Settings updated successfully"');
+            const res = await updateSetting(data, token);
+            handleUnAuthorisedResponse(res.statusCode);
+            showToastMessage(
+              res.status,
+              res.message,
+              'Settings updated successfully"'
+            );
             setLoading(false);
           }}
         />
@@ -160,9 +173,13 @@ export default function UpdateSettingsForm({
             };
 
             setLoading(true);
-            const result = await updateSetting(data, token);
-            handleUnAuthorisedResponse(setUser, result);
-            showToastMessage(result, 'Settings updated successfully"');
+            const res = await updateSetting(data, token);
+            handleUnAuthorisedResponse(res.statusCode);
+            showToastMessage(
+              res.status,
+              res.message,
+              'Settings updated successfully"'
+            );
             setLoading(false);
           }}
         />

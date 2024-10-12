@@ -180,10 +180,10 @@ export async function authorize(token: string) {
     return false;
   }
 }
-export async function getAdmin(adminId: string, token: string) {
-  let res;
+export async function getAdmin(token: string | undefined) {
+  let statusCode;
   try {
-    res = await fetch(`{URL}/admins/${adminId}`, {
+    const res = await fetch(`${DEV_URL}/admins/me`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -192,6 +192,7 @@ export async function getAdmin(adminId: string, token: string) {
 
     const data = await res.json();
 
+    statusCode = res.status;
     if (!res.ok) throw new Error(data.message);
 
     const {
@@ -201,24 +202,25 @@ export async function getAdmin(adminId: string, token: string) {
   } catch (err: unknown) {
     // Improved error handling
     if (err instanceof Error) {
-      return { status: "error", statusCode: res?.status, message: err.message };
+      return { status: "error", statusCode, message: err.message };
     } else {
       return { status: "error", message: "An unknown error occurred" };
     }
   }
 }
+
 export async function updateAdmin(
   token: string,
-  adminId: string | undefined,
   formData: {
     email: FormDataEntryValue;
     name: FormDataEntryValue;
     image?: string | undefined;
   }
 ) {
-  let res;
+  let statusCode;
+  // console.log(token);
   try {
-    res = await fetch(`${URL}/admins/${adminId}`, {
+    const res = await fetch(`${DEV_URL}/admins/updateMe`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -229,6 +231,7 @@ export async function updateAdmin(
 
     const data = await res.json();
 
+    statusCode = res.status;
     // Check if the response was successful
     if (!res.ok) throw new Error(data.message || "Signup failed");
 
@@ -237,13 +240,52 @@ export async function updateAdmin(
       data: { admin },
     } = data;
 
-    revalidatePath("/dashboard");
+    revalidatePath("/dashboard/account");
     return admin;
   } catch (err: unknown) {
     console.log(err);
     // Improved error handling
     if (err instanceof Error) {
-      return { status: "error", statusCode: res?.status, message: err.message };
+      return { status: "error", statusCode, message: err.message };
+    } else {
+      return { status: "error", message: "An unknown error occurred" };
+    }
+  }
+}
+
+export async function updatePassword(
+  formFields: {
+    currPassword: FormDataEntryValue;
+    password: FormDataEntryValue;
+    confirmPassword: FormDataEntryValue;
+  },
+  token: string
+) {
+  let statusCode;
+  try {
+    const res = await fetch(`${URL}/admins/updateMyPassword`, {
+      method: "PATCH",
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(formFields),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message || "Failed to update password");
+
+    const {
+      data: { admin },
+      token: adminToken,
+    } = data;
+
+    return { admin, token: adminToken };
+  } catch (err) {
+    if (err instanceof Error) {
+      return { status: "error", statusCode, message: err.message };
     } else {
       return { status: "error", message: "An unknown error occurred" };
     }

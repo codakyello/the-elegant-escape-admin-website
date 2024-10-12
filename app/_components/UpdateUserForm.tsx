@@ -9,11 +9,17 @@ import supabase from "@/app/supabase";
 import { toast } from "sonner";
 import { updateAdmin } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
-import { handleUnAuthorisedResponse, showToastMessage } from "../utils";
+import { useHandleUnAuthorisedResponse, showToastMessage } from "../utils";
 
-export default function UpdateUserForm() {
-  const { getToken, user, setUser } = useAuth();
+export default function UpdateUserForm({
+  user,
+}: {
+  user: { email: string; name: string };
+}) {
+  const { getToken, setUser } = useAuth();
   const [loading, setLoading] = useState(false);
+  const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
+  const { name, email } = user;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -57,12 +63,16 @@ export default function UpdateUserForm() {
     }
 
     // Update Admin
-    const data = await updateAdmin(token, user?._id, formInputs);
-    setUser(data);
-    setLoading(false);
+    const res = await updateAdmin(token, formInputs);
+    if (res?.status !== "error") {
+      setUser(res);
+    }
 
-    handleUnAuthorisedResponse(setUser, data);
-    showToastMessage(data, "Profile updated successfully");
+    handleUnAuthorisedResponse(res?.statusCode);
+
+    showToastMessage(res?.status, res?.message, "Profile updated successfully");
+
+    setLoading(false);
   }
   return (
     <form
@@ -80,7 +90,7 @@ export default function UpdateUserForm() {
           type="email"
           name="email"
           id="my-email"
-          defaultValue={user?.email}
+          defaultValue={email}
         />
       </FormRow>
 
@@ -90,7 +100,7 @@ export default function UpdateUserForm() {
           type="text"
           name="name"
           id="my-fullName"
-          defaultValue={user?.name}
+          defaultValue={name}
         />
       </FormRow>
 

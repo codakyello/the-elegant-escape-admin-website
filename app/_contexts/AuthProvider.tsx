@@ -6,10 +6,10 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import PropTypes from "prop-types";
 import { useRouter } from "next/navigation";
 import { authorize } from "@/app/_lib/data-service";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 type User = {
   token: string;
@@ -50,6 +50,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     if (storedUser && token) {
       setUser(JSON.parse(storedUser));
       setToken(JSON.parse(token));
+      Cookies.set("token", JSON.parse(token));
     } else {
       setIsAuthenticating(false);
       // just addedd incase of braking changes
@@ -84,13 +85,16 @@ function AuthProvider({ children }: { children: ReactNode }) {
     }
     if (token) {
       localStorage.setItem("token", JSON.stringify(token));
+      Cookies.set("token", token);
     }
   }, [user, token]);
 
   // Logout function
   function logout() {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
+    setToken(null);
     setAuthenticated(false);
     setLogoutAction(true);
   }

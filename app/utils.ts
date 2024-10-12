@@ -1,32 +1,25 @@
 import { toast } from "sonner";
+import { useAuth } from "./_contexts/AuthProvider";
 
-export function handleUnAuthorisedResponse(
-  setUser: (arg: null) => void,
-  data: {
-    statusCode?: number;
-    token?: string;
-    user?: { token: string };
-    status?: string;
-    message?: string;
-  }
-) {
-  if (data?.statusCode === 401) {
-    setUser(null);
-  }
+export function useHandleUnAuthorisedResponse() {
+  const { logout } = useAuth();
+
+  const handleUnAuthorisedResponse = (statusCode: number | undefined) => {
+    if (statusCode === 401) {
+      logout(); // Clear the user context on 401
+    }
+  };
+
+  return handleUnAuthorisedResponse;
 }
 
 export function showToastMessage(
-  result: {
-    statusCode?: number;
-    token?: string;
-    user?: { token: string };
-    status?: string;
-    message?: string;
-  },
+  status: string | undefined,
+  errorMessage: string | undefined,
   successMessage: string
 ) {
-  if (result.status === "error") {
-    toast.error(result.message);
+  if (status === "error") {
+    toast.error(errorMessage);
   } else {
     toast.success(successMessage);
   }
