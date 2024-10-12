@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { Setting } from "../_components/UpdateSettingsForm";
 
 const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
-const DEV_URL = "http://localhost:3001/api/v1";
+// const DEV_URL = "http://localhost:3001/api/v1";
 
 // /////////////
 // // AUTH
@@ -183,7 +183,7 @@ export async function authorize(token: string) {
 export async function getAdmin(token: string | undefined) {
   let statusCode;
   try {
-    const res = await fetch(`${DEV_URL}/admins/me`, {
+    const res = await fetch(`${URL}/admins/me`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -220,7 +220,7 @@ export async function updateAdmin(
   let statusCode;
   // console.log(token);
   try {
-    const res = await fetch(`${DEV_URL}/admins/updateMe`, {
+    const res = await fetch(`${URL}/admins/updateMe`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
