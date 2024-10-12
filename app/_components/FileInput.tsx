@@ -2,6 +2,7 @@ export default function FileInput({ loading }: { loading: boolean }) {
   return (
     <input
       type="file"
+      accept="image/*"
       name="image"
       id="my-image"
       disabled={loading}
