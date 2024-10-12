@@ -1,10 +1,11 @@
+"use client";
 import { Box } from "@chakra-ui/react";
 import Button from "./Button";
 import FormRow from "./FormRow";
 import Input from "./Input";
 import { useState } from "react";
 
-export function UpdatePasswordForm() {
+export default function UpdatePasswordForm() {
   const [loading, setLoading] = useState();
 
   function handleSubmit() {}

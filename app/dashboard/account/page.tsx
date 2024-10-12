@@ -1,4 +1,5 @@
-import { UpdateUser } from "@/app/_components/UpdateUserForm";
+import UpdateUserForm from "@/app/_components/UpdateUserForm";
+import UpdatePasswordForm from "@/app/_components/UpdatePasswordForm";
 import { Box } from "@chakra-ui/react";
 
 export const metadata = {
@@ -11,7 +12,8 @@ async function Page() {
       <h1>Update your account</h1>
       <h2>Update user data</h2>
 
-      <UpdateUser />
+      <UpdateUserForm />
+      <UpdatePasswordForm/>
     </Box>
   );
 }

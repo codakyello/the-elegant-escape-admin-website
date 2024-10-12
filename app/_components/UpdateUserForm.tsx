@@ -11,7 +11,7 @@ import { updateAdmin } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
 import { handleUnAuthorisedResponse, showToastMessage } from "../utils";
 
-export function UpdateUser() {
+export default function UpdateUserForm() {
   const { getToken, user, setUser } = useAuth();
   const [loading, setLoading] = useState(false);
 
