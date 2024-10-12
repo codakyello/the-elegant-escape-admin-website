@@ -9,7 +9,7 @@ import { useAuth } from "../_contexts/AuthProvider";
 import { useHandleUnAuthorisedResponse, showToastMessage } from "../utils";
 
 function SignUpForm() {
-  const { getToken, setUser, user } = useAuth();
+  const { getToken, user } = useAuth();
   const [loading, setLoading] = useState(false);
   const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
 

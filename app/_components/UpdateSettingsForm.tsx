@@ -27,7 +27,7 @@ export default function UpdateSettingsForm({
     breakFastPrice,
     maxGuestsPerBooking,
   } = settings;
-  const { getToken, setUser } = useAuth();
+  const { getToken } = useAuth();
 
   return (
     <form className="flex flex-col py-[2.4rem] px-[4rem] bg-[var(--color-grey-0)] border border-[var(--color-grey-100)] text-[1.4rem] rounded-[var(--border-radius-md)]">

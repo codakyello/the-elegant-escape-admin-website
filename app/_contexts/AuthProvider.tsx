@@ -39,7 +39,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const [isLogoutAction, setLogoutAction] = useState(false);
-  const [token, setToken] = useState<string | any>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   // Load user from localStorage on initial mount
   useEffect(() => {
@@ -53,7 +53,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
       Cookies.set("token", JSON.parse(token));
     } else {
       setIsAuthenticating(false);
-      // just addedd incase of braking changes
+      // just addedd incase of breaking changes
       setAuthenticated(false);
     }
   }, []);

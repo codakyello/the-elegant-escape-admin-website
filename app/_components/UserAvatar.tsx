@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
-import { useAuth } from "../_contexts/AuthProvider";
 import { cookies } from "next/headers";
 import { getAdmin } from "../_lib/data-service";
 
