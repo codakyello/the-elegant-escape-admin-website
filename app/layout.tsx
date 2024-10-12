@@ -39,7 +39,7 @@ export default function RootLayout({
         toastOptions={{
           duration: 3500,
           classNames: {
-            title: "text-[1.6rem]",
+            title: "text-[15px] text-center",
           },
         }}
       />
