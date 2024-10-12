@@ -12,7 +12,9 @@ export default async function UserAvatar() {
       <Box className="relative w-14 rounded-full overflow-hidden aspect-square">
         <Image fill alt="My Avatar" src={user.image || "/"} />
       </Box>
-      <span className="text-[1.4rem] font-medium">demo</span>
+      <span className="text-[1.4rem] font-medium">
+        {user.name.split(" ")[0]}
+      </span>
     </Box>
   );
 }
