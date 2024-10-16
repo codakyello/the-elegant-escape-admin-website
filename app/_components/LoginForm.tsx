@@ -2,7 +2,7 @@
 import FormRow from "@/app/_components/FormRow";
 import Input from "./Input";
 import { FormEvent, useState } from "react";
-import { login } from "../_lib/actions";
+import { login } from "../_lib/data-service";
 import { toast } from "sonner";
 import { useAuth } from "../_contexts/AuthProvider";
 import SpinnerMini from "@/app/_components/SpinnerMini";

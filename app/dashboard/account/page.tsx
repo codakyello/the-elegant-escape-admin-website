@@ -1,15 +1,15 @@
 import UpdateUserForm from "@/app/_components/UpdateUserForm";
 import UpdatePasswordForm from "@/app/_components/UpdatePasswordForm";
 import { Box } from "@chakra-ui/react";
-import { cookies } from "next/headers";
 import { getAdmin } from "@/app/_lib/data-service";
+import { getToken } from "@/app/serverUtils";
 
 export const metadata = {
   title: "Account",
 };
 
 async function Page() {
-  const token = cookies().get("token")?.value;
+  const token = await getToken();
   const user = await getAdmin(token);
   console.log(token, user);
   return (

@@ -2,7 +2,7 @@
 import { FormEvent, useState } from "react";
 import FormRow from "./FormRow";
 import Input from "./Input";
-import { signUp } from "../_lib/actions";
+import { signUp } from "../_lib/data-service";
 import Button from "./Button";
 import { Box } from "@chakra-ui/react";
 import { useAuth } from "../_contexts/AuthProvider";

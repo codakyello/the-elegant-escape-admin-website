@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 import { useAuth } from "./_contexts/AuthProvider";
+import { cookies } from "next/headers";
 
 export function useHandleUnAuthorisedResponse() {
   const { logout } = useAuth();

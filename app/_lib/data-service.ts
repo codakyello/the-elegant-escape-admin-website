@@ -292,6 +292,39 @@ export async function updatePassword(
   }
 }
 
+export async function getBookings(token: string | null) {
+  let statusCode;
+  try {
+    const res = await fetch(`${URL}/bookings`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
+      },
+      next: { revalidate: 60 },
+    });
+
+    const data = await res.json();
+
+    statusCode = res.status;
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
+    console.log(data);
+    const {
+      data: { bookings },
+    } = data;
+
+    return bookings;
+  } catch (err) {
+    if (err instanceof Error) {
+      return { status: "error", statusCode, message: err.message };
+    } else {
+      return { status: "error", message: "An unknown error occurred" };
+    }
+  }
+}
 // export async function login(email, password) {
 //   const res = await fetch(`${URL}/guests/login`, {
 //     method: "POST",
@@ -514,37 +547,6 @@ export async function updatePassword(
 //     return booking;
 //   } catch {
 //     notFound();
-//   }
-// }
-
-// export async function getBookings() {
-//   try {
-//     const token = await getToken();
-
-//     const res = await fetch(`${URL}/guests/myBookings`, {
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
-//       },
-//       next: { revalidate: 60 },
-//     });
-
-//     const data = await res.json();
-
-//     if (!res.ok) {
-//       throw new Error(data.message);
-//     }
-
-//     const {
-//       data: { bookings },
-//     } = data;
-
-//     console.log(bookings);
-
-//     return bookings;
-//   } catch (err) {
-//     console.error("Error fetching bookings:", err.message);
-//     throw err;
 //   }
 // }
 
