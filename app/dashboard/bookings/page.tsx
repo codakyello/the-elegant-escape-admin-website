@@ -21,13 +21,13 @@ async function Page() {
 
   if (!bookings.length) return <h1>No Bookings Found!</h1>;
   return (
-    <Box className="flex flex-col gap-12">
-      <Box className="flex gap-8">
-        <h1>All Bookings</h1>
+    <Box className="flex flex-col gap-5">
+      <Box className="grid-cols-[1fr_1fr] grid lg:grid-cols-[repeat(3,auto)] gap-8">
+        <h1 className="col-span-2 lg:col-span-1 ">All Bookings</h1>
         <Filter
           defaultValue="all"
           paramName="status"
-          className="ml-auto"
+          className="lg:ml-auto"
           filters={[
             { name: "All", value: "all" },
             { name: "Checked-in", value: "checked-in" },
