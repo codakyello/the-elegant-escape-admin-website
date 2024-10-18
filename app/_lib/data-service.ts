@@ -115,13 +115,11 @@ export async function login(formData: FormData) {
 }
 
 export async function signUp(formData: FormData, token: string) {
-  // always check if a user is authenticated before any mutations
   const email = formData.get("email");
   const password = formData.get("password");
   const name = formData.get("fullName");
   const confirmPassword = formData.get("confirmPassword");
   const isRoot = formData.get("isRoot") === "on" ? true : false;
-  console.log("this is token", token);
 
   let res;
   try {
@@ -320,6 +318,120 @@ export async function getBookings(token: string | null) {
   } catch (err) {
     if (err instanceof Error) {
       return { status: "error", statusCode, message: err.message };
+    } else {
+      return { status: "error", message: "An unknown error occurred" };
+    }
+  }
+}
+
+export async function getCabins() {
+  let statusCode;
+  try {
+    const res = await fetch(`${URL}/cabins`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      next: { revalidate: 60 },
+    });
+
+    const data = await res.json();
+
+    statusCode = res.status;
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
+    console.log(data);
+    const {
+      data: { cabins },
+    } = data;
+
+    return cabins;
+  } catch (err) {
+    if (err instanceof Error) {
+      return { status: "error", statusCode, message: err.message };
+    } else {
+      return { status: "error", message: "An unknown error occurred" };
+    }
+  }
+}
+
+export async function createCabin(
+  token: string,
+  cabinData: {
+    name: string;
+    numGuests: number;
+    totalPrice: number;
+    discount: number;
+    image: string;
+    regularPrice: number;
+  }
+) {
+  console.log("creating cabins 2");
+
+  let res;
+  try {
+    // const token = getToken
+    res = await fetch(`${URL}/cabins`, {
+      method: "POST",
+      body: JSON.stringify(cabinData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    // Check if the response was successful
+    if (!res.ok) throw new Error(data.message);
+
+    // Destructure token and user from response
+    const {
+      data: { cabin },
+    } = data;
+
+    revalidatePath("/dashboard/cabins");
+    return cabin;
+  } catch (err: unknown) {
+    console.log(err);
+    // Improved error handling
+    if (err instanceof Error) {
+      return { status: "error", statusCode: res?.status, message: err.message };
+    } else {
+      return { status: "error", message: "An unknown error occurred" };
+    }
+  }
+}
+
+export async function deleteCabin(id: string, token: string) {
+  let res;
+  try {
+    // const token = getToken
+    res = await fetch(`${URL}/cabins/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // Check if the response was successful
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message);
+    }
+
+    // Destructure token and user from response
+
+    revalidatePath("/dashboard/cabins");
+    return { status: "success" };
+  } catch (err: unknown) {
+    console.log(err);
+    // Improved error handling
+    if (err instanceof Error) {
+      return { status: "error", statusCode: res?.status, message: err.message };
     } else {
       return { status: "error", message: "An unknown error occurred" };
     }

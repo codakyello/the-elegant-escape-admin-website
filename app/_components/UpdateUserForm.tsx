@@ -9,7 +9,10 @@ import supabase from "@/app/supabase";
 import { toast } from "sonner";
 import { updateAdmin } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
-import { useHandleUnAuthorisedResponse, showToastMessage } from "../utils";
+import {
+  useHandleUnAuthorisedResponse,
+  showToastMessage,
+} from "@/app/utils/utils";
 
 export default function UpdateUserForm({
   user,

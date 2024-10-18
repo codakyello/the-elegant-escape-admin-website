@@ -79,6 +79,10 @@ body {
   background-color: var(--color-grey-0);
 }
 
+p {
+  font-size: 1.6rem;
+}
+
 input,
 button,
 textarea,
@@ -101,10 +105,10 @@ input:disabled {
   color: var(--color-grey-500);
 }
 
-input:focus,
-button:focus,
-textarea:focus,
-select:focus {
+input:focus-visible,
+button:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--color-brand-600);
   outline-offset: -1px;
 }
@@ -123,7 +127,6 @@ ul {
   list-style: none;
 }
 
-p,
 h1,
 h2,
 h3,
@@ -165,13 +168,12 @@ img {
   justify-content: center;
   font-weight: 500;
   border-radius: var(--border-radius-sm);
+  border: none;
 }
 
 .btn--primary {
-  border: none;
   width: 15rem;
   height: 5rem;
-
   box-shadow: var(--shadow-sm);
   color: var(--color-brand-50);
   background-color: var(--color-brand-600);
@@ -183,6 +185,16 @@ img {
   color: var(--color-grey-600);
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-200);
+}
+
+.btn--danger {
+  box-shadow: var(--shadow-sm);
+  font-size: 1.4rem;
+  width: 7rem;
+  height: 5rem;
+  font-weight: 500;
+  color: var(--color-red-100);
+  background-color: var(--color-red-700);
 }
 
 .no-scrollbar::-webkit-scrollbar {

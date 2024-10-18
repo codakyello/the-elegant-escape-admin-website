@@ -1,22 +1,24 @@
+import { ReactNode } from "react";
 import SpinnerMini from "./SpinnerMini";
 
 export default function Button({
   loading,
   children,
   type,
-  handleClick,
+  onClick,
   action = "button",
 }: {
   loading?: boolean;
-  children: string;
-  type: "cancel" | "primary" | "secondary";
+  children: ReactNode;
+  type: "cancel" | "primary" | "secondary" | "danger";
   action?: "submit" | "button";
-  handleClick?: () => void;
+  onClick?: () => void;
 }) {
   return (
     <button
+      disabled={loading}
       type={action}
-      onClick={handleClick}
+      onClick={onClick}
       className={`flex justify-center btn btn--${type}`}
     >
       {loading ? <SpinnerMini /> : children}

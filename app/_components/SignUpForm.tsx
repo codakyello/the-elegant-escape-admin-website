@@ -6,7 +6,10 @@ import { signUp } from "../_lib/data-service";
 import Button from "./Button";
 import { Box } from "@chakra-ui/react";
 import { useAuth } from "../_contexts/AuthProvider";
-import { useHandleUnAuthorisedResponse, showToastMessage } from "../utils";
+import {
+  useHandleUnAuthorisedResponse,
+  showToastMessage,
+} from "@/app/utils/utils";
 
 function SignUpForm() {
   const { getToken, user } = useAuth();

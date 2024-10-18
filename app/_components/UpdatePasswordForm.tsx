@@ -6,7 +6,10 @@ import Input from "./Input";
 import { FormEvent, useState } from "react";
 import { updatePassword } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
-import { useHandleUnAuthorisedResponse, showToastMessage } from "../utils";
+import {
+  useHandleUnAuthorisedResponse,
+  showToastMessage,
+} from "@/app/utils/utils";
 
 export default function UpdatePasswordForm() {
   const [loading, setLoading] = useState(false);
