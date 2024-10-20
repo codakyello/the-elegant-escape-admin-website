@@ -4,7 +4,10 @@ import FormRow from "./FormRow";
 import Input from "./Input";
 import { updateSetting } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
-import { useHandleUnAuthorisedResponse, showToastMessage } from "../utils";
+import {
+  useHandleUnAuthorisedResponse,
+  showToastMessage,
+} from "@/app/utils/utils";
 
 export type Setting = {
   _id: string;
