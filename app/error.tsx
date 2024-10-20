@@ -16,7 +16,7 @@ export default function Error({
       <h1 className="text-[3rem] font-semibold">Something went wrong!</h1>
       <p className="text-[1.8rem]">Please try again later.</p>
 
-      <Button handleClick={reset} type="primary">
+      <Button onClick={reset} type="primary">
         Try again!
       </Button>
     </main>
