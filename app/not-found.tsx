@@ -14,7 +14,7 @@ function Page() {
         <h1 className="mb-[3.2rem]">
           The page you are looking for could not be found 😢
         </h1>
-        <Button type="primary" handleClick={moveBack}>
+        <Button type="primary" onClick={moveBack}>
           &larr; Go back
         </Button>
       </div>
