@@ -1,10 +1,19 @@
 "use client";
 
-import Table, { Body, Header } from "./Table";
+import Table, { Body, Footer, Header } from "./Table";
 import { Booking } from "../utils/types";
 import { BookingRow } from "./BookingRow";
+import Pagination from "./Pagination";
+import { RESULTS_PER_PAGE } from "../utils/constants";
 
-export default function BookingTable({ bookings }: { bookings: Booking[] }) {
+export default function BookingTable({
+  bookings,
+  count,
+}: {
+  bookings: Booking[];
+  count: string;
+}) {
+  console.log(count);
   return (
     <Table columns={["0.6fr, 2fr, 2.4fr, 1.4fr, 1fr, 3.2rem"]}>
       <Header headers={["Cabin", "Guest", "Dates", "Status", "Amount"]} />
@@ -12,6 +21,9 @@ export default function BookingTable({ bookings }: { bookings: Booking[] }) {
         data={bookings}
         render={(booking) => <BookingRow booking={booking} key={booking._id} />}
       />
+      <Footer>
+        {Number(count) > RESULTS_PER_PAGE ? <Pagination count={count} /> : ""}
+      </Footer>
     </Table>
 
     // <Box className="border border-[var(--color-grey-200)] bg-[var(--color-grey-0)] text-[1.4rem]">

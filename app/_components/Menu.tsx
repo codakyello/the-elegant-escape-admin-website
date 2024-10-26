@@ -9,7 +9,7 @@ import {
   ReactElement,
 } from "react";
 import { Box } from "@chakra-ui/react";
-// import useOutsideClick from "../hooks/useOutsideClick";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 type MenuContextType =
   | {
@@ -27,8 +27,6 @@ export default function Menus({ children }: { children: ReactNode }) {
   const close = () => setOpenId("");
   const open = setOpenId;
 
-  // useOutsideClick(close);
-
   return (
     <MenuContext.Provider value={{ openId, open, close }}>
       {children}
@@ -37,16 +35,15 @@ export default function Menus({ children }: { children: ReactNode }) {
 }
 
 function Menu({ children, id }: { children: ReactNode; id: string }) {
-  const context = useContext(MenuContext);
+  const { openId, close } = useMenu();
 
-  if (!context) {
-    return null;
-  }
-
-  const { openId } = context;
+  const ref = useOutsideClick<HTMLDivElement>(close);
 
   return openId === id ? (
-    <Box className="absolute top-[20px] left-[-40px] z-20 bg-[var(--color-grey-0)] shadow-md rounded-[var(--border-radius-md)]">
+    <Box
+      ref={ref}
+      className="absolute top-[20px] left-[-40px] z-20 bg-[var(--color-grey-0)] shadow-md rounded-[var(--border-radius-md)]"
+    >
       {children}
     </Box>
   ) : null;
@@ -96,3 +93,11 @@ function Button({
 Menus.Menu = Menu;
 Menus.Toogle = Toggle;
 Menus.Button = Button;
+
+export function useMenu() {
+  const context = useContext(MenuContext);
+
+  if (!context)
+    throw new Error("Cannot use table context outside its provider");
+  return context;
+}

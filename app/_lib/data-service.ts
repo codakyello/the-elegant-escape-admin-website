@@ -4,6 +4,8 @@
 
 import { revalidatePath } from "next/cache";
 import { Setting } from "../_components/UpdateSettingsForm";
+import { RESULTS_PER_PAGE } from "../utils/constants";
+import { notFound } from "next/navigation";
 
 const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
 // const DEV_URL = "http://localhost:3001/api/v1";
@@ -290,10 +292,42 @@ export async function updatePassword(
   }
 }
 
-export async function getBookings(token: string | null) {
+export async function getAllBookings(
+  token: string | null,
+  searchParams: { page: string; status: string; sortBy: string }
+) {
   let statusCode;
+
+  let query = "";
+
+  const page = searchParams.page || 1;
+  const status = searchParams.status;
+  const sort = searchParams.sortBy || "startDate-desc";
+
+  // Page
+  query += `?page=${page}&limit=${RESULTS_PER_PAGE}`;
+
+  // Filter
+  if (status && status !== "all") query += `&status=${status}`;
+
+  // Sort
+  switch (sort) {
+    case "startDate-desc":
+      query += "&sort=-created_at";
+      break;
+    case "startDate-asc":
+      query += "&sort=created_at";
+      break;
+    case "totalPrice-desc":
+      query += "&sort=-totalPrice";
+      break;
+    case "totalPrice-asc":
+      query += "&sort=totalPrice";
+  }
+
+  console.log("query is", query);
   try {
-    const res = await fetch(`${URL}/bookings`, {
+    const res = await fetch(`${URL}/bookings/${query}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
@@ -309,12 +343,13 @@ export async function getBookings(token: string | null) {
       throw new Error(data.message);
     }
 
-    console.log(data);
     const {
+      totalCount,
+      results,
       data: { bookings },
     } = data;
 
-    return bookings;
+    return { bookings, totalCount, results };
   } catch (err) {
     if (err instanceof Error) {
       return { status: "error", statusCode, message: err.message };
@@ -324,10 +359,60 @@ export async function getBookings(token: string | null) {
   }
 }
 
-export async function getCabins() {
+export async function getAllCabins(searchParams: {
+  page: string;
+  discount: string;
+  sortBy: string;
+}) {
+  await new Promise((res) => {
+    setTimeout(res, 5000);
+  });
   let statusCode;
+  let query = "";
+
+  console.log("fetching");
+
+  const page = searchParams.page || 1;
+  const discount = searchParams.discount;
+  const sort = searchParams.sortBy || "startDate-desc";
+
+  // Page
+  query += `?page=${page}&limit=${RESULTS_PER_PAGE}`;
+
+  // Filter
+  switch (discount) {
+    case "no-discount":
+      console.log("no discount");
+      query += "&discount=0";
+      break;
+
+    case "with-discount":
+      query += "&discount[gt]=0";
+  }
+
+  // Sort
+  switch (sort) {
+    case "name-asc":
+      query += "&sort=name";
+      break;
+    case "name-desc":
+      query += "&sort=-name";
+      break;
+    case "regularPrice-asc":
+      query += "&sort=regularPrice";
+      break;
+    case "regularPrice-desc":
+      query += "&sort=-regularPrice";
+
+    case "maxCapacity-asc":
+      query += "&sort=maxCapacity";
+
+    case "maxCapacity-desc":
+      query += "&sort=-maxCapacity";
+  }
+
   try {
-    const res = await fetch(`${URL}/cabins`, {
+    const res = await fetch(`${URL}/cabins/${query}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -344,10 +429,12 @@ export async function getCabins() {
 
     console.log(data);
     const {
+      totalCount,
+      results,
       data: { cabins },
     } = data;
 
-    return cabins;
+    return { cabins, totalCount, results };
   } catch (err) {
     if (err instanceof Error) {
       return { status: "error", statusCode, message: err.message };
@@ -357,15 +444,47 @@ export async function getCabins() {
   }
 }
 
+export async function getCabin(id?: string) {
+  console.log("getting cabin");
+  try {
+    const res = await fetch(
+      `${URL}/cabins/${id}`,
+
+      {
+        next: {
+          revalidate: 60,
+        },
+      }
+    );
+
+    const data = await res.json();
+    // data.error || data.data
+
+    if (!res.ok) {
+      throw new Error(data.error);
+    }
+
+    const {
+      data: { cabin },
+    } = data;
+
+    console.log(cabin);
+
+    return cabin;
+  } catch {
+    notFound();
+  }
+}
+
 export async function createCabin(
   token: string,
   cabinData: {
     name: string;
-    numGuests: number;
-    totalPrice: number;
+    maxCapacity: number;
     discount: number;
-    image: string;
+    image: string | undefined;
     regularPrice: number;
+    description: string;
   }
 ) {
   console.log("creating cabins 2");
@@ -392,7 +511,56 @@ export async function createCabin(
       data: { cabin },
     } = data;
 
-    revalidatePath("/dashboard/cabins");
+    // revalidatePath("/dashboard/cabins");
+    return cabin;
+  } catch (err: unknown) {
+    console.log(err);
+    // Improved error handling
+    if (err instanceof Error) {
+      return { status: "error", statusCode: res?.status, message: err.message };
+    } else {
+      return { status: "error", message: "An unknown error occurred" };
+    }
+  }
+}
+
+export async function updateCabin(
+  token: string,
+  id: string | undefined,
+  cabinData: {
+    name: string;
+    maxCapacity: number;
+    discount: number;
+    image: string | undefined;
+    regularPrice: number;
+    description: string;
+  }
+) {
+  console.log("editing cabins 2");
+
+  let res;
+  try {
+    // const token = getToken
+    res = await fetch(`${URL}/cabins/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(cabinData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    // Check if the response was successful
+    if (!res.ok) throw new Error(data.message);
+
+    // Destructure token and user from response
+    const {
+      data: { cabin },
+    } = data;
+
+    // revalidatePath("/dashboard/cabins");
     return cabin;
   } catch (err: unknown) {
     console.log(err);

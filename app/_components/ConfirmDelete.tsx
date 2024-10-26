@@ -1,20 +1,21 @@
+"use client";
 import { Box } from "@chakra-ui/react";
 import Button from "./Button";
 import SpinnerMini from "./SpinnerMini";
 
-export function ConfirmDelete({
+export default function ConfirmDelete({
   resourceName,
   onConfirm,
   onClose,
-  isLoading,
+  isDeleting,
 }: {
   resourceName: string;
-  isLoading: boolean;
+  isDeleting: boolean;
   onConfirm: () => void;
   onClose: () => void;
 }) {
   return (
-    <Box className="w-[40rem] px-[3.2rem] py-[4rem] shadow-lg rounded-[var(--border-radius-lg)] z-50 bg-[var(--color-grey-0)] flex flex-col gap-[1.2rem]">
+    <Box className="w-[45rem] flex flex-col gap-[1.2rem]">
       <h3>Delete {resourceName}</h3>
       <p className="mb-[1.2rem] text-[var(--color-grey-500)]">
         Are you sure you want to delete this cabins permanently? This action
@@ -25,8 +26,8 @@ export function ConfirmDelete({
         <Button onClick={onClose} type="cancel">
           Cancel
         </Button>
-        <Button loading={isLoading} onClick={onConfirm} type="danger">
-          {!isLoading ? "Delete" : <SpinnerMini />}
+        <Button loading={isDeleting} onClick={onConfirm} type="danger">
+          {!isDeleting ? "Delete" : <SpinnerMini />}
         </Button>
       </Box>
     </Box>

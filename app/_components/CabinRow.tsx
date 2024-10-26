@@ -18,30 +18,14 @@ import {
   useHandleUnAuthorisedResponse,
 } from "../utils/utils";
 import { ModalOpen, ModalWindow, useModal } from "./Modal";
-import { ConfirmDelete } from "./ConfirmDelete";
+import ConfirmDelete from "./ConfirmDelete";
 import { useState } from "react";
-
-// async function handleDelete(cabin: Cabin) {}
-
-// const menuList = [
-//   {
-//     name: "Edit",
-//     icon: (
-//       <HiPencil className="w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
-//     ),
-//     onClick: () => {},
-//   },
-//   {
-//     name: "Delete",
-//     icon: (
-//       <HiTrash className="w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
-//     ),
-//     onClick: () => {},
-//   },
-// ];
+import CreateEditCabinForm from "./CreateEditCabinForm";
 
 export default function CabinRow({ cabin }: { cabin: Cabin }) {
   const { close } = useModal();
+
+  const { name, maxCapacity, image, regularPrice, discount, _id: id } = cabin;
 
   const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
 
@@ -61,7 +45,7 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
     showToastMessage(res.status, res.message, "Cabin successfully created");
   };
 
-  const handleDelete = async function (id: string) {
+  const handleDelete = async function () {
     setLoading(true);
 
     const token = await getToken();
@@ -76,7 +60,6 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
 
     close();
   };
-  const { name, numGuests, image, regularPrice, discount, _id } = cabin;
   return (
     <Row>
       <Box className="relative w-[6.4rem] aspect-[3/2]">
@@ -88,14 +71,14 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
         />
       </Box>
       <p className="font-semibold">{name}</p>
-      <p>Fits up to {numGuests} guests</p>
+      <p>Fits up to {maxCapacity} guests</p>
       <p className="font-semibold">{formatCurrency(regularPrice)}</p>
       <p className="text-[var(--color-green-700)] font-medium">
         {discount ? formatCurrency(discount) : "-"}
       </p>
 
       <div className="relative grid">
-        <Menus.Toogle id={cabin._id}>
+        <Menus.Toogle id={id}>
           <button className="bg-none border-none p-1 rounded-sm translate-x-2 transition-all duration-200 hover:bg-gray-100">
             <HiEllipsisVertical className="self-end h-10 w-10" />
           </button>
@@ -111,14 +94,20 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
             Duplicate
           </Menus.Button>
 
-          <Menus.Button
-            onClick={() => {}}
-            icon={
-              <HiPencil className="w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
-            }
-          >
-            Edit
-          </Menus.Button>
+          <ModalOpen name="edit-cabin">
+            <Menus.Button
+              onClick={() => {}}
+              icon={
+                <HiPencil className="w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
+              }
+            >
+              Edit
+            </Menus.Button>
+          </ModalOpen>
+
+          <ModalWindow name="edit-cabin">
+            <CreateEditCabinForm cabinToEdit={cabin} />
+          </ModalWindow>
 
           <ModalOpen name="delete-cabin">
             <Menus.Button
@@ -134,10 +123,8 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
           <ModalWindow name="delete-cabin">
             <ConfirmDelete
               resourceName="Cabin"
-              isLoading={loading}
-              onConfirm={() => {
-                handleDelete(_id);
-              }}
+              isDeleting={loading}
+              onConfirm={handleDelete}
               onClose={close}
             />
           </ModalWindow>

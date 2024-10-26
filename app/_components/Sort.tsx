@@ -17,11 +17,12 @@ export default function Sort({
   const pathname = usePathname();
 
   const activeSort = searchParams.get("sortBy") || defaultValue;
+  console.log(activeSort);
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value = event.currentTarget.value;
     const params = new URLSearchParams(searchParams);
-    params.set("SortBy", value);
+    params.set("sortBy", value);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 

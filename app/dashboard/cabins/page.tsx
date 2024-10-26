@@ -1,27 +1,33 @@
 import CabinTable from "@/app/_components/CabinTable";
 import Sort from "@/app/_components/Sort";
 import Filter from "@/app/_components/Filter";
-import { getCabins } from "@/app/_lib/data-service";
+import { getAllCabins } from "@/app/_lib/data-service";
 import { Box } from "@chakra-ui/react";
 import Button from "@/app/_components/Button";
 import Modal, { ModalOpen, ModalWindow } from "@/app/_components/Modal";
-// import { ConfirmDelete } from "@/app/_components/ConfirmDelete";
+import CreateEditCabinForm from "@/app/_components/CreateEditCabinForm";
+import ConfirmDelete from "@/app/_components/ConfirmDelete";
+import { Suspense } from "react";
+import Cabins from "@/app/_components/Cabins";
+import Loading from "../loading";
 
 export const metadata = {
   title: "Cabins",
 };
 
-async function Page() {
-  const cabins = await getCabins();
+async function Page({
+  searchParams,
+}: {
+  searchParams: { page: string; discount: string; sortBy: string };
+}) {
   return (
-    <Modal>
-      <Box className="flex flex-col gap-5">
-        <Box className="grid-cols-[1fr_1fr] grid lg:grid-cols-[repeat(3,auto)] gap-8">
-          <h1 className="col-span-2 lg:col-span-1 ">All Cabins</h1>
+    <Box className="flex flex-col gap-5">
+      <Box className="flex flex-col lg:flex-row gap-8 pt-1 pr-1">
+        <h1 className="">All Cabins</h1>
+        <Box className="flex gap-6 lg:ml-auto">
           <Filter
             defaultValue="all"
             paramName="discount"
-            className="lg:ml-auto"
             filters={[
               { name: "All", value: "all" },
               { name: "No discount", value: "no-discount" },
@@ -34,7 +40,10 @@ async function Page() {
             options={[
               { name: "Sort by name (A-Z)", value: "name-asc" },
               { name: "Sort by name (Z-A)", value: "name-desc" },
-              { name: "Sort by price (low first)", value: "regularPrice-asc" },
+              {
+                name: "Sort by price (low first)",
+                value: "regularPrice-asc",
+              },
               {
                 name: "Sort by price (high first)",
                 value: "regularPrice-desc",
@@ -50,24 +59,15 @@ async function Page() {
             ]}
           />
         </Box>
-
-        <CabinTable cabins={cabins} />
-
-        <ModalOpen name="add-cabin">
-          <Button type="primary">Add new cabin</Button>
-        </ModalOpen>
-
-        <ModalWindow name="add-cabin">
-          <span></span>
-          {/* <ConfirmDelete
-          isLoading={loading}
-            resourceName="Cabin"
-            onConfirm={() => {}}
-            onClose={() => {}}
-          /> */}
-        </ModalWindow>
       </Box>
-    </Modal>
+
+      <Suspense
+        fallback={<Loading />}
+        key={`${searchParams.discount}-${searchParams.page}-${searchParams.sortBy}`}
+      >
+        <Cabins searchParams={searchParams} />
+      </Suspense>
+    </Box>
   );
 }
 

@@ -173,7 +173,8 @@ img {
 
 .btn--primary {
   width: 15rem;
-  height: 5rem;
+  height: 4.5rem;
+  transition: 0.3s;
   box-shadow: var(--shadow-sm);
   color: var(--color-brand-50);
   background-color: var(--color-brand-600);
@@ -195,6 +196,29 @@ img {
   font-weight: 500;
   color: var(--color-red-100);
   background-color: var(--color-red-700);
+}
+
+.btn--pagination {
+  background-color: var(--color-grey-50);
+  color: inherit;
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.5rem;
+  color: #333;
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-brand-600);
+    color: var(--color-brand-50);
+  }
+
+  &:hover:not(:disabled) svg {
+    color: var(--color-grey-0);
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {

@@ -1,6 +1,6 @@
 "use client";
 import { Box } from "@chakra-ui/react";
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactElement, ReactNode, useContext } from "react";
 // import { Booking, Cabin } from "../utils/types";
 import { generateGridTemplateColumns } from "../utils/helpers";
 
@@ -56,8 +56,12 @@ export function Body<T>({
   data,
   render,
 }: {
-  data: T[];
+  data: T[] | null;
   render: (item: T) => ReactNode;
 }) {
-  return <Box>{data.map(render)}</Box>;
+  return <Box>{data?.map(render)}</Box>;
+}
+
+export function Footer({ children }: { children: ReactElement | string }) {
+  return <footer>{children}</footer>;
 }

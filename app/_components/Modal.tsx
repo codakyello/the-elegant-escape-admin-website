@@ -9,6 +9,8 @@ import {
   useContext,
   useState,
 } from "react";
+import useOutsideClick from "../hooks/useOutsideClick";
+import { IoCloseOutline } from "react-icons/io5";
 
 const ModalContext = createContext<
   | { isOpen: string; open: (name: string) => void; close: () => void }
@@ -19,7 +21,6 @@ export default function Modal({ children }: { children: ReactNode }) {
   const [isOpen, setOpen] = useState("");
   const open = setOpen;
   const close = () => setOpen("");
-  //   useOutsideClick(close);
 
   return (
     <ModalContext.Provider value={{ isOpen, open, close }}>
@@ -54,15 +55,24 @@ export function ModalWindow({
   children: ReactElement;
   name: string;
 }) {
-  const context = useContext(ModalContext);
+  const { close, isOpen } = useModal();
 
-  if (!context) return;
-
-  const { isOpen } = context;
+  const ref = useOutsideClick<HTMLDivElement>(close);
 
   return isOpen === name ? (
-    <Box className="fixed top-0 left-0 z-20 flex items-center justify-center h-full w-screen backdrop-blur-sm">
-      {children}
+    <Box className="fixed p-5 top-0  left-0 z-[90] flex items-center justify-center h-full w-screen backdrop-blur-sm">
+      <Box
+        className="px-[3rem] py-[3rem] shadow-lg rounded-[var(--border-radius-lg)] z-50 bg-[var(--color-grey-0)] flex relative"
+        ref={ref}
+      >
+        <button
+          className="absolute z-[99] top-[2rem] right-[3rem]"
+          onClick={close}
+        >
+          <IoCloseOutline size="2.5rem" />
+        </button>
+        {children}
+      </Box>
     </Box>
   ) : (
     ""

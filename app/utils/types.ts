@@ -11,13 +11,21 @@ export interface Guest {
 export interface Cabin {
   _id: string;
   name: string;
-  numGuests: number;
-  totalPrice: number;
+  maxCapacity: number;
   discount: number;
   image: string;
+  description: string;
   regularPrice: number;
 }
 
+export interface CabinData {
+  name: string;
+  maxCapacity: number;
+  discount: number;
+  image: string | undefined;
+  regularPrice: number;
+  description: string;
+}
 export interface Booking {
   _id: string;
   startDate: Date;

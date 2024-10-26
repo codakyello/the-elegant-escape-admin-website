@@ -7,13 +7,15 @@ export default async function UserAvatar() {
   const token = cookies().get("token")?.value;
   const user = await getAdmin(token);
 
+  if (!user) return;
+
   return (
     <Box className="flex items-center gap-5">
       <Box className="relative w-14 rounded-full overflow-hidden aspect-square">
         <Image fill alt="My Avatar" src={user.image || "/"} />
       </Box>
       <span className="text-[1.4rem] font-medium">
-        {user.name.split(" ")[0]}
+        {user.name?.split(" ")[0]}
       </span>
     </Box>
   );
