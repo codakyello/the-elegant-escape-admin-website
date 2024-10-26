@@ -5,9 +5,9 @@ import Input from "./Input";
 import FileInput from "./FileInput";
 import { useModal } from "./Modal";
 import Button from "./Button";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { toast } from "sonner";
-import { createCabin, getCabin, updateCabin } from "../_lib/data-service";
+import { createCabin, updateCabin } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
 import supabase from "../supabase";
 import {

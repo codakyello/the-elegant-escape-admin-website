@@ -1,9 +1,7 @@
 import { getAllCabins } from "../_lib/data-service";
 import Button from "./Button";
 import CabinTable from "./CabinTable";
-import ConfirmDelete from "./ConfirmDelete";
 import CreateEditCabinForm from "./CreateEditCabinForm";
-import CreateCabinForm from "./CreateEditCabinForm";
 import Modal, { ModalOpen, ModalWindow } from "./Modal";
 
 export default async function Cabins({
