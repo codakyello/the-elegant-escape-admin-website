@@ -1,12 +1,6 @@
-import CabinTable from "@/app/_components/CabinTable";
 import Sort from "@/app/_components/Sort";
 import Filter from "@/app/_components/Filter";
-import { getAllCabins } from "@/app/_lib/data-service";
 import { Box } from "@chakra-ui/react";
-import Button from "@/app/_components/Button";
-import Modal, { ModalOpen, ModalWindow } from "@/app/_components/Modal";
-import CreateEditCabinForm from "@/app/_components/CreateEditCabinForm";
-import ConfirmDelete from "@/app/_components/ConfirmDelete";
 import { Suspense } from "react";
 import Cabins from "@/app/_components/Cabins";
 import Loading from "../loading";
