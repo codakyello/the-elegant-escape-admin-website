@@ -11,7 +11,7 @@ export default function BookingTable({
   count,
 }: {
   bookings: Booking[];
-  count: string;
+  count: number;
 }) {
   console.log(count);
   return (
