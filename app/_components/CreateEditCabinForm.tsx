@@ -114,96 +114,87 @@ export default function CreateEditCabinForm({
   };
 
   return (
-    <Box className="flex flex-col gap-8">
-      <h2>{isEditSession ? "Edit" : "Create"} Cabin</h2>
-      <form onSubmit={handleSubmit} className="w-screen max-w-[80rem]">
-        <FormRow
-          htmlFor="cabin_name"
-          label="Cabin name"
-          orientation="horizontal"
-        >
-          <Input
-            defaultValue={editValues?.name}
-            name="name"
-            id="cabin_name"
-            required={true}
-            type="text"
-          />
-        </FormRow>
+    <form onSubmit={handleSubmit} className="w-full">
+      <h2 className="mb-[.5rem]">{isEditSession ? "Edit" : "Create"} Cabin</h2>
 
-        <FormRow
-          htmlFor="cabin_maxCapacity"
-          label="Maximum capacity"
-          orientation="horizontal"
-        >
-          <Input
-            defaultValue={editValues?.maxCapacity}
-            name="maxCapacity"
-            required={true}
-            id="cabin_maxCapacity"
-            type="number"
-          />
-        </FormRow>
+      <FormRow htmlFor="cabin_name" label="Cabin name" orientation="horizontal">
+        <Input
+          defaultValue={editValues?.name}
+          name="name"
+          id="cabin_name"
+          required={true}
+          type="text"
+        />
+      </FormRow>
 
-        <FormRow
-          htmlFor="cabin_price"
-          label="Regular price"
-          orientation="horizontal"
-        >
-          <Input
-            defaultValue={editValues?.regularPrice}
-            name="regularPrice"
-            required={true}
-            id="cabin_price"
-            type="number"
-          />
-        </FormRow>
+      <FormRow
+        htmlFor="cabin_maxCapacity"
+        label="Maximum capacity"
+        orientation="horizontal"
+      >
+        <Input
+          defaultValue={editValues?.maxCapacity}
+          name="maxCapacity"
+          required={true}
+          id="cabin_maxCapacity"
+          type="number"
+        />
+      </FormRow>
 
-        <FormRow
-          htmlFor="cabin_discount"
-          label="Discount"
-          orientation="horizontal"
-        >
-          <Input
-            defaultValue={editValues?.discount}
-            name="discount"
-            required={true}
-            id="cabin_discount"
-            type="number"
-          />
-        </FormRow>
+      <FormRow
+        htmlFor="cabin_price"
+        label="Regular price"
+        orientation="horizontal"
+      >
+        <Input
+          defaultValue={editValues?.regularPrice}
+          name="regularPrice"
+          required={true}
+          id="cabin_price"
+          type="number"
+        />
+      </FormRow>
 
-        <FormRow
-          htmlFor="website_descr"
-          label="Description for website"
-          orientation="horizontal"
-        >
-          <Textarea
-            defaultValue={editValues?.description}
-            required={true}
-            className="py-[1rem] md:text-[16px] px-[1.2rem] bg-white border rounded-[var(--border-radius-sm)]"
-            name="description"
-            id="website_descr"
-          />
-        </FormRow>
+      <FormRow
+        htmlFor="cabin_discount"
+        label="Discount"
+        orientation="horizontal"
+      >
+        <Input
+          defaultValue={editValues?.discount}
+          name="discount"
+          required={true}
+          id="cabin_discount"
+          type="number"
+        />
+      </FormRow>
 
-        <FormRow
-          orientation="horizontal"
-          label="Cabin photo"
-          htmlFor="my-image"
-        >
-          <FileInput loading={false} />
-        </FormRow>
+      <FormRow
+        htmlFor="website_descr"
+        label="Description for website"
+        orientation="horizontal"
+      >
+        <Textarea
+          defaultValue={editValues?.description}
+          required={true}
+          className="py-[1rem] md:text-[16px] px-[1.2rem] bg-white border rounded-[var(--border-radius-sm)]"
+          name="description"
+          id="website_descr"
+        />
+      </FormRow>
 
-        <Box className="flex justify-end gap-5 items-center">
-          <Button type="cancel" onClick={close}>
-            Cancel
-          </Button>
-          <Button loading={loading} type="primary" action="submit">
-            {!isEditSession ? "Create new cabin" : "Edit cabin"}
-          </Button>
-        </Box>
-      </form>
-    </Box>
+      <FormRow orientation="horizontal" label="Cabin photo" htmlFor="my-image">
+        <FileInput loading={false} />
+      </FormRow>
+
+      <Box className="flex justify-end gap-5 items-center">
+        <Button type="cancel" onClick={close}>
+          Cancel
+        </Button>
+        <Button loading={loading} type="primary" action="submit">
+          {!isEditSession ? "Create new cabin" : "Edit cabin"}
+        </Button>
+      </Box>
+    </form>
   );
 }

@@ -511,7 +511,7 @@ export async function createCabin(
       data: { cabin },
     } = data;
 
-    // revalidatePath("/dashboard/cabins");
+    revalidatePath("/dashboard/cabins");
     return cabin;
   } catch (err: unknown) {
     console.log(err);
@@ -560,7 +560,7 @@ export async function updateCabin(
       data: { cabin },
     } = data;
 
-    // revalidatePath("/dashboard/cabins");
+    revalidatePath("/dashboard/cabins");
     return cabin;
   } catch (err: unknown) {
     console.log(err);

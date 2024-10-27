@@ -75,13 +75,16 @@ function Button({
   icon,
   children,
   onClick,
+  disabled,
 }: {
   icon: ReactElement;
   children: ReactNode;
   onClick: () => void;
+  disabled: boolean;
 }) {
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
       className="w-full text-left bg-none border-none py-[1.5rem] px-[2.4rem] text-[1.4rem] transition-all duration-200 flex items-center gap-[1.6rem] hover:bg-gray-50"
     >

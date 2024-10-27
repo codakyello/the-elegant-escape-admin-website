@@ -32,6 +32,8 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
   const [loading, setLoading] = useState(false);
 
   const handleDuplicate = async function (cabin: Cabin) {
+    setLoading(true);
+
     const cabinData = {
       ...cabin,
       _id: undefined,
@@ -43,6 +45,10 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
     const res = await createCabin(token, cabinData);
 
     showToastMessage(res.status, res.message, "Cabin successfully created");
+
+    setLoading(false);
+
+    close();
   };
 
   const handleDelete = async function () {
@@ -86,6 +92,7 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
 
         <Menus.Menu id={cabin._id}>
           <Menus.Button
+            disabled={loading}
             onClick={() => handleDuplicate(cabin)}
             icon={
               <HiSquare2Stack className="w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
@@ -96,6 +103,7 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
 
           <ModalOpen name="edit-cabin">
             <Menus.Button
+              disabled={loading}
               onClick={() => {}}
               icon={
                 <HiPencil className="w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
@@ -111,6 +119,7 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
 
           <ModalOpen name="delete-cabin">
             <Menus.Button
+              disabled={loading}
               onClick={() => {}}
               icon={
                 <HiTrash className="w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />

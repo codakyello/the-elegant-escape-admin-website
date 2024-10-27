@@ -60,9 +60,9 @@ export function ModalWindow({
   const ref = useOutsideClick<HTMLDivElement>(close);
 
   return isOpen === name ? (
-    <Box className="fixed p-5 top-0  left-0 z-[90] flex items-center justify-center h-full w-screen backdrop-blur-sm">
+    <Box className="fixed p-5 top-0 left-0 z-[90] flex items-center justify-center h-full w-screen backdrop-blur-sm">
       <Box
-        className="px-[3rem] py-[3rem] shadow-lg rounded-[var(--border-radius-lg)] z-50 bg-[var(--color-grey-0)] flex relative"
+        className="px-[3rem] max-w-[80rem] w-screen py-[3rem] shadow-lg rounded-[var(--border-radius-lg)] z-50 bg-[var(--color-grey-0)] flex relative"
         ref={ref}
       >
         <button
