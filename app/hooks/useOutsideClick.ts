@@ -2,7 +2,7 @@ import { useRef, useLayoutEffect } from "react";
 
 function useOutsideClick<T extends HTMLElement>(
   handler: () => void, // The handler function
-  listenCapturing: boolean = true // Optional: Defaults to capturing phase
+  listenCapturing: boolean = false // Optional: Defaults to capturing phase
 ) {
   const ref = useRef<T>(null); // Using a generic HTML element ref
 

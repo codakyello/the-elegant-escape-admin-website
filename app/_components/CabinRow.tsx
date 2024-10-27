@@ -4,7 +4,7 @@ import Row from "./Row";
 import Image from "next/image";
 import { formatCurrency } from "../utils/helpers";
 import { Cabin } from "../utils/types";
-import Menus from "./Menu";
+import Menus, { useMenu } from "./Menu";
 import {
   HiEllipsisVertical,
   HiPencil,
@@ -23,7 +23,8 @@ import { useState } from "react";
 import CreateEditCabinForm from "./CreateEditCabinForm";
 
 export default function CabinRow({ cabin }: { cabin: Cabin }) {
-  const { close } = useModal();
+  const { close: closeModal } = useModal();
+  const { close: closeMenu } = useMenu();
 
   const { name, maxCapacity, image, regularPrice, discount, _id: id } = cabin;
 
@@ -48,7 +49,7 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
 
     setLoading(false);
 
-    close();
+    closeMenu();
   };
 
   const handleDelete = async function () {
@@ -64,7 +65,7 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
 
     setLoading(false);
 
-    close();
+    closeModal();
   };
   return (
     <Row>
@@ -134,7 +135,6 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
               resourceName="Cabin"
               isDeleting={loading}
               onConfirm={handleDelete}
-              onClose={close}
             />
           </ModalWindow>
         </Menus.Menu>

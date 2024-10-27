@@ -3,7 +3,6 @@ import { Box, Textarea } from "@chakra-ui/react";
 import FormRow from "./FormRow";
 import Input from "./Input";
 import FileInput from "./FileInput";
-import { useModal } from "./Modal";
 import Button from "./Button";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
@@ -15,6 +14,7 @@ import {
   useHandleUnAuthorisedResponse,
 } from "../utils/utils";
 import { Cabin } from "../utils/types";
+import { IoCloseOutline } from "react-icons/io5";
 
 type CabinData = {
   name: string;
@@ -27,14 +27,15 @@ type CabinData = {
 
 export default function CreateEditCabinForm({
   cabinToEdit,
+  onClose,
 }: {
   cabinToEdit?: Cabin;
+  onClose?: () => void;
 }) {
   const [loading, setLoading] = useState(false);
 
   const { _id: editId, ...editValues } = cabinToEdit ?? ({} as Cabin);
   const isEditSession = Boolean(editId);
-  const { close } = useModal();
   const { getToken } = useAuth();
   const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
 
@@ -114,8 +115,18 @@ export default function CreateEditCabinForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full">
-      <h2 className="mb-[.5rem]">{isEditSession ? "Edit" : "Create"} Cabin</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="px-[3rem] py-[3rem] rounded-[var(--border-radius-lg)] shadow-lg z-50 bg-[var(--color-grey-0)] w-full"
+    >
+      <Box className="flex justify-between">
+        <h2 className="mb-[.5rem]">
+          {isEditSession ? "Edit" : "Create"} Cabin
+        </h2>
+        <button onClick={onClose}>
+          <IoCloseOutline size="2.5rem" />
+        </button>
+      </Box>
 
       <FormRow htmlFor="cabin_name" label="Cabin name" orientation="horizontal">
         <Input
