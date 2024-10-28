@@ -1,9 +1,6 @@
 import { getAllBookings } from "../_lib/data-service";
 import { getToken } from "../utils/serverUtils";
 import BookingTable from "./BookingTable";
-import Button from "./Button";
-import CreateEditCabinForm from "./CreateEditCabinForm";
-import Modal, { ModalOpen, ModalWindow } from "./Modal";
 
 export default async function Bookings({
   searchParams,
@@ -16,16 +13,7 @@ export default async function Bookings({
   const count = data.totalCount;
 
   return bookings.length ? (
-    <Modal>
-      <BookingTable count={count} bookings={bookings} />
-      <ModalOpen name="add-cabin">
-        <Button type="primary">Add new cabin</Button>
-      </ModalOpen>
-
-      <ModalWindow name="add-cabin">
-        <CreateEditCabinForm />
-      </ModalWindow>
-    </Modal>
+    <BookingTable count={count} bookings={bookings} />
   ) : (
     <h1 className="mt-5">No Bookings Found</h1>
   );

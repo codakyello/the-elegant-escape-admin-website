@@ -120,9 +120,7 @@ export default function CreateEditCabinForm({
       className="px-[3rem] py-[3rem] rounded-[var(--border-radius-lg)] shadow-lg z-50 bg-[var(--color-grey-0)] w-full"
     >
       <Box className="flex justify-between">
-        <h2 className="mb-[.5rem]">
-          {isEditSession ? "Edit" : "Create"} Cabin
-        </h2>
+        <h2 className="mb-[2rem]">{isEditSession ? "Edit" : "Create"} Cabin</h2>
         <button onClick={onClose}>
           <IoCloseOutline size="2.5rem" />
         </button>

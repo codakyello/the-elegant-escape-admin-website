@@ -42,7 +42,7 @@ function Menu({ children, id }: { children: ReactNode; id: string }) {
   return openId === id ? (
     <Box
       ref={ref}
-      className="absolute top-[20px] left-[-40px] z-20 bg-[var(--color-grey-0)] shadow-md rounded-[var(--border-radius-md)]"
+      className="absolute top-[20px] right-[20px] z-20 bg-[var(--color-grey-0)] shadow-md rounded-[var(--border-radius-md)]"
     >
       {children}
     </Box>
@@ -89,7 +89,7 @@ function Button({
       className="w-full text-left bg-none border-none py-[1.5rem] px-[2.4rem] text-[1.4rem] transition-all duration-200 flex items-center gap-[1.6rem] hover:bg-gray-50"
     >
       {icon}
-      {children}
+      <span className="whitespace-nowrap">{children}</span>
     </button>
   );
 }

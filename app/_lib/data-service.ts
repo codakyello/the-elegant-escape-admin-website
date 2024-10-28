@@ -5,7 +5,8 @@
 import { revalidatePath } from "next/cache";
 import { Setting } from "../_components/UpdateSettingsForm";
 import { RESULTS_PER_PAGE } from "../utils/constants";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { BookingData, CabinData } from "../utils/types";
 
 const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
 // const DEV_URL = "http://localhost:3001/api/v1";
@@ -292,73 +293,6 @@ export async function updatePassword(
   }
 }
 
-export async function getAllBookings(
-  token: string | null,
-  searchParams: { page: string; status: string; sortBy: string }
-) {
-  let statusCode;
-
-  let query = "";
-
-  const page = searchParams.page || 1;
-  const status = searchParams.status;
-  const sort = searchParams.sortBy || "startDate-desc";
-
-  // Page
-  query += `?page=${page}&limit=${RESULTS_PER_PAGE}`;
-
-  // Filter
-  if (status && status !== "all") query += `&status=${status}`;
-
-  // Sort
-  switch (sort) {
-    case "startDate-desc":
-      query += "&sort=-created_at";
-      break;
-    case "startDate-asc":
-      query += "&sort=created_at";
-      break;
-    case "totalPrice-desc":
-      query += "&sort=-totalPrice";
-      break;
-    case "totalPrice-asc":
-      query += "&sort=totalPrice";
-  }
-
-  console.log("query is", query);
-  try {
-    const res = await fetch(`${URL}/bookings/${query}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
-      },
-      next: { revalidate: 60 },
-    });
-
-    const data = await res.json();
-
-    statusCode = res.status;
-
-    if (!res.ok) {
-      throw new Error(data.message);
-    }
-
-    const {
-      totalCount,
-      results,
-      data: { bookings },
-    } = data;
-
-    return { bookings, totalCount, results };
-  } catch (err) {
-    if (err instanceof Error) {
-      return { status: "error", statusCode, message: err.message };
-    } else {
-      return { status: "error", message: "An unknown error occurred" };
-    }
-  }
-}
-
 export async function getAllCabins(searchParams: {
   page: string;
   discount: string;
@@ -444,7 +378,7 @@ export async function getAllCabins(searchParams: {
   }
 }
 
-export async function getCabin(id?: string) {
+export async function getCabin(id: string) {
   console.log("getting cabin");
   try {
     const res = await fetch(
@@ -476,17 +410,7 @@ export async function getCabin(id?: string) {
   }
 }
 
-export async function createCabin(
-  token: string,
-  cabinData: {
-    name: string;
-    maxCapacity: number;
-    discount: number;
-    image: string | undefined;
-    regularPrice: number;
-    description: string;
-  }
-) {
+export async function createCabin(token: string, cabinData: CabinData) {
   console.log("creating cabins 2");
 
   let res;
@@ -527,14 +451,7 @@ export async function createCabin(
 export async function updateCabin(
   token: string,
   id: string | undefined,
-  cabinData: {
-    name: string;
-    maxCapacity: number;
-    discount: number;
-    image: string | undefined;
-    regularPrice: number;
-    description: string;
-  }
+  cabinData: CabinData
 ) {
   console.log("editing cabins 2");
 
@@ -594,6 +511,176 @@ export async function deleteCabin(id: string, token: string) {
     // Destructure token and user from response
 
     revalidatePath("/dashboard/cabins");
+    return { status: "success" };
+  } catch (err: unknown) {
+    console.log(err);
+    // Improved error handling
+    if (err instanceof Error) {
+      return { status: "error", statusCode: res?.status, message: err.message };
+    } else {
+      return { status: "error", message: "An unknown error occurred" };
+    }
+  }
+}
+
+export async function getAllBookings(
+  token: string | null,
+  searchParams: { page: string; status: string; sortBy: string }
+) {
+  let statusCode;
+
+  let query = "";
+
+  const page = searchParams.page || 1;
+  const status = searchParams.status;
+  const sort = searchParams.sortBy || "startDate-desc";
+
+  // Page
+  query += `?page=${page}&limit=${RESULTS_PER_PAGE}`;
+
+  // Filter
+  if (status && status !== "all") query += `&status=${status}`;
+
+  // Sort
+  switch (sort) {
+    case "startDate-desc":
+      query += "&sort=-created_at";
+      break;
+    case "startDate-asc":
+      query += "&sort=created_at";
+      break;
+    case "totalPrice-desc":
+      query += "&sort=-totalPrice";
+      break;
+    case "totalPrice-asc":
+      query += "&sort=totalPrice";
+  }
+
+  console.log("query is", query);
+  try {
+    const res = await fetch(`${URL}/bookings/${query}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
+      },
+      next: { revalidate: 60 },
+    });
+
+    const data = await res.json();
+
+    statusCode = res.status;
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
+    const {
+      totalCount,
+      results,
+      data: { bookings },
+    } = data;
+
+    return { bookings, totalCount, results };
+  } catch (err) {
+    if (err instanceof Error) {
+      return { status: "error", statusCode, message: err.message };
+    } else {
+      return { status: "error", message: "An unknown error occurred" };
+    }
+  }
+}
+
+export async function getBooking(id: string) {
+  try {
+    const res = await fetch(
+      `${URL}/bookings/${id}`,
+
+      {
+        next: {
+          revalidate: 60,
+        },
+      }
+    );
+
+    const data = await res.json();
+    // data.error || data.data
+
+    if (!res.ok) {
+      throw new Error(data.error);
+    }
+
+    const {
+      data: { bookings },
+    } = data;
+
+    return bookings;
+  } catch {
+    notFound();
+  }
+}
+
+export async function updateBooking(
+  token: string,
+  id: string,
+  bookingData: BookingData
+) {
+  let res;
+  try {
+    // const token = getToken
+    res = await fetch(`${URL}/bookings/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(bookingData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    // Check if the response was successful
+    if (!res.ok) throw new Error(data.message);
+
+    // Destructure token and user from response
+    const {
+      data: { cabin },
+    } = data;
+
+    revalidatePath("/dashboard/bookings");
+    redirect("/dashboard/bookings");
+    return cabin;
+  } catch (err: unknown) {
+    console.log(err);
+    // Improved error handling
+    if (err instanceof Error) {
+      return { status: "error", statusCode: res?.status, message: err.message };
+    } else {
+      return { status: "error", message: "An unknown error occurred" };
+    }
+  }
+}
+
+export async function deleteBooking(id: string, token: string) {
+  let res;
+  try {
+    // const token = getToken
+    res = await fetch(`${URL}/bookings/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // Check if the response was successful
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message);
+    }
+
+    // Destructure token and user from response
+
+    revalidatePath("/dashboard/bookings");
     return { status: "success" };
   } catch (err: unknown) {
     console.log(err);

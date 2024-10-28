@@ -45,7 +45,7 @@ function Page({
 
       <Suspense
         fallback={<Loading />}
-        key={`${searchParams.status}-${searchParams.sortBy}`}
+        key={`${searchParams.status}-${searchParams.sortBy}-${searchParams.page}`}
       >
         <Bookings searchParams={searchParams} />
       </Suspense>

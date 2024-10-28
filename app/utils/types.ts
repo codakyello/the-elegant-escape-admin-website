@@ -37,6 +37,16 @@ export interface Booking {
   cabin: Cabin;
 }
 
+export interface BookingData {
+  startDate: Date;
+  endDate: Date;
+  numNights: number;
+  totalPrice: number;
+  status: string;
+  guest: Guest;
+  cabin: Cabin;
+}
+
 export type BookingRowProps = {
   booking?: Booking;
   cabin?: Cabin;

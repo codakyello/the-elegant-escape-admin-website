@@ -15,8 +15,11 @@ export default async function Cabins({
 
   return (
     <Modal>
-      <CabinTable cabins={cabins} count={count} />
-
+      {cabins.length ? (
+        <CabinTable count={count} cabins={cabins} />
+      ) : (
+        <h1 className="mt-5">No Cabins Found</h1>
+      )}
       <ModalOpen name="add-cabin">
         <Button type="primary">Add new cabin</Button>
       </ModalOpen>
