@@ -1,6 +1,5 @@
 import { getBooking } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
-import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useBooking(bookingId: string) {

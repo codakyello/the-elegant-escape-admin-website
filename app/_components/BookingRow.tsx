@@ -10,14 +10,7 @@ import Tag from "./Tag";
 import Row from "./Row";
 import Menus from "./Menu";
 import { HiEllipsisVertical, HiEye, HiTrash } from "react-icons/hi2";
-import {
-  deleteBooking as deleteBookingApi,
-  updateBooking,
-} from "../_lib/data-service";
-import {
-  showToastMessage,
-  useHandleUnAuthorisedResponse,
-} from "../utils/utils";
+import { updateBooking } from "../_lib/data-service";
 import { ModalOpen, ModalWindow, useModal } from "./Modal";
 import Link from "next/link";
 import ConfirmDelete from "./ConfirmDelete";

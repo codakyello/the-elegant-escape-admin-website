@@ -1,7 +1,5 @@
-import Booking from "@/app/_components/Booking";
 import CheckIn from "@/app/_components/Checkin";
-import { getBooking, getSettings } from "@/app/_lib/data-service";
-import { getToken } from "@/app/utils/serverUtils";
+import { getSettings } from "@/app/_lib/data-service";
 
 export const metadata = {
   title: "Booking",

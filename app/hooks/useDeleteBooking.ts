@@ -6,6 +6,7 @@ import {
 import { toast } from "sonner";
 import { useHandleUnAuthorisedResponse } from "../utils/utils";
 import { deleteBooking } from "../_lib/data-service";
+import AppError from "../utils/AppError";
 
 interface DeleteBookingVariables {
   bookingId: string;
@@ -16,38 +17,28 @@ interface DeleteBookingData {
   status: string;
 }
 
-interface UseCustomMutationReturn<TData, TVariables> {
-  mutate: UseMutateFunction<
-    TData,
-    { error: Error; statusCode: string },
-    TVariables,
-    unknown
-  >;
+interface UseCustomMutationReturn<TData, AppError, TVariables> {
+  mutate: UseMutateFunction<TData, AppError, TVariables, unknown>;
   isPending: boolean;
 }
 
 export default function useDeleteBookings<
   TData extends DeleteBookingData = DeleteBookingData,
   TVariables extends DeleteBookingVariables = DeleteBookingVariables
->(): UseCustomMutationReturn<TData, TVariables> {
+>(): UseCustomMutationReturn<TData, AppError, TVariables> {
   const queryClient = useQueryClient();
   const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
 
-  const { mutate, isPending } = useMutation<
-    TData,
-    { error: Error; statusCode: string },
-    TVariables
-  >({
+  const { mutate, isPending } = useMutation<TData, AppError, TVariables>({
     mutationFn: async (variables: TVariables) => {
       const { bookingId, token } = variables;
-      // Cast the result as TData
       return deleteBooking({ bookingId, token }) as Promise<TData>;
     },
     onSuccess: () => {
       queryClient.invalidateQueries();
       toast.success(`Booking successfully deleted`);
     },
-    onError: (err: any) => {
+    onError: (err: AppError) => {
       toast.error(err.message);
 
       handleUnAuthorisedResponse(err.statusCode);

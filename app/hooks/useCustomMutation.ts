@@ -1,7 +1,6 @@
 import {
   useMutation,
   useQueryClient,
-  UseMutationResult,
   UseMutateFunction,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -13,12 +12,7 @@ type MutationFunction<TData, TVariables> = (
 ) => Promise<TData>;
 
 interface UseCustomMutationReturn<TData, TVariables> {
-  mutate: UseMutateFunction<
-    TData,
-    { error: Error; statusCode: string },
-    TVariables,
-    unknown
-  >;
+  mutate: UseMutateFunction<TData, AppError, TVariables, unknown>;
   isPending: boolean;
 }
 
@@ -33,7 +27,7 @@ export default function useCustomMutation<TData = unknown, TVariables = void>(
       console.log("invalidated");
       queryClient.invalidateQueries();
     },
-    onError: (err: any) => {
+    onError: (err: AppError) => {
       toast.error(err.message);
 
       handleUnAuthorisedResponse(err.statusCode);

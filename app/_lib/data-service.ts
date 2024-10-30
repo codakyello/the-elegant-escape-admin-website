@@ -655,8 +655,7 @@ export async function getBookingAfterDate(token: string, date: number) {
 
     return bookings;
   } catch (err: unknown) {
-    if (err instanceof Error) console.log("Error is", err.message);
-    notFound();
+    throw err;
   }
 }
 
@@ -671,7 +670,7 @@ export async function updateBooking({
 }) {
   try {
     // const token = getToken
-    let res = await fetch(`${URL}/bookings/${id}`, {
+    const res = await fetch(`${URL}/bookings/${id}`, {
       method: "PATCH",
       body: JSON.stringify(obj),
       headers: {
@@ -691,7 +690,7 @@ export async function updateBooking({
     } = data;
 
     return booking;
-  } catch (err: any) {
+  } catch (err: unknown) {
     throw err;
   }
 }
