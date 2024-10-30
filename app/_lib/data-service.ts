@@ -705,7 +705,7 @@ export async function deleteBooking({
   try {
     console.log("booking id");
     // const token = getToken
-    let res = await fetch(`${URL}/bookings/${bookingId}`, {
+    const res = await fetch(`${URL}/bookings/${bookingId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
