@@ -1,6 +1,6 @@
 import Booking from "@/app/_components/Booking";
-import { getBooking, getSettings } from "@/app/_lib/data-service";
-import { getToken } from "@/app/utils/serverUtils";
+import Modal from "@/app/_components/Modal";
+import { getSettings } from "@/app/_lib/data-service";
 
 export const metadata = {
   title: "Booking",
@@ -9,13 +9,13 @@ export const metadata = {
 async function Page({ params }: { params: { bookingId: string } }) {
   const bookingId = params.bookingId;
 
-  const token = await getToken();
-  const [booking, settings] = await Promise.all([
-    getBooking(bookingId, token),
-    getSettings(),
-  ]);
+  const settings = await getSettings();
 
-  return <Booking booking={booking} settings={settings} />;
+  return (
+    <Modal>
+      <Booking settings={settings} bookingId={bookingId} />
+    </Modal>
+  );
 }
 
 export default Page;

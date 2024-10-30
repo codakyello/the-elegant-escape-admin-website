@@ -4,7 +4,7 @@ import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import Button from "./Button";
 
-import { Booking as BookingType, Settings } from "../utils/types";
+import { Settings } from "../utils/types";
 import BookingDataBox from "./BookingDataBox";
 import Input from "./Input";
 import { useState } from "react";
@@ -13,27 +13,36 @@ import { getToken } from "../utils/serverUtils";
 import SpinnerMini from "./SpinnerMini";
 import { showToastMessage } from "../utils/utils";
 import { formatCurrency } from "../utils/helpers";
+import useBooking from "../hooks/useBooking";
+import useCustomMutation from "../hooks/useCustomMutation";
+import SpinnerFull from "./SpinnerFull";
+import { toast } from "sonner";
+import { useAuth } from "../_contexts/AuthProvider";
 
 export default function CheckIn({
-  booking,
+  bookingId,
   settings,
 }: {
-  booking: BookingType;
+  bookingId: string;
   settings: Settings;
 }) {
   const router = useRouter();
+  const { getToken } = useAuth();
+  const token = getToken();
+  const { isLoading, error, data: booking } = useBooking(bookingId);
   const {
-    bookingId,
     status,
     numNights,
     numGuests,
     totalPrice,
     hasBreakfast,
-    guest: { fullName },
-  } = booking;
+    guest: { fullName } = {},
+  } = booking || {};
   const { breakFastPrice } = settings;
 
-  const [loading, setLoading] = useState(false);
+  const { mutate: checkIn, isPending: isCheckingIn } =
+    useCustomMutation(updateBooking);
+
   const [breakFast, setBreakFast] = useState(false);
   const [confirm, setConfirm] = useState(false);
 
@@ -43,30 +52,28 @@ export default function CheckIn({
     ? totalPrice + totalBreakfastPrice
     : totalPrice;
 
-  const handleCheckIn = async function () {
-    if (!confirm) return;
-    const obj = {
-      status: "checked-in",
-      totalPrice: totalBookingPrice,
-      hasBreakfast: breakFast,
-    };
-    setLoading(true);
-    const token = await getToken();
-    if (!token) return;
-    const result = await updateBooking(token, bookingId, obj);
+  // const handleCheckIn = async function () {
+  //   if (!confirm) return;
 
-    showToastMessage(
-      result.status,
-      result.message,
-      "Booking successfully checked in"
-    );
-    setLoading(false);
-  };
+  //   setLoading(true);
+  //   const token = await getToken();
+  //   if (!token) return;
+  //   const result = await updateBooking({ token, id: bookingId, obj });
 
+  //   showToastMessage(
+  //     result.status,
+  //     result.message,
+  //     "Booking successfully checked in"
+  //   );
+  //   setLoading(false);
+  // };
+
+  if (isLoading) return <SpinnerFull />;
+  if (error) return toast.error(error.message);
   return (
     <Box className="flex flex-col gap-8 px-[2rem] py-[4rem]">
       <BookingDataBox booking={booking} settings={settings} />
-      {booking.status.toLowerCase() === "unconfirmed" && (
+      {status.toLowerCase() === "unconfirmed" && (
         <>
           {!hasBreakfast && (
             <Box className="flex items-center gap-5 bg-[var(--color-grey-0)] py-[2.4rem] px-[4rem] rounded-[var(--border-radius-md)]">
@@ -112,11 +119,29 @@ export default function CheckIn({
       <Box className="flex justify-end gap-5">
         {status === "unconfirmed" && (
           <Button
-            disabled={loading || !confirm}
+            disabled={isCheckingIn || !confirm}
             type="primary"
-            onClick={handleCheckIn}
+            onClick={() => {
+              const obj = {
+                status: "checked-in",
+                totalPrice: totalBookingPrice,
+                hasBreakfast: breakFast,
+              };
+              checkIn(
+                {
+                  token,
+                  id: bookingId,
+                  obj,
+                },
+                {
+                  onSuccess: () => {
+                    toast.success(`Booking successfully checked in`);
+                  },
+                }
+              );
+            }}
           >
-            {!loading ? "Check in booking" : <SpinnerMini />}
+            {!isCheckingIn ? "Check in booking" : <SpinnerMini />}
           </Button>
         )}
 

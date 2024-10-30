@@ -10,18 +10,23 @@ import Tag from "./Tag";
 import Row from "./Row";
 import Menus from "./Menu";
 import { HiEllipsisVertical, HiEye, HiTrash } from "react-icons/hi2";
-import { useState } from "react";
-import { getToken } from "../utils/serverUtils";
-import { deleteBooking, updateBooking } from "../_lib/data-service";
+import {
+  deleteBooking as deleteBookingApi,
+  updateBooking,
+} from "../_lib/data-service";
 import {
   showToastMessage,
   useHandleUnAuthorisedResponse,
 } from "../utils/utils";
-import { ModalOpen, ModalWindow } from "./Modal";
+import { ModalOpen, ModalWindow, useModal } from "./Modal";
 import Link from "next/link";
 import ConfirmDelete from "./ConfirmDelete";
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import useCustomMutation from "../hooks/useCustomMutation";
+import { toast } from "sonner";
+import { useAuth } from "../_contexts/AuthProvider";
+import useDeleteBookings from "../hooks/useDeleteBooking";
 
 export function BookingRow({ booking }: { booking: Booking }) {
   const {
@@ -35,40 +40,17 @@ export function BookingRow({ booking }: { booking: Booking }) {
     cabin: { name: cabinName },
   } = booking;
 
-  const [loading, setLoading] = useState(false);
+  const { getToken } = useAuth();
+  const token = getToken();
+  const { close } = useModal();
 
   const router = useRouter();
 
-  const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
+  const { mutate: checkOut, isPending: isCheckingOut } =
+    useCustomMutation(updateBooking);
 
-  const handleDelete = async function () {
-    setLoading(true);
+  const { mutate: deleteBooking, isPending: isDeleting } = useDeleteBookings();
 
-    const token = await getToken();
-
-    const res = await deleteBooking(bookingId, token);
-
-    handleUnAuthorisedResponse(res.statusCode);
-
-    showToastMessage(res.status, res.message, "Booking successfully deleted");
-
-    setLoading(false);
-  };
-  const handleCheckOut = async function () {
-    setLoading(true);
-    const token = await getToken();
-    if (!token) return;
-    const result = await updateBooking(token, bookingId, {
-      status: "checked-out",
-    });
-
-    showToastMessage(
-      result.status,
-      result.message,
-      "Booking successfully checked out"
-    );
-    setLoading(false);
-  };
   return (
     <Row>
       <Box className="font-semibold">{cabinName}</Box>
@@ -108,7 +90,7 @@ export function BookingRow({ booking }: { booking: Booking }) {
               <HiEye className=" w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
             }
             onClick={() => {}}
-            disabled={loading}
+            disabled={isCheckingOut || isDeleting}
           >
             <Link href={`/dashboard/bookings/${bookingId}`}>See details</Link>
           </Menus.Button>
@@ -122,10 +104,21 @@ export function BookingRow({ booking }: { booking: Booking }) {
                 if (status === "unconfirmed") {
                   router.push(`/dashboard/checkin/${bookingId}`);
                 } else {
-                  handleCheckOut();
+                  checkOut(
+                    {
+                      token,
+                      id: bookingId,
+                      obj: { status: "unconfirmed" },
+                    },
+                    {
+                      onSuccess: (data) => {
+                        toast.success(`Booking successfully checked out`);
+                      },
+                    }
+                  );
                 }
               }}
-              disabled={loading}
+              disabled={isCheckingOut || isDeleting}
             >
               {status === "unconfirmed" ? "Check in" : "Check out"}
             </Menus.Button>
@@ -139,7 +132,7 @@ export function BookingRow({ booking }: { booking: Booking }) {
               icon={
                 <HiTrash className="w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
               }
-              disabled={loading}
+              disabled={isCheckingOut || isDeleting}
             >
               Delete booking
             </Menus.Button>
@@ -148,8 +141,20 @@ export function BookingRow({ booking }: { booking: Booking }) {
           <ModalWindow name="delete-booking">
             <ConfirmDelete
               resourceName="Booking"
-              isDeleting={loading}
-              onConfirm={handleDelete}
+              isDeleting={isDeleting}
+              onConfirm={async () => {
+                await deleteBooking(
+                  {
+                    token,
+                    bookingId,
+                  },
+                  {
+                    onSuccess: () => {
+                      close();
+                    },
+                  }
+                );
+              }}
             />
           </ModalWindow>
         </Menus.Menu>

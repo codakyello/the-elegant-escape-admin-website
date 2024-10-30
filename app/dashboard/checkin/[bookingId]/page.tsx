@@ -10,13 +10,9 @@ export const metadata = {
 async function Page({ params }: { params: { bookingId: string } }) {
   const bookingId = params.bookingId;
 
-  const token = await getToken();
-  const [booking, settings] = await Promise.all([
-    getBooking(bookingId, token),
-    getSettings(),
-  ]);
+  const settings = await getSettings();
 
-  return <CheckIn booking={booking} settings={settings} />;
+  return <CheckIn bookingId={bookingId} settings={settings} />;
 }
 
 export default Page;

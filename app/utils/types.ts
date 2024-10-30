@@ -50,6 +50,12 @@ export interface Booking {
   };
 }
 
+export interface BookingParams {
+  page: string;
+  status: string;
+  sortBy: string;
+}
+
 export interface Settings {
   breakFastPrice: number;
 }

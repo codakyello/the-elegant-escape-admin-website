@@ -2,77 +2,68 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import Button from "./Button";
-import Modal, { ModalOpen, ModalWindow } from "./Modal";
+import { ModalOpen, ModalWindow } from "./Modal";
 import ConfirmDelete from "./ConfirmDelete";
-import {
-  showToastMessage,
-  useHandleUnAuthorisedResponse,
-} from "../utils/utils";
-import { deleteBooking } from "../_lib/data-service";
-import { getToken } from "../utils/serverUtils";
-import { useState } from "react";
-import { Booking as BookingType, Settings } from "../utils/types";
+import { Settings } from "../utils/types";
 import BookingDataBox from "./BookingDataBox";
+import useBooking from "../hooks/useBooking";
+import SpinnerFull from "./SpinnerFull";
+import { toast } from "sonner";
+import { useAuth } from "../_contexts/AuthProvider";
+import useDeleteBookings from "../hooks/useDeleteBooking";
 
 export default function Booking({
-  booking,
   settings,
+  bookingId,
 }: {
-  booking: BookingType;
   settings: Settings;
+  bookingId: string;
 }) {
-  const { bookingId, status } = booking;
   const router = useRouter();
-  const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
-  const [loading, setLoading] = useState(false);
+  const { getToken } = useAuth();
+  const token = getToken();
+  const { isLoading, data: booking, error } = useBooking(bookingId);
 
-  const handleDelete = async function () {
-    setLoading(true);
+  const { mutate: deleteBooking, isPending: isDeleting } = useDeleteBookings();
 
-    const token = await getToken();
+  if (isLoading) return <SpinnerFull />;
+  if (error) return toast.error(error.message);
 
-    const res = await deleteBooking(bookingId, token);
-
-    if (res.status === "success") router.push("/dashboard/bookings");
-
-    handleUnAuthorisedResponse(res.statusCode);
-
-    showToastMessage(res.status, res.message, "Booking successfully deleted");
-
-    setLoading(false);
-  };
   return (
-    <Modal>
-      <Box className="flex flex-col gap-8 px-[2rem] py-[4rem]">
-        <BookingDataBox booking={booking} settings={settings} />
-        <Box className="flex justify-end gap-5">
-          {status === "unconfirmed" && (
-            <Button
-              type="primary"
-              onClick={() => {
-                router.push(`/dashboard/checkin/${bookingId}`);
-              }}
-            >
-              Check in
-            </Button>
-          )}
-
-          <ModalOpen name="delete-booking">
-            <Button type="danger">Delete booking</Button>
-          </ModalOpen>
-
-          <ModalWindow name="delete-booking">
-            <ConfirmDelete
-              resourceName="Booking"
-              isDeleting={loading}
-              onConfirm={handleDelete}
-            />
-          </ModalWindow>
-          <Button onClick={() => router.back()} type="cancel">
-            Back
+    <Box className="flex flex-col gap-8 px-[2rem] py-[4rem]">
+      <BookingDataBox booking={booking} settings={settings} />
+      <Box className="flex justify-end gap-5">
+        {booking?.status === "unconfirmed" && (
+          <Button
+            type="primary"
+            onClick={() => {
+              router.push(`/dashboard/checkin/${bookingId}`);
+            }}
+          >
+            Check in
           </Button>
-        </Box>
+        )}
+
+        <ModalOpen name="delete-booking">
+          <Button type="danger">Delete booking</Button>
+        </ModalOpen>
+
+        <ModalWindow name="delete-booking">
+          <ConfirmDelete
+            resourceName="Booking"
+            isDeleting={isDeleting}
+            onConfirm={async () => {
+              await deleteBooking({
+                token,
+                bookingId,
+              });
+            }}
+          />
+        </ModalWindow>
+        <Button onClick={() => router.back()} type="cancel">
+          Back
+        </Button>
       </Box>
-    </Modal>
+    </Box>
   );
 }

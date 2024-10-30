@@ -28,7 +28,7 @@ const AuthContext = createContext<
       logout: () => void;
       setUser: (user: User | null) => void;
       setToken: (token: string) => void;
-      getToken: () => string | void | null;
+      getToken: () => string | null;
     }
   | undefined
 >(undefined);
@@ -99,13 +99,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
     setLogoutAction(true);
   }
 
-  function getToken(): string | null | void {
+  function getToken(): string | null {
     const storedToken = localStorage.getItem("token");
     const token: string | null = storedToken ? JSON.parse(storedToken) : null;
     if (!token) {
       setToken(null);
       toast.error("You are not logged in!");
-      return router.push("/login");
+      router.push("/login");
     }
     return token;
   }

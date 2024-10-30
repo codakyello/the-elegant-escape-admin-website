@@ -1,18 +1,16 @@
-import { getAllBookings } from "../_lib/data-service";
-import { getToken } from "../utils/serverUtils";
+"use client";
 import BookingTable from "./BookingTable";
+import SpinnerFull from "./SpinnerFull";
+import { toast } from "sonner";
+import useBookings from "../hooks/useBookings";
 
-export default async function Bookings({
-  searchParams,
-}: {
-  searchParams: { page: string; status: string; sortBy: string };
-}) {
-  const token = await getToken();
-
-  const data = await getAllBookings(token, searchParams);
+export default function Bookings() {
+  const { data, isLoading, error } = useBookings();
   const bookings = data.bookings;
   const count = data.totalCount;
 
+  if (isLoading) return <SpinnerFull />;
+  if (error) return toast.error(error.message);
   return bookings.length ? (
     <BookingTable count={count} bookings={bookings} />
   ) : (

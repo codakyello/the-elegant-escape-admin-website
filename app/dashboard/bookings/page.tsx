@@ -1,19 +1,14 @@
 import Filter from "@/app/_components/Filter";
 import Sort from "@/app/_components/Sort";
 import { Box } from "@chakra-ui/react";
-import { Suspense } from "react";
-import Loading from "../loading";
+
 import Bookings from "@/app/_components/Bookings";
 
 export const metadata = {
   title: "Bookings",
 };
 
-function Page({
-  searchParams,
-}: {
-  searchParams: { page: string; status: string; sortBy: string };
-}) {
+function Page() {
   return (
     <Box className="flex flex-col gap-5">
       <Box className="flex flex-col lg:flex-row gap-8 pt-1 pr-1">
@@ -43,12 +38,7 @@ function Page({
         </Box>
       </Box>
 
-      <Suspense
-        fallback={<Loading />}
-        key={`${searchParams.status}-${searchParams.sortBy}-${searchParams.page}`}
-      >
-        <Bookings searchParams={searchParams} />
-      </Suspense>
+      <Bookings />
     </Box>
     /* {bookings.map((booking: Booking) => (
         <li key={booking._id}>

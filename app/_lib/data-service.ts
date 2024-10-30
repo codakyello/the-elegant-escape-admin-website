@@ -7,6 +7,7 @@ import { Setting } from "../_components/UpdateSettingsForm";
 import { RESULTS_PER_PAGE } from "../utils/constants";
 import { notFound } from "next/navigation";
 import { BookingData, CabinData } from "../utils/types";
+import AppError from "../utils/AppError";
 
 const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
 // const DEV_URL = "http://localhost:3001/api/v1";
@@ -525,14 +526,14 @@ export async function deleteCabin(id: string, token: string) {
 export async function getAllBookings(
   token: string | null,
   searchParams: {
-    page: string;
-    status: string;
-    sortBy: string;
+    page: string | null;
+    status: string | null;
+    sortBy: string | null;
   }
 ) {
-  let statusCode;
-
   let query = "";
+
+  console.log("This are the Bookings");
 
   const page = searchParams.page || 1;
   const status = searchParams.status;
@@ -566,12 +567,9 @@ export async function getAllBookings(
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      next: { revalidate: 60 },
     });
 
     const data = await res.json();
-
-    statusCode = res.status;
 
     if (!res.ok) {
       throw new Error(data.message);
@@ -585,15 +583,18 @@ export async function getAllBookings(
 
     return { bookings, totalCount, results };
   } catch (err) {
-    if (err instanceof Error) {
-      return { status: "error", statusCode, message: err.message };
-    } else {
-      return { status: "error", message: "An unknown error occurred" };
-    }
+    throw err;
+    // if (err instanceof Error) {
+    //   return { status: "error", statusCode, message: err.message };
+    // } else {
+    //   return { status: "error", message: "An unknown error occurred" };
+    // }
   }
 }
 
-export async function getBooking(id: string, token: string) {
+export async function getBooking(id: string, token: string | null) {
+  console.log("This are the Booking", id, token);
+
   try {
     const res = await fetch(
       `${URL}/bookings/${id}`,
@@ -602,9 +603,6 @@ export async function getBooking(id: string, token: string) {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
-        },
-        next: {
-          revalidate: 60,
         },
       }
     );
@@ -620,9 +618,10 @@ export async function getBooking(id: string, token: string) {
       data: { booking },
     } = data;
 
+    console.log(booking);
     return booking;
-  } catch {
-    notFound();
+  } catch (err) {
+    throw err;
   }
 }
 
@@ -647,7 +646,7 @@ export async function getBookingAfterDate(token: string, date: number) {
     // data.error || data.data
 
     if (!res.ok) {
-      throw new Error(data.message);
+      throw new AppError(data.message, res.status);
     }
 
     const {
@@ -661,17 +660,20 @@ export async function getBookingAfterDate(token: string, date: number) {
   }
 }
 
-export async function updateBooking(
-  token: string,
-  id: string,
-  bookingData: BookingData
-) {
-  let res;
+export async function updateBooking({
+  token,
+  id,
+  obj,
+}: {
+  token: string | null;
+  id: string;
+  obj: BookingData;
+}) {
   try {
     // const token = getToken
-    res = await fetch(`${URL}/bookings/${id}`, {
+    let res = await fetch(`${URL}/bookings/${id}`, {
       method: "PATCH",
-      body: JSON.stringify(bookingData),
+      body: JSON.stringify(obj),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -681,33 +683,30 @@ export async function updateBooking(
     const data = await res.json();
 
     // Check if the response was successful
-    if (!res.ok) throw new Error(data.message);
+    if (!res.ok) throw new AppError(data.message, res.status);
 
     // Destructure token and user from response
     const {
       data: { booking },
     } = data;
 
-    revalidatePath("/dashboard");
-    revalidatePath("/dashboard/bookings");
-    revalidatePath(`/dashboard/checkin/${id}`);
     return booking;
-  } catch (err: unknown) {
-    console.log(err);
-    // Improved error handling
-    if (err instanceof Error) {
-      return { status: "error", statusCode: res?.status, message: err.message };
-    } else {
-      return { status: "error", message: "An unknown error occurred" };
-    }
+  } catch (err: any) {
+    throw err;
   }
 }
 
-export async function deleteBooking(id: string, token: string) {
-  let res;
+export async function deleteBooking({
+  bookingId,
+  token,
+}: {
+  bookingId: string;
+  token: string | null;
+}) {
   try {
+    console.log("booking id");
     // const token = getToken
-    res = await fetch(`${URL}/bookings/${id}`, {
+    let res = await fetch(`${URL}/bookings/${bookingId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -718,22 +717,14 @@ export async function deleteBooking(id: string, token: string) {
     // Check if the response was successful
     if (!res.ok) {
       const data = await res.json();
-      throw new Error(data.message);
+      throw new AppError(data.message, res.status);
     }
 
     // Destructure token and user from response
 
-    revalidatePath("/dashboard/bookings");
-    revalidatePath(`/dashboard/bookings/${id}`);
     return { status: "success" };
-  } catch (err: unknown) {
-    console.log(err);
-    // Improved error handling
-    if (err instanceof Error) {
-      return { status: "error", statusCode: res?.status, message: err.message };
-    } else {
-      return { status: "error", message: "An unknown error occurred" };
-    }
+  } catch (err: any) {
+    throw err;
   }
 }
 // export async function login(email, password) {
