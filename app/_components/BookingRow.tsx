@@ -111,7 +111,7 @@ export function BookingRow({ booking }: { booking: Booking }) {
                       obj: { status: "unconfirmed" },
                     },
                     {
-                      onSuccess: (data) => {
+                      onSuccess: () => {
                         toast.success(`Booking successfully checked out`);
                       },
                     }

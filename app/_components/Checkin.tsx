@@ -52,22 +52,6 @@ export default function CheckIn({
     ? totalPrice + totalBreakfastPrice
     : totalPrice;
 
-  // const handleCheckIn = async function () {
-  //   if (!confirm) return;
-
-  //   setLoading(true);
-  //   const token = await getToken();
-  //   if (!token) return;
-  //   const result = await updateBooking({ token, id: bookingId, obj });
-
-  //   showToastMessage(
-  //     result.status,
-  //     result.message,
-  //     "Booking successfully checked in"
-  //   );
-  //   setLoading(false);
-  // };
-
   if (isLoading) return <SpinnerFull />;
   if (error) return toast.error(error.message);
   return (
