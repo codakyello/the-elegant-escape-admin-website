@@ -3,7 +3,6 @@ import { useAuth } from "../_contexts/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useBooking(bookingId: string) {
-  console.log("This is booking id", bookingId);
   const { getToken } = useAuth();
   const token = getToken();
 
