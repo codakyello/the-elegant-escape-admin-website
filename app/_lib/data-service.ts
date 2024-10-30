@@ -722,7 +722,7 @@ export async function deleteBooking({
     // Destructure token and user from response
 
     return { status: "success" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     throw err;
   }
 }
