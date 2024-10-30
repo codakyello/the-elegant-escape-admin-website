@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { getAllCabins } from "../_lib/data-service";
 import Button from "./Button";
 import CabinTable from "./CabinTable";
@@ -18,10 +19,12 @@ export default async function Cabins({
       {cabins.length ? (
         <CabinTable count={count} cabins={cabins} />
       ) : (
-        <h1 className="mt-5">No Cabins Found</h1>
+        <h2 className="mt-5">No Cabins Found</h2>
       )}
       <ModalOpen name="add-cabin">
-        <Button type="primary">Add new cabin</Button>
+        <Box>
+          <Button type="primary">Add new cabin</Button>
+        </Box>
       </ModalOpen>
 
       <ModalWindow name="add-cabin">

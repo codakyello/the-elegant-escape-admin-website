@@ -67,6 +67,10 @@
   transition: background-color 0.3s, border 0.3s;
 }
 
+.grid-container {
+  grid-template-columns: repeat(4, minmax(200rem, 1fr));
+}
+
 html {
   font-size: 62.5%;
 }
@@ -79,15 +83,11 @@ body {
   background-color: var(--color-grey-0);
 }
 
-p {
-  font-size: 1.6rem;
-}
-
 input,
 button,
 textarea,
 select {
-  font-size: 16px;
+  font-size: 1.6rem;
   color: inherit;
 }
 
@@ -161,8 +161,15 @@ img {
   filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
 }
 
+.icon-box svg {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: inherit;
+}
+
 .btn {
   font-size: 1.4rem;
+  padding: 1.2rem 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -172,8 +179,6 @@ img {
 }
 
 .btn--primary {
-  width: 15rem;
-  height: 4.5rem;
   transition: 0.3s;
   box-shadow: var(--shadow-sm);
   color: var(--color-brand-50);
@@ -181,8 +186,6 @@ img {
 }
 
 .btn--cancel {
-  padding: 1.2rem 1.6rem;
-
   color: var(--color-grey-600);
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-200);
@@ -190,9 +193,6 @@ img {
 
 .btn--danger {
   box-shadow: var(--shadow-sm);
-  font-size: 1.4rem;
-  width: 7rem;
-  height: 5rem;
   font-weight: 500;
   color: var(--color-red-100);
   background-color: var(--color-red-700);

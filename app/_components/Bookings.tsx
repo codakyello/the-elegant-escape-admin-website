@@ -8,6 +8,7 @@ export default async function Bookings({
   searchParams: { page: string; status: string; sortBy: string };
 }) {
   const token = await getToken();
+
   const data = await getAllBookings(token, searchParams);
   const bookings = data.bookings;
   const count = data.totalCount;
@@ -15,6 +16,6 @@ export default async function Bookings({
   return bookings.length ? (
     <BookingTable count={count} bookings={bookings} />
   ) : (
-    <h1 className="mt-5">No Bookings Found</h1>
+    <h2 className="mt-5">No Bookings Found</h2>
   );
 }

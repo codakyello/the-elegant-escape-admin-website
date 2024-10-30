@@ -15,6 +15,7 @@ import {
 } from "../utils/utils";
 import { Cabin } from "../utils/types";
 import { IoCloseOutline } from "react-icons/io5";
+import { useModal } from "./Modal";
 
 type CabinData = {
   name: string;
@@ -27,13 +28,12 @@ type CabinData = {
 
 export default function CreateEditCabinForm({
   cabinToEdit,
-  onClose,
 }: {
   cabinToEdit?: Cabin;
-  onClose?: () => void;
 }) {
   const [loading, setLoading] = useState(false);
 
+  const { close } = useModal();
   const { _id: editId, ...editValues } = cabinToEdit ?? ({} as Cabin);
   const isEditSession = Boolean(editId);
   const { getToken } = useAuth();
@@ -121,7 +121,7 @@ export default function CreateEditCabinForm({
     >
       <Box className="flex justify-between">
         <h2 className="mb-[2rem]">{isEditSession ? "Edit" : "Create"} Cabin</h2>
-        <button onClick={onClose}>
+        <button onClick={close}>
           <IoCloseOutline size="2.5rem" />
         </button>
       </Box>

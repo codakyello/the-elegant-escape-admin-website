@@ -10,6 +10,7 @@ function Input({
   checked,
   onChange,
   value,
+  className,
 }: {
   name: string;
   type: string;
@@ -21,12 +22,13 @@ function Input({
   disabled?: boolean;
   checked?: boolean;
   value?: string | number;
-  onChange?: () => void;
+  className?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }) {
   return (
     <input
-      className="py-[1rem] md:text-[16px] px-[1.2rem] bg-white border rounded-[var(--border-radius-sm)]"
+      className={`py-[1rem] md:text-[16px] px-[1.2rem] bg-white border rounded-[var(--border-radius-sm)] ${className}`}
       name={name}
       type={type}
       id={id}

@@ -5,7 +5,7 @@
 import { revalidatePath } from "next/cache";
 import { Setting } from "../_components/UpdateSettingsForm";
 import { RESULTS_PER_PAGE } from "../utils/constants";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { BookingData, CabinData } from "../utils/types";
 
 const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
@@ -293,56 +293,55 @@ export async function updatePassword(
   }
 }
 
-export async function getAllCabins(searchParams: {
+export async function getAllCabins(searchParams?: {
   page: string;
   discount: string;
   sortBy: string;
 }) {
-  await new Promise((res) => {
-    setTimeout(res, 5000);
-  });
   let statusCode;
   let query = "";
 
   console.log("fetching");
 
-  const page = searchParams.page || 1;
-  const discount = searchParams.discount;
-  const sort = searchParams.sortBy || "startDate-desc";
+  if (searchParams) {
+    const page = searchParams.page || 1;
+    const discount = searchParams.discount;
+    const sort = searchParams.sortBy || "startDate-desc";
 
-  // Page
-  query += `?page=${page}&limit=${RESULTS_PER_PAGE}`;
+    // Page
+    query += `?page=${page}&limit=${RESULTS_PER_PAGE}`;
 
-  // Filter
-  switch (discount) {
-    case "no-discount":
-      console.log("no discount");
-      query += "&discount=0";
-      break;
+    // Filter
+    switch (discount) {
+      case "no-discount":
+        console.log("no discount");
+        query += "&discount=0";
+        break;
 
-    case "with-discount":
-      query += "&discount[gt]=0";
-  }
+      case "with-discount":
+        query += "&discount[gt]=0";
+    }
 
-  // Sort
-  switch (sort) {
-    case "name-asc":
-      query += "&sort=name";
-      break;
-    case "name-desc":
-      query += "&sort=-name";
-      break;
-    case "regularPrice-asc":
-      query += "&sort=regularPrice";
-      break;
-    case "regularPrice-desc":
-      query += "&sort=-regularPrice";
+    // Sort
+    switch (sort) {
+      case "name-asc":
+        query += "&sort=name";
+        break;
+      case "name-desc":
+        query += "&sort=-name";
+        break;
+      case "regularPrice-asc":
+        query += "&sort=regularPrice";
+        break;
+      case "regularPrice-desc":
+        query += "&sort=-regularPrice";
 
-    case "maxCapacity-asc":
-      query += "&sort=maxCapacity";
+      case "maxCapacity-asc":
+        query += "&sort=maxCapacity";
 
-    case "maxCapacity-desc":
-      query += "&sort=-maxCapacity";
+      case "maxCapacity-desc":
+        query += "&sort=-maxCapacity";
+    }
   }
 
   try {
@@ -525,7 +524,11 @@ export async function deleteCabin(id: string, token: string) {
 
 export async function getAllBookings(
   token: string | null,
-  searchParams: { page: string; status: string; sortBy: string }
+  searchParams: {
+    page: string;
+    status: string;
+    sortBy: string;
+  }
 ) {
   let statusCode;
 
@@ -561,7 +564,7 @@ export async function getAllBookings(
     const res = await fetch(`${URL}/bookings/${query}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
+        Authorization: `Bearer ${token}`,
       },
       next: { revalidate: 60 },
     });
@@ -590,12 +593,16 @@ export async function getAllBookings(
   }
 }
 
-export async function getBooking(id: string) {
+export async function getBooking(id: string, token: string) {
   try {
     const res = await fetch(
       `${URL}/bookings/${id}`,
 
       {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
+        },
         next: {
           revalidate: 60,
         },
@@ -606,7 +613,41 @@ export async function getBooking(id: string) {
     // data.error || data.data
 
     if (!res.ok) {
-      throw new Error(data.error);
+      throw new Error(data.message);
+    }
+
+    const {
+      data: { booking },
+    } = data;
+
+    return booking;
+  } catch {
+    notFound();
+  }
+}
+
+export async function getBookingAfterDate(token: string, date: number) {
+  console.log("date is", date);
+  try {
+    const res = await fetch(
+      `${URL}/bookings/getBookingsAfter?date=${date}`,
+
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
+        },
+        next: {
+          revalidate: 60,
+        },
+      }
+    );
+
+    const data = await res.json();
+    // data.error || data.data
+
+    if (!res.ok) {
+      throw new Error(data.message);
     }
 
     const {
@@ -614,7 +655,8 @@ export async function getBooking(id: string) {
     } = data;
 
     return bookings;
-  } catch {
+  } catch (err: unknown) {
+    if (err instanceof Error) console.log("Error is", err.message);
     notFound();
   }
 }
@@ -643,12 +685,13 @@ export async function updateBooking(
 
     // Destructure token and user from response
     const {
-      data: { cabin },
+      data: { booking },
     } = data;
 
+    revalidatePath("/dashboard");
     revalidatePath("/dashboard/bookings");
-    redirect("/dashboard/bookings");
-    return cabin;
+    revalidatePath(`/dashboard/checkin/${id}`);
+    return booking;
   } catch (err: unknown) {
     console.log(err);
     // Improved error handling
@@ -681,6 +724,7 @@ export async function deleteBooking(id: string, token: string) {
     // Destructure token and user from response
 
     revalidatePath("/dashboard/bookings");
+    revalidatePath(`/dashboard/bookings/${id}`);
     return { status: "success" };
   } catch (err: unknown) {
     console.log(err);

@@ -8,7 +8,7 @@ export const subtractDates = (
 
 // Format the distance of a given date from now, omitting 'about' and adjusting 'in'
 export const formatDistanceFromNow = (dateStr: string): string =>
-  formatDistance(parseISO(dateStr), new Date(), {
+  formatDistance(new Date(dateStr), new Date(), {
     addSuffix: true,
   })
     .replace("about ", "")
@@ -38,3 +38,14 @@ export const generateGridTemplateColumns = (columns: string[]) => {
     .replaceAll(",", "");
   return cols;
 };
+
+export function getTagName(status: string): string {
+  const statusToTagName = {
+    unconfirmed: "blue",
+    "checked-in": "green",
+    "checked-out": "silver",
+  };
+
+  type Status = keyof typeof statusToTagName;
+  return statusToTagName[status as Status];
+}
