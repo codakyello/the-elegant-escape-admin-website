@@ -3,6 +3,7 @@ import Filter from "@/app/_components/Filter";
 import DashboardLayout from "../_components/DashboardLayout";
 import Loading from "../loading";
 import { getAllCabins } from "../_lib/data-service";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Dashboard",
@@ -29,7 +30,9 @@ async function Page() {
         />
       </Box>
 
-      <DashboardLayout cabinCount={cabinCount} />
+      <Suspense fallback={<Loading />}>
+        <DashboardLayout cabinCount={cabinCount} />
+      </Suspense>
     </Box>
   );
 }

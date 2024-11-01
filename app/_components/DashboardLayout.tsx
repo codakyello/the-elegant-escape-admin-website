@@ -24,8 +24,6 @@ export default async function DashboardLayout({
 
   const searchParams = useSearchParams();
   const numDays = Number(searchParams.get("last")) || 7;
-  // const { isLoading, error, data: bookings } = useTodayActivity();
-  console.log(bookings);
 
   if (isLoading1 || isLoading2) return <SpinnerFull />;
   if (error) return toast.error(error.message);

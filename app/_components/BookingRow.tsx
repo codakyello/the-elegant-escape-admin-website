@@ -9,7 +9,12 @@ import {
 import Tag from "./Tag";
 import Row from "./Row";
 import Menus, { useMenu } from "./Menu";
-import { HiEllipsisVertical, HiEye, HiTrash } from "react-icons/hi2";
+import {
+  HiArrowDownOnSquare,
+  HiArrowUpOnSquare,
+  HiEye,
+  HiTrash,
+} from "react-icons/hi2";
 import { ModalOpen, ModalWindow, useModal } from "./Modal";
 import Link from "next/link";
 import ConfirmDelete from "./ConfirmDelete";
@@ -82,7 +87,11 @@ export function BookingRow({ booking }: { booking: Booking }) {
           {status !== "checked-out" ? (
             <Menus.Button
               icon={
-                <HiEye className=" w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
+                status === "unconfirmed" ? (
+                  <HiArrowDownOnSquare className=" w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
+                ) : (
+                  <HiArrowUpOnSquare className=" w-[1.6rem] h-[1.6rem] text-[var(--color-grey-400)]" />
+                )
               }
               onClick={() => {
                 if (status === "unconfirmed") {
