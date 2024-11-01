@@ -146,7 +146,7 @@ function DurationChart({ confirmedStays }: { confirmedStays: Booking[] }) {
               dataKey="value"
               innerRadius={85}
               outerRadius={110}
-              cx="40%"
+              cx="50%"
               cy="50%"
               paddingAngle={3}
             >
