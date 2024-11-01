@@ -10,6 +10,8 @@ export default function QueryProvider({ children }: { children: ReactNode }) {
       queries: {
         staleTime: 0,
         refetchInterval: 60000,
+        retry: 3,
+        retryDelay: (retryAttempt) => Math.min(1000 * 2 ** retryAttempt, 30000),
       },
     },
   });

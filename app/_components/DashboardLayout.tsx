@@ -15,18 +15,13 @@ export default async function DashboardLayout({
 }: {
   cabinCount: number;
 }) {
-  const {
-    isLoading: isLoading1,
-    error,
-    data: bookings,
-  } = useBookingsAfterDate();
+  const { isLoading: isLoading1, data: bookings } = useBookingsAfterDate();
   const { isLoading: isLoading2, confirmedStays } = useStaysAfterDate();
 
   const searchParams = useSearchParams();
   const numDays = Number(searchParams.get("last")) || 7;
 
   if (isLoading1 || isLoading2) return <SpinnerFull />;
-  if (error) return toast.error(error.message);
 
   return (
     <>

@@ -10,9 +10,7 @@ import { Box } from "@chakra-ui/react";
 export default function TodayActivity() {
   // activity ending today that is not already checkedout
   // filter all the checked out ones
-  const { activities: todayActivity, isLoading, error } = useTodayActivity();
-
-  if (error) toast.error("Recent activity could not be loaded");
+  const { activities: todayActivity, isLoading } = useTodayActivity();
 
   return (
     <Box className="bg-[var(--color-grey-0)] rounded-[var(--border-radius-md)] flex flex-col gap-8 overflow-scroll no-scrollbar min-h-[32.7rem] pt-[2.4rem] pb-[3.2rem] px-[3.2rem]">
