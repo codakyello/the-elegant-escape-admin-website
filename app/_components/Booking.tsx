@@ -8,9 +8,8 @@ import { Settings } from "../utils/types";
 import BookingDataBox from "./BookingDataBox";
 import useBooking from "../hooks/useBooking";
 import SpinnerFull from "./SpinnerFull";
-import { toast } from "sonner";
-import { useAuth } from "../_contexts/AuthProvider";
 import useDeleteBookings from "../hooks/useDeleteBooking";
+import { useEffect } from "react";
 
 export default function Booking({
   settings,
@@ -20,14 +19,17 @@ export default function Booking({
   bookingId: string;
 }) {
   const router = useRouter();
-  const { getToken } = useAuth();
-  const token = getToken();
+
   const { isLoading, data: booking, error } = useBooking(bookingId);
 
   const { mutate: deleteBooking, isPending: isDeleting } = useDeleteBookings();
 
+  useEffect(() => {
+    if (error) router.push("/not-found");
+  }, [error]);
+
   if (isLoading) return <SpinnerFull />;
-  if (error) return toast.error(error.message);
+  if (error) return null;
 
   return (
     <Box className="flex flex-col gap-8 px-[2rem] py-[4rem]">
@@ -53,10 +55,7 @@ export default function Booking({
             resourceName="Booking"
             isDeleting={isDeleting}
             onConfirm={async () => {
-              await deleteBooking({
-                token,
-                bookingId,
-              });
+              await deleteBooking(bookingId);
             }}
           />
         </ModalWindow>

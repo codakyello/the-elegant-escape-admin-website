@@ -7,7 +7,7 @@ import Button from "./Button";
 import { Settings } from "../utils/types";
 import BookingDataBox from "./BookingDataBox";
 import Input from "./Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateBooking } from "../_lib/data-service";
 import SpinnerMini from "./SpinnerMini";
 import { formatCurrency } from "../utils/helpers";
@@ -50,8 +50,12 @@ export default function CheckIn({
     ? totalPrice + totalBreakfastPrice
     : totalPrice;
 
+  useEffect(() => {
+    if (error) router.push("/not-found");
+  }, [error]);
+
   if (isLoading) return <SpinnerFull />;
-  if (error) return toast.error(error.message);
+  if (error) return null;
   return (
     <Box className="flex flex-col gap-8 px-[2rem] py-[4rem]">
       <BookingDataBox booking={booking} settings={settings} />
@@ -65,7 +69,7 @@ export default function CheckIn({
                   setConfirm(false);
                 }}
                 checked={breakFast}
-                className="w-[2rem] h-[2rem]"
+                className="w-[2rem] bg-[var(--color-brand-600)] h-[2rem]"
                 type="checkbox"
                 name="hasBreakFast"
                 id="addBreakfast"
@@ -81,7 +85,7 @@ export default function CheckIn({
               disabled={confirm && breakFast}
               onChange={() => setConfirm((state) => !state)}
               checked={confirm}
-              className="w-[2rem] h-[2rem]"
+              className="w-[2rem] bg-[var(--color-brand-600)] h-[2rem]"
               type="checkbox"
               name="confirm"
               id="confirm"
@@ -112,7 +116,7 @@ export default function CheckIn({
               checkIn(
                 {
                   token,
-                  id: bookingId,
+                  bookingId,
                   obj,
                 },
                 {

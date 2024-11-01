@@ -8,18 +8,16 @@ import {
 } from "../utils/helpers";
 import Tag from "./Tag";
 import Row from "./Row";
-import Menus from "./Menu";
+import Menus, { useMenu } from "./Menu";
 import { HiEllipsisVertical, HiEye, HiTrash } from "react-icons/hi2";
-import { updateBooking } from "../_lib/data-service";
 import { ModalOpen, ModalWindow, useModal } from "./Modal";
 import Link from "next/link";
 import ConfirmDelete from "./ConfirmDelete";
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import useCustomMutation from "../hooks/useCustomMutation";
-import { toast } from "sonner";
 import { useAuth } from "../_contexts/AuthProvider";
 import useDeleteBookings from "../hooks/useDeleteBooking";
+import useCheckOut from "../hooks/useCheckOut";
 
 export function BookingRow({ booking }: { booking: Booking }) {
   const {
@@ -33,15 +31,12 @@ export function BookingRow({ booking }: { booking: Booking }) {
     cabin: { name: cabinName },
   } = booking;
 
-  const { getToken } = useAuth();
-  const token = getToken();
   const { close } = useModal();
+  const { close: closeMenu } = useMenu();
 
   const router = useRouter();
 
-  const { mutate: checkOut, isPending: isCheckingOut } =
-    useCustomMutation(updateBooking);
-
+  const { mutate: checkOut, isPending: isCheckingOut } = useCheckOut();
   const { mutate: deleteBooking, isPending: isDeleting } = useDeleteBookings();
 
   return (
@@ -71,11 +66,7 @@ export function BookingRow({ booking }: { booking: Booking }) {
       <Box>{formatCurrency(totalPrice)}</Box>
 
       <Box className="relative ">
-        <Menus.Toogle id={bookingId}>
-          <button className="bg-none border-none p-1 rounded-sm translate-x-2 transition-all duration-200 hover:bg-gray-100">
-            <HiEllipsisVertical className="self-end h-10 w-10" />
-          </button>
-        </Menus.Toogle>
+        <Menus.Toogle id={bookingId} />
 
         <Menus.Menu id={bookingId}>
           <Menus.Button
@@ -97,18 +88,9 @@ export function BookingRow({ booking }: { booking: Booking }) {
                 if (status === "unconfirmed") {
                   router.push(`/dashboard/checkin/${bookingId}`);
                 } else {
-                  checkOut(
-                    {
-                      token,
-                      id: bookingId,
-                      obj: { status: "unconfirmed" },
-                    },
-                    {
-                      onSuccess: () => {
-                        toast.success(`Booking successfully checked out`);
-                      },
-                    }
-                  );
+                  checkOut(bookingId, {
+                    onSuccess: closeMenu,
+                  });
                 }
               }}
               disabled={isCheckingOut || isDeleting}
@@ -136,17 +118,11 @@ export function BookingRow({ booking }: { booking: Booking }) {
               resourceName="Booking"
               isDeleting={isDeleting}
               onConfirm={async () => {
-                await deleteBooking(
-                  {
-                    token,
-                    bookingId,
+                await deleteBooking(bookingId, {
+                  onSuccess: () => {
+                    close();
                   },
-                  {
-                    onSuccess: () => {
-                      close();
-                    },
-                  }
-                );
+                });
               }}
             />
           </ModalWindow>

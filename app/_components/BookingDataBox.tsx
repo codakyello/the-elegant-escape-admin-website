@@ -37,8 +37,6 @@ export default function BookingDataBox({
     cabin: { regularPrice },
   } = booking;
 
-  console.log("this is booking", booking);
-
   const { breakFastPrice } = settings;
 
   return (

@@ -2,7 +2,8 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import AuthProvider from "./_contexts/AuthProvider";
-import SWRProvider from "./_contexts/QueryProvider";
+import QueryProvider from "./_contexts/QueryProvider";
+import { DarkModeProvider } from "./_contexts/DarkModeProvider";
 
 const poppins = Poppins({
   subsets: ["latin"], // Add other subsets if needed
@@ -29,9 +30,11 @@ export default function RootLayout({
   return (
     <html className="lg:text-[62.5%] md:text-[56.25%] text-[50%]" lang="en">
       <body className={`${poppins.className} `}>
-        <SWRProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </SWRProvider>
+        <QueryProvider>
+          <DarkModeProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </DarkModeProvider>
+        </QueryProvider>
       </body>
       <Toaster
         theme={"light"}

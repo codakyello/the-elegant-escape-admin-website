@@ -29,6 +29,7 @@ export interface CabinData {
 export interface Booking {
   _id: string;
   bookingId: string;
+  extrasPrice: number;
   created_at: string;
   status: string;
   numNights: number;

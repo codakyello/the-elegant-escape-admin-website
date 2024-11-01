@@ -5,6 +5,7 @@ import React, {
   createContext,
   useEffect,
   ReactNode,
+  useReducer,
 } from "react";
 import { useRouter } from "next/navigation";
 import { authorize } from "@/app/_lib/data-service";
@@ -26,54 +27,117 @@ const AuthContext = createContext<
       authenticated: boolean;
       isLogoutAction: boolean;
       logout: () => void;
-      setUser: (user: User | null) => void;
-      setToken: (token: string) => void;
+      login: (user: User | null) => void;
+      setToken: (token: string | null) => void;
       getToken: () => string | null;
     }
   | undefined
 >(undefined);
 
+type AuthState = {
+  user: User | null;
+  token: string | null;
+  isAuthenticating: boolean;
+  authenticated: boolean;
+  isLogoutAction: boolean;
+};
+
+const initialState = {
+  user: null,
+  isAuthenticating: true,
+  authenticated: false,
+  isLogoutAction: false,
+  token: null,
+};
+// setUser(null);
+// setToken(null);
+// setAuthenticated(false);
+// setLogoutAction(true);
+
+function reducer(state: AuthState, action: { type: string; payload?: any }) {
+  switch (action.type) {
+    case "logout":
+      return {
+        ...state,
+        user: null,
+        token: null,
+        setAuthenticated: false,
+        setLogoutAction: true,
+      };
+
+    case "user":
+      return { ...state, user: action.payload };
+    case "token":
+      return { ...state, token: action.payload };
+    case "authenticating/start":
+      return { ...state, isAuthenticating: true };
+    case "authenticating/finished":
+      return { ...state, isAuthenticating: false };
+    case "authenticated":
+      return { ...state, authenticated: true };
+    case "not-authenticated":
+      return { ...state, authenticated: false };
+    default:
+      throw new Error("Your action type dosent match ");
+    // return state;
+  }
+}
 function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
-  const [isLogoutAction, setLogoutAction] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
+  // const [isAuthenticating, setIsAuthenticating] = useState(true);
+  // const [authenticated, setAuthenticated] = useState(false);
+  // const [isLogoutAction, setLogoutAction] = useState(false);
+  // const [token, setToken] = useState<string | null>(null);
+
+  const [
+    { user, isAuthenticating, authenticated, isLogoutAction, token },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
   // Load user from localStorage on initial mount
   useEffect(() => {
-    setIsAuthenticating(true);
+    // setIsAuthenticating(true);
+    dispatch({ type: "authenticating/start" });
     const storedUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
 
     if (storedUser && token) {
-      setUser(JSON.parse(storedUser));
-      setToken(JSON.parse(token));
+      dispatch({ type: "user", payload: JSON.parse(storedUser) });
+
+      dispatch({ type: "token", payload: JSON.parse(token) });
+
       Cookies.set("token", JSON.parse(token));
     } else {
-      setIsAuthenticating(false);
-      // just addedd incase of breaking changes
-      setAuthenticated(false);
+      // setIsAuthenticating(false);
+      dispatch({ type: "authenticating/finished" });
+      // setAuthenticated(false);
+      dispatch({ type: "not-authenticated" });
     }
   }, []);
 
   // Check authenticated on mount and on router change
   useEffect(() => {
     if (!token) {
-      setAuthenticated(false);
+      // setAuthenticated(false);
+      dispatch({ type: "not-authenticated" });
+
       return;
     }
 
     (async function authenticate() {
-      setIsAuthenticating(true);
+      // setIsAuthenticating(true);
+      dispatch({ type: "authenticating/start" });
+
       try {
         await authorize(token);
-        setAuthenticated(true);
+        // setAuthenticated(true);
+        dispatch({ type: "authenticated" });
       } catch {
         logout();
       } finally {
-        setIsAuthenticating(false);
+        // setIsAuthenticating(false);
+        dispatch({ type: "authenticating/finished" });
       }
     })();
   }, [token]);
@@ -89,21 +153,26 @@ function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [user, token]);
 
+  function login(user: User | null) {
+    dispatch({ type: "user", payload: user });
+  }
+
+  function setToken(token: string | null) {
+    dispatch({ type: "token", payload: token });
+  }
+
   // Logout function
   function logout() {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    setUser(null);
-    setToken(null);
-    setAuthenticated(false);
-    setLogoutAction(true);
+    dispatch({ type: "logout" });
   }
 
   function getToken(): string | null {
     const storedToken = localStorage.getItem("token");
     const token: string | null = storedToken ? JSON.parse(storedToken) : null;
     if (!token) {
-      setToken(null);
+      logout();
       toast.error("You are not logged in!");
       router.push("/login");
     }
@@ -114,7 +183,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
-        setUser,
+        login,
         logout,
         isAuthenticating,
         authenticated,

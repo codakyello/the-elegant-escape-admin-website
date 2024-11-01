@@ -1,35 +1,46 @@
+"use client";
 import { Box } from "@chakra-ui/react";
 import Stats from "./Stats";
-import { getToken } from "../utils/serverUtils";
-import { getAllCabins, getBookingAfterDate } from "../_lib/data-service";
-import TodayActivities from "./TodayActivities";
+import useBookingsAfterDate from "../hooks/useBookingsAfterDate";
+import SpinnerFull from "./SpinnerFull";
+import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
+import TodayActivity from "./TodayActivity";
+import DurationChart from "./DurationChart";
+import useStaysAfterDate from "../hooks/useStaysAfterDate";
+import SalesChart from "./SalesChart";
 
-export default async function DashboardLayout({ last }: { last: string }) {
-  const token = await getToken();
-  const numDays = Number(last);
-  const [bookings, data] = await Promise.all([
-    getBookingAfterDate(token, numDays || 7),
-    getAllCabins(),
-  ]);
+export default async function DashboardLayout({
+  cabinCount,
+}: {
+  cabinCount: number;
+}) {
+  const {
+    isLoading: isLoading1,
+    error,
+    data: bookings,
+  } = useBookingsAfterDate();
+  const { isLoading: isLoading2, confirmedStays } = useStaysAfterDate();
+
+  const searchParams = useSearchParams();
+  const numDays = Number(searchParams.get("last")) || 7;
+  // const { isLoading, error, data: bookings } = useTodayActivity();
+  console.log(bookings);
+
+  if (isLoading1 || isLoading2) return <SpinnerFull />;
+  if (error) return toast.error(error.message);
 
   return (
     <>
       <Box className="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-[2.4rem] ">
-        <Stats
-          bookings={bookings}
-          cabinCount={data.totalCount}
-          numDays={numDays}
-        />
+        <Stats bookings={bookings} cabinCount={cabinCount} numDays={numDays} />
       </Box>
       <Box className="grid md:grid-cols-2 grid-cols-1 gap-[2.4rem] ">
-        <Box className="bg-[var(--color-grey-0)] flex flex-col gap-8 overflow-scroll no-scrollbar h-[30rem] pt-[2.4rem] pb-[3.2rem] px-[3.2rem]">
-          <h2>Today</h2>
-          <TodayActivities bookings={bookings} />
-        </Box>
-        <Box className="bg-[var(--color-grey-0)]">Stay duration summary</Box>
-        <Box className="bg-[var(--color-grey-0)] col-span-full h-[45rem]">
-          Graph
-        </Box>
+        <TodayActivity />
+
+        <DurationChart confirmedStays={confirmedStays} />
+
+        <SalesChart bookings={confirmedStays} numDays={numDays} />
       </Box>
     </>
   );

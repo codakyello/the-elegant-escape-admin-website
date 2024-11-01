@@ -186,7 +186,7 @@ export default function CreateEditCabinForm({
         <Textarea
           defaultValue={editValues?.description}
           required={true}
-          className="py-[1rem] md:text-[16px] px-[1.2rem] bg-white border rounded-[var(--border-radius-sm)]"
+          className="py-[1rem] md:text-[16px] px-[1.2rem] bg-[var(--color-grey-0)] appearance-none focus:ring-0 border border-[var(--color-grey-300)] rounded-[var(--border-radius-sm)]"
           name="description"
           id="website_descr"
         />

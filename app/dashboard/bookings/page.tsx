@@ -10,7 +10,7 @@ export const metadata = {
 
 function Page() {
   return (
-    <Box className="flex flex-col gap-5">
+    <Box className="flex flex-col gap-[3.2rem]">
       <Box className="flex flex-col lg:flex-row gap-8 pt-1 pr-1">
         <h1 className="">All Bookings</h1>
         <Box className="flex gap-6 lg:ml-auto">

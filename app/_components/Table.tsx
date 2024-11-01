@@ -17,7 +17,7 @@ export default function Table({
 }) {
   return (
     <TableContext.Provider value={{ columns }}>
-      <Box className="border border-[var(--color-grey-200)] bg-[var(--color-grey-0)] text-[1.4rem]">
+      <Box className="overflow-x-hidden no-scrollbar rounded-[var(--border-radius-md)] border border-[var(--color-grey-200)] bg-[var(--color-grey-0)] text-[1.4rem]">
         {children}
       </Box>
     </TableContext.Provider>
@@ -59,7 +59,7 @@ export function Body<T>({
   data: T[] | null;
   render: (item: T) => ReactNode;
 }) {
-  return <Box>{data?.map(render)}</Box>;
+  return <Box className="no-scroll-bar">{data?.map(render)}</Box>;
 }
 
 export function Footer({ children }: { children: ReactElement | string }) {

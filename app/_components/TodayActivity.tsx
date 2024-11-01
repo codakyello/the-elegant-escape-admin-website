@@ -1,0 +1,41 @@
+"use client";
+import { toast } from "sonner";
+import useTodayActivity from "../hooks/useTodaysActivity";
+import { Booking } from "../utils/types";
+
+import Activity from "./Activity";
+import SpinnerMini from "./SpinnerMini";
+import Spinner from "./Spinner";
+import { Box } from "@chakra-ui/react";
+
+export default function TodayActivity() {
+  // activity ending today that is not already checkedout
+  // filter all the checked out ones
+  const { activities: todayActivity, isLoading, error } = useTodayActivity();
+
+  console.log(todayActivity);
+
+  if (error) toast.error("Recent activity could not be loaded");
+
+  return (
+    <Box className="bg-[var(--color-grey-0)] rounded-[var(--border-radius-md)] flex flex-col gap-8 overflow-scroll no-scrollbar min-h-[32.7rem] pt-[2.4rem] pb-[3.2rem] px-[3.2rem]">
+      {isLoading && <Spinner />}
+      {!isLoading && todayActivity.length ? (
+        <>
+          <h2 className="mb-[1.6rem]">Today</h2>
+          <ul className="no-scrollbar ">
+            {todayActivity.map((activity: Booking) => (
+              <Activity key={activity.bookingId} activity={activity} />
+            ))}
+          </ul>
+        </>
+      ) : (
+        !isLoading && (
+          <p className="text-center text-[1.8rem] font-medium mt-[.8rem]">
+            No Recent Activity
+          </p>
+        )
+      )}
+    </Box>
+  );
+}

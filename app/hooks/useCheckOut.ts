@@ -5,9 +5,8 @@ import {
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useHandleUnAuthorisedResponse } from "../utils/utils";
-import { deleteBooking } from "../_lib/data-service";
+import { updateBooking } from "../_lib/data-service";
 import AppError from "../utils/AppError";
-import { useRouter } from "next/navigation";
 import { useAuth } from "../_contexts/AuthProvider";
 
 interface UseCustomMutationReturn<TData, AppError, TVariables> {
@@ -15,7 +14,7 @@ interface UseCustomMutationReturn<TData, AppError, TVariables> {
   isPending: boolean;
 }
 
-export default function useDeleteBookings<
+export default function useCheckOut<
   TData,
   TVariables extends string
 >(): UseCustomMutationReturn<TData, AppError, TVariables> {
@@ -25,19 +24,20 @@ export default function useDeleteBookings<
   const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
 
   const { mutate, isPending } = useMutation<TData, AppError, TVariables>({
-    mutationFn: async (bookingId) => {
-      return deleteBooking({ bookingId, token }) as Promise<TData>;
+    mutationFn: (bookingId) => {
+      return updateBooking({
+        bookingId,
+        token,
+        obj: { status: "checked-out" },
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries();
-
-      console.log("invalidated");
-      toast.success(`Booking successfully deleted`);
+      console.log("i am here");
+      toast.success("Booking successfully checked-out");
     },
-
     onError: (err: AppError) => {
       toast.error(err.message);
-      queryClient.invalidateQueries();
 
       handleUnAuthorisedResponse(err.statusCode);
     },

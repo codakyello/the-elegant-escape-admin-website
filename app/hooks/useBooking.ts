@@ -7,8 +7,9 @@ export default function useBooking(bookingId: string) {
   const token = getToken();
 
   const { data, error, isLoading } = useQuery({
-    queryKey: ["booking"],
+    queryKey: ["booking", bookingId],
     queryFn: () => getBooking(bookingId, token),
+    staleTime: 0,
   });
 
   console.log(data);

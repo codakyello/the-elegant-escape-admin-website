@@ -1,14 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import Filter from "@/app/_components/Filter";
 import DashboardLayout from "../_components/DashboardLayout";
-import { Suspense } from "react";
 import Loading from "../loading";
+import { getAllCabins } from "../_lib/data-service";
 
 export const metadata = {
   title: "Dashboard",
 };
 
-async function Page({ searchParams }: { searchParams: { last: string } }) {
+async function Page() {
+  const data = await getAllCabins();
+  const cabinCount = data.totalCount;
+
   return (
     <Box className="flex flex-col gap-[3.2rem]">
       <Box className="flex flex-col md:flex-row justify-between">
@@ -26,9 +29,7 @@ async function Page({ searchParams }: { searchParams: { last: string } }) {
         />
       </Box>
 
-      <Suspense fallback={<Loading />} key={`last-${searchParams.last}`}>
-        <DashboardLayout last={searchParams.last} />
-      </Suspense>
+      <DashboardLayout cabinCount={cabinCount} />
     </Box>
   );
 }

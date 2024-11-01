@@ -37,6 +37,7 @@ export default function ConfirmDelete({
           loading={isDeleting}
           onClick={async () => {
             await onConfirm();
+            close();
           }}
           type="danger"
         >

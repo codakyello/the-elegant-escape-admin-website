@@ -18,12 +18,7 @@ const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
 export async function getSettings() {
   try {
     const res = await fetch(
-      `https://the-eleganta-escape.vercel.app/api/v1/settings`,
-      {
-        next: {
-          revalidate: 5,
-        },
-      }
+      `https://the-eleganta-escape.vercel.app/api/v1/settings`
     );
 
     const data = await res.json();
@@ -90,9 +85,6 @@ export async function login(formData: FormData) {
       headers: {
         "Content-Type": "application/json",
       },
-      // next: {
-      //   revalidate: 5,
-      // },
     });
     console.log("not crashded");
 
@@ -491,6 +483,8 @@ export async function updateCabin(
 }
 
 export async function deleteCabin(id: string, token: string) {
+  if (!token) return;
+
   let res;
   try {
     // const token = getToken
@@ -531,9 +525,12 @@ export async function getAllBookings(
     sortBy: string | null;
   }
 ) {
-  let query = "";
+  if (!token) return;
 
-  console.log("This are the Bookings");
+  // await new Promise((res) => {
+  //   setTimeout(res, 5000);
+  // });
+  let query = "";
 
   const page = searchParams.page || 1;
   const status = searchParams.status;
@@ -593,7 +590,7 @@ export async function getAllBookings(
 }
 
 export async function getBooking(id: string, token: string | null) {
-  console.log("This are the Booking", id, token);
+  if (!token) return;
 
   try {
     const res = await fetch(
@@ -625,19 +622,19 @@ export async function getBooking(id: string, token: string | null) {
   }
 }
 
-export async function getBookingAfterDate(token: string, date: number) {
-  console.log("date is", date);
+export async function getBookingAfterDate(
+  token: string | null,
+  lastDays: number
+) {
+  if (!token) return;
   try {
     const res = await fetch(
-      `${URL}/bookings/getBookingsAfter?date=${date}`,
+      `${URL}/bookings/getBookingsAfter?date=${lastDays}`,
 
       {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // Ensure the 'Authorization' key is capitalized
-        },
-        next: {
-          revalidate: 60,
         },
       }
     );
@@ -661,16 +658,18 @@ export async function getBookingAfterDate(token: string, date: number) {
 
 export async function updateBooking({
   token,
-  id,
+  bookingId,
   obj,
 }: {
   token: string | null;
-  id: string;
+  bookingId: string;
   obj: BookingData;
 }) {
+  if (!token) return;
+
   try {
     // const token = getToken
-    const res = await fetch(`${URL}/bookings/${id}`, {
+    const res = await fetch(`${URL}/bookings/${bookingId}`, {
       method: "PATCH",
       body: JSON.stringify(obj),
       headers: {
@@ -703,6 +702,8 @@ export async function deleteBooking({
   token: string | null;
 }) {
   try {
+    if (!token) return;
+
     console.log("booking id");
     // const token = getToken
     const res = await fetch(`${URL}/bookings/${bookingId}`, {

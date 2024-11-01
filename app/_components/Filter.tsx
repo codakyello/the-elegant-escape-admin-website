@@ -28,7 +28,7 @@ export default function Filter({
 
   return (
     <ul
-      className={`flex border border-[var(--color-grey-100)] gap-2 bg-[var(--color-grey-0)] shadow-sm py-[0.44rem] px-[.8rem] ${className}`}
+      className={`flex border rounded-[var(--border-radius-sm)] border-[var(--color-grey-100)] gap-2 bg-[var(--color-grey-0)] shadow-sm py-[0.44rem] px-[.8rem] ${className}`}
     >
       {filters.map((filter) => (
         <FilterButton

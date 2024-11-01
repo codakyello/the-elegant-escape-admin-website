@@ -18,9 +18,9 @@ export default function Page() {
 
   if (!authenticated)
     return (
-      <div className="flex p-5 bg-gray-50 gap-[3.2rem] flex-col h-screen items-center justify-center">
+      <div className="flex p-5 bg-[var(--color-grey-50)] gap-[3.2rem] flex-col h-screen items-center justify-center">
         <Logo />
-        <h1 className="font">Log in to your account</h1>
+        <h1>Log in to your account</h1>
         <LoginForm />
       </div>
     );

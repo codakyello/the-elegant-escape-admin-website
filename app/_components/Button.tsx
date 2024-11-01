@@ -23,7 +23,7 @@ export default function Button({
       disabled={loading || disabled}
       type={action}
       onClick={onClick}
-      className={`${className} flex justify-center btn btn--${type}`}
+      className={`${className} flex justify-center  btn btn--${type}`}
     >
       {loading ? <SpinnerMini /> : children}
     </button>

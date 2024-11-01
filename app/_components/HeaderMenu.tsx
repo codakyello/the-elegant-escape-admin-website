@@ -1,6 +1,7 @@
-import { MoonIcon, UserIcon } from "@heroicons/react/24/outline";
+import { UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import SignOutButton from "./SignOutButton";
+import DarkModeToggle from "./DarkModeToggle";
 
 function HeaderMenu() {
   return (
@@ -11,11 +12,7 @@ function HeaderMenu() {
       >
         <UserIcon className="w-9 text-[var(--color-brand-600)] aspect-square" />
       </Link>
-
-      <button className="p-2 hover:bg-[var(--color-grey-100)] rounded-md">
-        <MoonIcon className="w-9 text-[var(--color-brand-600)] aspect-square" />
-      </button>
-
+      <DarkModeToggle />
       <SignOutButton />
     </div>
   );

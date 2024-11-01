@@ -59,13 +59,11 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
 
     const res = await deleteCabin(id, token);
 
-    handleUnAuthorisedResponse(res.statusCode);
+    handleUnAuthorisedResponse(res?.statusCode);
 
-    showToastMessage(res.status, res.message, "Cabin successfully deleted");
+    showToastMessage(res?.status, res?.message, "Cabin successfully deleted");
 
     setLoading(false);
-
-    closeModal();
   };
   return (
     <Row>
@@ -85,11 +83,7 @@ export default function CabinRow({ cabin }: { cabin: Cabin }) {
       </p>
 
       <div className="relative grid">
-        <Menus.Toogle id={id}>
-          <button className="bg-none border-none p-1 rounded-sm translate-x-2 transition-all duration-200 hover:bg-gray-100">
-            <HiEllipsisVertical className="self-end h-10 w-10" />
-          </button>
-        </Menus.Toogle>
+        <Menus.Toogle id={id} />
 
         <Menus.Menu id={cabin._id}>
           <Menus.Button

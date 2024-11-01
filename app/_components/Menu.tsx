@@ -10,6 +10,7 @@ import {
 } from "react";
 import { Box } from "@chakra-ui/react";
 import useOutsideClick from "../hooks/useOutsideClick";
+import { HiEllipsisVertical } from "react-icons/hi2";
 
 type MenuContextType =
   | {
@@ -42,14 +43,14 @@ function Menu({ children, id }: { children: ReactNode; id: string }) {
   return openId === id ? (
     <Box
       ref={ref}
-      className="absolute top-[20px] right-[20px] z-20 bg-[var(--color-grey-0)] shadow-md rounded-[var(--border-radius-md)]"
+      className="absolute top-[20px] right-[20px] z-50 bg-[var(--color-grey-0)] shadow-md rounded-[var(--border-radius-md)]"
     >
       {children}
     </Box>
   ) : null;
 }
 
-function Toggle({ children, id }: { children: ReactElement; id: string }) {
+function Toggle({ id }: { id: string }) {
   const context = useContext(MenuContext);
 
   if (!context) {
@@ -60,13 +61,16 @@ function Toggle({ children, id }: { children: ReactElement; id: string }) {
 
   // Clone the children and add an onClick handler to toggle the menu state
   return (
-    <Box className="justify-self-end cursor-pointer">
-      {cloneElement(children, {
-        onClick: () => {
+    <Box className="justify-self-end  cursor-pointer">
+      <button
+        onClick={() => {
           if (openId === id) return close();
           open(id);
-        },
-      })}
+        }}
+        className="bg-none border-none p-1 rounded-[var(--border-radius-sm)] translate-x-2 transition-all duration-200 hover:bg-[var(--color-grey-50)]"
+      >
+        <HiEllipsisVertical className="self-end h-10 w-10" />
+      </button>
     </Box>
   );
 }
@@ -86,7 +90,7 @@ function Button({
     <button
       disabled={disabled}
       onClick={onClick}
-      className="w-full text-left bg-none border-none py-[1.5rem] px-[2.4rem] text-[1.4rem] transition-all duration-200 flex items-center gap-[1.6rem] hover:bg-gray-50"
+      className="w-full text-left bg-none border-none py-[1.5rem] px-[2.4rem] text-[1.4rem] transition-all duration-200 flex items-center gap-[1.6rem] hover:bg-[var(--color-grey-50)]"
     >
       {icon}
       <span className="whitespace-nowrap">{children}</span>

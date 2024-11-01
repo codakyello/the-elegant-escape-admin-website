@@ -2,12 +2,12 @@
 import FormRow from "@/app/_components/FormRow";
 import Input from "./Input";
 import { FormEvent, useState } from "react";
-import { login } from "../_lib/data-service";
+import { login as loginApi } from "../_lib/data-service";
 import { toast } from "sonner";
 import { useAuth } from "../_contexts/AuthProvider";
 import SpinnerMini from "@/app/_components/SpinnerMini";
 function LoginForm() {
-  const { setUser, setToken } = useAuth();
+  const { login, setToken } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -15,12 +15,12 @@ function LoginForm() {
     setLoading(true);
     const formData = new FormData(event.currentTarget);
 
-    const data = await login(formData);
+    const data = await loginApi(formData);
 
     if (data.status === "error") {
       toast.error(data.message);
     } else {
-      setUser(data.user);
+      login(data.user);
       setToken(data.token);
     }
     setLoading(false);
@@ -39,14 +39,11 @@ function LoginForm() {
       </FormRow>
 
       <div className="flex flex-col gap-[.8rem] my-[1.2rem]">
-        {/* <Button action="submit" type="primary" loading={loading}>
-          Login
-        </Button> */}
         <button
           type="submit"
-          className="flex justify-center items-center py-[1.2rem] px-[1.6rem] bg-[var(--color-brand-600)] rounded-md text-[var(--color-grey-0)]"
+          className="flex justify-center  items-center py-[1.2rem] px-[1.6rem] bg-[var(--color-brand-600)] rounded-md "
         >
-          {loading ? <SpinnerMini /> : "Login"}
+          {loading ? <SpinnerMini /> : "Log in"}
         </button>
       </div>
     </form>
