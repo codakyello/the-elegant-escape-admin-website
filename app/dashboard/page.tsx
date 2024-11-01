@@ -26,7 +26,7 @@ async function Page() {
           ]}
           paramName="last"
           defaultValue="7"
-          className="w-[33rem]"
+          className="w-[35rem]"
         />
       </Box>
 
