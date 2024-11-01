@@ -19,7 +19,7 @@ export default function UpdateUserForm({
 }: {
   user: { email: string; name: string };
 }) {
-  const { getToken, setUser } = useAuth();
+  const { getToken, login } = useAuth();
   const [loading, setLoading] = useState(false);
   const handleUnAuthorisedResponse = useHandleUnAuthorisedResponse();
   const { name, email } = user;
@@ -68,7 +68,7 @@ export default function UpdateUserForm({
     // Update Admin
     const res = await updateAdmin(token, formInputs);
     if (res?.status !== "error") {
-      setUser(res);
+      login(res);
     }
 
     handleUnAuthorisedResponse(res?.statusCode);
