@@ -35,7 +35,6 @@ export function BookingRow({ booking }: { booking: Booking }) {
     cabin: { name: cabinName },
   } = booking;
 
-  const { close } = useModal();
   const { close: closeMenu } = useMenu();
 
   const router = useRouter();

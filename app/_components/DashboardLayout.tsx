@@ -9,7 +9,7 @@ import DurationChart from "./DurationChart";
 import useStaysAfterDate from "../hooks/useStaysAfterDate";
 import SalesChart from "./SalesChart";
 
-export default async function DashboardLayout({
+export default function DashboardLayout({
   cabinCount,
 }: {
   cabinCount: number;
