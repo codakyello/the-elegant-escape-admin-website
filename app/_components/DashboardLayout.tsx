@@ -3,7 +3,6 @@ import { Box } from "@chakra-ui/react";
 import Stats from "./Stats";
 import useBookingsAfterDate from "../hooks/useBookingsAfterDate";
 import SpinnerFull from "./SpinnerFull";
-import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import TodayActivity from "./TodayActivity";
 import DurationChart from "./DurationChart";

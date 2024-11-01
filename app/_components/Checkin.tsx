@@ -52,7 +52,7 @@ export default function CheckIn({
 
   useEffect(() => {
     if (error) router.push("/not-found");
-  }, [error]);
+  }, [error, router]);
 
   if (isLoading) return <SpinnerFull />;
   if (error) return null;
