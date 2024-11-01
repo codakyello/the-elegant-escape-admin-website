@@ -15,7 +15,7 @@ import {
   HiEye,
   HiTrash,
 } from "react-icons/hi2";
-import { ModalOpen, ModalWindow, useModal } from "./Modal";
+import { ModalOpen, ModalWindow } from "./Modal";
 import Link from "next/link";
 import ConfirmDelete from "./ConfirmDelete";
 import { Box } from "@chakra-ui/react";
