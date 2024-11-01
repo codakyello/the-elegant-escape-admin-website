@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { useHandleUnAuthorisedResponse } from "../utils/utils";
 import { deleteBooking } from "../_lib/data-service";
 import AppError from "../utils/AppError";
-import { useRouter } from "next/navigation";
 import { useAuth } from "../_contexts/AuthProvider";
 
 interface UseCustomMutationReturn<TData, AppError, TVariables> {
@@ -31,7 +30,6 @@ export default function useDeleteBookings<
     onSuccess: () => {
       queryClient.invalidateQueries();
 
-      console.log("invalidated");
       toast.success(`Booking successfully deleted`);
     },
 

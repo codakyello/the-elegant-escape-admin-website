@@ -5,7 +5,6 @@ import {
   useState,
   createContext,
   ReactNode,
-  cloneElement,
   ReactElement,
 } from "react";
 import { Box } from "@chakra-ui/react";

@@ -2,10 +2,6 @@ import { Box } from "@chakra-ui/react";
 import { Booking } from "../utils/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { showToastMessage } from "../utils/utils";
-import { useState } from "react";
-import { getToken } from "../utils/serverUtils";
-import { updateBooking } from "../_lib/data-service";
 import SpinnerMini from "./SpinnerMini";
 import Tag from "./Tag";
 import { getTagName } from "../utils/helpers";
@@ -21,20 +17,7 @@ export default function Activity({ activity }: { activity: Booking }) {
   } = activity;
 
   const { isPending: isCheckingOut, mutate: checkOut } = useCheckOut();
-  //   setLoading(true);
-  //   const token = await getToken();
-  //   if (!token) return;
-  //   const result = await updateBooking(token, bookingId, {
-  //     status: "checked-out",
-  //   });
 
-  //   showToastMessage(
-  //     result.status,
-  //     result.message,
-  //     "Booking successfully checked out"
-  //   );
-  //   setLoading(false);
-  // };
   return (
     <li
       key={bookingId}

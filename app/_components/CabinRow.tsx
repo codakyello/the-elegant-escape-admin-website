@@ -5,25 +5,19 @@ import Image from "next/image";
 import { formatCurrency } from "../utils/helpers";
 import { Cabin } from "../utils/types";
 import Menus, { useMenu } from "./Menu";
-import {
-  HiEllipsisVertical,
-  HiPencil,
-  HiSquare2Stack,
-  HiTrash,
-} from "react-icons/hi2";
+import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import { getToken } from "../utils/serverUtils";
 import { createCabin, deleteCabin } from "../_lib/data-service";
 import {
   showToastMessage,
   useHandleUnAuthorisedResponse,
 } from "../utils/utils";
-import { ModalOpen, ModalWindow, useModal } from "./Modal";
+import { ModalOpen, ModalWindow } from "./Modal";
 import ConfirmDelete from "./ConfirmDelete";
 import { useState } from "react";
 import CreateEditCabinForm from "./CreateEditCabinForm";
 
 export default function CabinRow({ cabin }: { cabin: Cabin }) {
-  const { close: closeModal } = useModal();
   const { close: closeMenu } = useMenu();
 
   const { name, maxCapacity, image, regularPrice, discount, _id: id } = cabin;

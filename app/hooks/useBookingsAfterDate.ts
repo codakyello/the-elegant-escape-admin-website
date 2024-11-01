@@ -1,4 +1,4 @@
-import { getAllBookings, getBookingAfterDate } from "../_lib/data-service";
+import { getBookingAfterDate } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";

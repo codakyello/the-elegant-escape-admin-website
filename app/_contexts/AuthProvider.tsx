@@ -49,10 +49,6 @@ const initialState = {
   isLogoutAction: false,
   token: null,
 };
-// setUser(null);
-// setToken(null);
-// setAuthenticated(false);
-// setLogoutAction(true);
 
 function reducer(state: AuthState, action: { type: string; payload?: any }) {
   switch (action.type) {
@@ -78,8 +74,11 @@ function reducer(state: AuthState, action: { type: string; payload?: any }) {
     case "not-authenticated":
       return { ...state, authenticated: false };
     default:
-      throw new Error("Your action type dosent match ");
-    // return state;
+      // in development
+      // throw new Error(
+      //   `Unknown action type: ${action.type}. Please check the reducer for valid action types.`
+      // );
+      return state;
   }
 }
 function AuthProvider({ children }: { children: ReactNode }) {
@@ -161,7 +160,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "token", payload: token });
   }
 
-  // Logout function
   function logout() {
     localStorage.removeItem("user");
     localStorage.removeItem("token");

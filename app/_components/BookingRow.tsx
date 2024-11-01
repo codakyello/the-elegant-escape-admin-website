@@ -20,7 +20,6 @@ import Link from "next/link";
 import ConfirmDelete from "./ConfirmDelete";
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../_contexts/AuthProvider";
 import useDeleteBookings from "../hooks/useDeleteBooking";
 import useCheckOut from "../hooks/useCheckOut";
 

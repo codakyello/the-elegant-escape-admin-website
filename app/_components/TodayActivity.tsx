@@ -4,7 +4,6 @@ import useTodayActivity from "../hooks/useTodaysActivity";
 import { Booking } from "../utils/types";
 
 import Activity from "./Activity";
-import SpinnerMini from "./SpinnerMini";
 import Spinner from "./Spinner";
 import { Box } from "@chakra-ui/react";
 
@@ -12,8 +11,6 @@ export default function TodayActivity() {
   // activity ending today that is not already checkedout
   // filter all the checked out ones
   const { activities: todayActivity, isLoading, error } = useTodayActivity();
-
-  console.log(todayActivity);
 
   if (error) toast.error("Recent activity could not be loaded");
 
