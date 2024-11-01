@@ -59,7 +59,9 @@ export function Body<T>({
   data: T[] | null;
   render: (item: T) => ReactNode;
 }) {
-  return <Box className="no-scroll-bar">{data?.map(render)}</Box>;
+  return (
+    <Box className="no-scroll-bar overflow-x-scroll">{data?.map(render)}</Box>
+  );
 }
 
 export function Footer({ children }: { children: ReactElement | string }) {

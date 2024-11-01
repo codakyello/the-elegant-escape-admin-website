@@ -18,10 +18,11 @@ async function Page({
     <Box className="flex flex-col gap-[3.2rem]">
       <Box className="flex flex-col lg:flex-row gap-8 pt-1 pr-1">
         <h1 className="">All Cabins</h1>
-        <Box className="flex gap-6 lg:ml-auto">
+        <Box className="flex flex-col md:flex-row gap-6 lg:ml-auto">
           <Filter
             defaultValue="all"
             paramName="discount"
+            className="w-[28rem]"
             filters={[
               { name: "All", value: "all" },
               { name: "No discount", value: "no-discount" },
@@ -30,6 +31,7 @@ async function Page({
           />
 
           <Sort
+            className="max-w-[28rem]"
             defaultValue="startDate-desc"
             options={[
               { name: "Sort by name (A-Z)", value: "name-asc" },
