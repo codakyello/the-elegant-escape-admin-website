@@ -41,6 +41,15 @@ type AuthState = {
   isLogoutAction: boolean;
 };
 
+type ActionType =
+  | { type: "logout" }
+  | { type: "user"; payload: User | null }
+  | { type: "token"; payload: string | null }
+  | { type: "authenticating/start" }
+  | { type: "authenticating/finished" }
+  | { type: "authenticated" }
+  | { type: "not-authenticated" };
+
 const initialState = {
   user: null,
   isAuthenticating: true,
@@ -49,7 +58,7 @@ const initialState = {
   token: null,
 };
 
-function reducer(state: AuthState, action: { type: string; payload?: any }) {
+function reducer(state: AuthState, action: ActionType) {
   switch (action.type) {
     case "logout":
       return {
