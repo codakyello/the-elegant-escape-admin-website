@@ -6,8 +6,6 @@ import Spinner from "./Spinner";
 import { Box } from "@chakra-ui/react";
 
 export default function TodayActivity() {
-  // activity ending today that is not already checkedout
-  // filter all the checked out ones
   const { activities: todayActivity, isLoading } = useTodayActivity();
 
   return (
