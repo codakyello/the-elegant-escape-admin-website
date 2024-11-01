@@ -16,21 +16,24 @@ const DarkModeContext = createContext<
 >(undefined);
 
 function DarkModeProvider({ children }: { children: ReactNode }) {
+  // Set initial state based on the localStorage value or system preference
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const isDarkMode = localStorage.getItem("isDarkMode");
-    if (isDarkMode) return JSON.parse(isDarkMode);
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (typeof window !== "undefined") {
+      const storedDarkMode = localStorage.getItem("isDarkMode");
+      if (storedDarkMode) return JSON.parse(storedDarkMode);
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    return false; // Fallback for server-side rendering
   });
 
+  // Update the class on mount and whenever isDarkMode changes
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark-mode");
-      document.documentElement.classList.remove("light-mode");
-    } else {
-      document.documentElement.classList.add("light-mode");
-      document.documentElement.classList.remove("dark-mode");
+    document.documentElement.classList.toggle("dark-mode", isDarkMode);
+    document.documentElement.classList.toggle("light-mode", !isDarkMode);
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("isDarkMode", JSON.stringify(isDarkMode));
     }
-    localStorage.setItem("isDarkMode", JSON.stringify(isDarkMode));
   }, [isDarkMode]);
 
   function toggleDarkMode() {

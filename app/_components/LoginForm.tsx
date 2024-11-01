@@ -41,7 +41,7 @@ function LoginForm() {
       <div className="flex flex-col gap-[.8rem] my-[1.2rem]">
         <button
           type="submit"
-          className="flex justify-center  items-center py-[1.2rem] px-[1.6rem] bg-[var(--color-brand-600)] rounded-md "
+          className="flex justify-center  items-center py-[1.2rem] px-[1.6rem] bg-[var(--color-brand-600)] rounded-md text-white"
         >
           {loading ? <SpinnerMini /> : "Log in"}
         </button>
