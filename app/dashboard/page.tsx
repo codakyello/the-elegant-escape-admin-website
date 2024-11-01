@@ -30,9 +30,7 @@ async function Page() {
         />
       </Box>
 
-      <Suspense fallback={<Loading />}>
-        <DashboardLayout cabinCount={cabinCount} />
-      </Suspense>
+      <DashboardLayout cabinCount={cabinCount} />
     </Box>
   );
 }
