@@ -136,7 +136,7 @@ function DurationChart({ confirmedStays }: { confirmedStays: Booking[] }) {
 
   return (
     <Box>
-      <Box className="bg-[var(--color-grey-0)] h-[32.7rem] border border-[var(--color-grey-100)] rounded-md p-6 sm:p-8 col-start-3 col-span-2">
+      <Box className="bg-[var(--color-grey-0)] min-h-[40rem] border border-[var(--color-grey-100)] rounded-md p-6 sm:p-8 col-start-3 col-span-2">
         <h2 className="mb-[1.6rem]">Stay duration summary</h2>
         <ResponsiveContainer width="100%" height={240}>
           <PieChart>
