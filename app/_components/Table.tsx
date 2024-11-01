@@ -60,7 +60,7 @@ export function Body<T>({
   render: (item: T) => ReactNode;
 }) {
   return (
-    <Box className="no-scroll-bar overflow-x-scroll">{data?.map(render)}</Box>
+    <Box className="no-scrollbar overflow-x-scroll">{data?.map(render)}</Box>
   );
 }
 
