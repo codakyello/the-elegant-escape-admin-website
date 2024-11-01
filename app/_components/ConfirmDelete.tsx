@@ -12,7 +12,7 @@ export default function ConfirmDelete({
 }: {
   resourceName: string;
   isDeleting: boolean;
-  onConfirm: () => Promise<void>;
+  onConfirm: () => void;
 }) {
   const { close } = useModal();
   return (
@@ -33,14 +33,7 @@ export default function ConfirmDelete({
         <Button onClick={close} type="cancel">
           Cancel
         </Button>
-        <Button
-          loading={isDeleting}
-          onClick={async () => {
-            await onConfirm();
-            close();
-          }}
-          type="danger"
-        >
+        <Button loading={isDeleting} onClick={onConfirm} type="danger">
           {!isDeleting ? "Delete" : <SpinnerMini />}
         </Button>
       </Box>

@@ -54,9 +54,13 @@ export default function Booking({
           <ConfirmDelete
             resourceName="Booking"
             isDeleting={isDeleting}
-            onConfirm={async () => {
-              await deleteBooking(bookingId);
-            }}
+            onConfirm={() =>
+              deleteBooking(bookingId, {
+                onSuccess: () => {
+                  router.push("/dashboard/bookings");
+                },
+              })
+            }
           />
         </ModalWindow>
         <Button onClick={() => router.back()} type="cancel">

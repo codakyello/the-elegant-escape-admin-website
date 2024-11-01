@@ -125,12 +125,8 @@ export function BookingRow({ booking }: { booking: Booking }) {
             <ConfirmDelete
               resourceName="Booking"
               isDeleting={isDeleting}
-              onConfirm={async () => {
-                await deleteBooking(bookingId, {
-                  onSuccess: () => {
-                    close();
-                  },
-                });
+              onConfirm={() => {
+                deleteBooking(bookingId);
               }}
             />
           </ModalWindow>
