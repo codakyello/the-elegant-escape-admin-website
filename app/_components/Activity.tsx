@@ -42,7 +42,7 @@ export default function Activity({ activity }: { activity: Booking }) {
             checkOut(bookingId); //checkout
           }
         }}
-        className="uppercase w-[9rem] h-[2.6rem] flex items-center justify-center bg-[var(--color-brand-600)] font-semibold text-[1.2rem] border-none text-[var(--color-grey-0)] rounded-[var(--border-radius-sm)]"
+        className="uppercase whitespace-nowrap w-[9rem] h-[2.6rem] flex items-center justify-center bg-[var(--color-brand-600)] font-semibold text-[1.2rem] border-none text-[var(--color-grey-0)] rounded-[var(--border-radius-sm)]"
       >
         {isCheckingOut ? (
           <SpinnerMini />
