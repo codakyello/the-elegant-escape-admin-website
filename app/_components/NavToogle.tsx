@@ -1,7 +1,7 @@
 "use client";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
-export default function MobileNavToggle() {
+export default function NavToggle() {
   return (
     <button
       className="md:hidden flex bg-[var(--color-grey-50)] h-16 items-center justify-center rounded-[var(--border-radius-md)] aspect-square"
