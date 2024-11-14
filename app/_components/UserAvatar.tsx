@@ -10,7 +10,7 @@ export default async function UserAvatar() {
   if (!user) return;
 
   return (
-    <Box className="flex items-center gap-5">
+    <Box className="flex mr-auto md:mr-0 items-center gap-5">
       <Box className="relative w-14 rounded-full overflow-hidden aspect-square">
         <Image fill alt="My Avatar" src={user.image || "/"} />
       </Box>
