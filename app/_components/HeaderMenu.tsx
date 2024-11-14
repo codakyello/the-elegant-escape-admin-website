@@ -1,6 +1,4 @@
 import { UserIcon } from "@heroicons/react/24/outline";
-// import { CiUser } from "react-icons/ci";
-
 import Link from "next/link";
 import SignOutButton from "./SignOutButton";
 import DarkModeToggle from "./DarkModeToggle";

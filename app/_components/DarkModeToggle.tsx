@@ -1,6 +1,6 @@
 "use client";
-import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
 import { useDarkMode } from "../_contexts/DarkModeProvider";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 
 export default function DarkModeToggle() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -11,9 +11,9 @@ export default function DarkModeToggle() {
       onClick={toggleDarkMode}
     >
       {isDarkMode ? (
-        <HiOutlineSun className=" text-[2.5rem] text-[var(--color-brand-600)]" />
+        <SunIcon className="h-9 aspect-square text-[var(--color-brand-600)]" />
       ) : (
-        <HiOutlineMoon className=" text-[2.5rem] text-[var(--color-brand-600)]" />
+        <MoonIcon className="h-9 aspect-square text-[var(--color-brand-600)]" />
       )}
     </button>
   );
