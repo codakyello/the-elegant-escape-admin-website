@@ -3,9 +3,16 @@ import Nav from "./Nav";
 
 export default function SideBar() {
   return (
-    <aside className="fixed hidden border-r border-r-[var(--color-grey-100)] top-0 left-0 h-full md:flex py-[1.2rem] md:py-[3.2rem] md:px-[2.4rem] items-center flex-col gap-16 md:gap-14 row-span-2 z-10">
-      <Logo />
-      <Nav />
-    </aside>
+    <>
+      {/*Mobile Nav*/}
+      <aside className="mobile-nav md:hidden bg-[var(--color-grey-0)] md:fixed w-[23rem] absolute border-r border-r-[var(--color-grey-100)] top-0 left-0 h-full flex py-[1.2rem] md:py-[3.2rem] md:px-[2.4rem] items-center flex-col gap-16  row-span-2 z-[9999]">
+        <Logo />
+        <Nav />
+      </aside>
+      <aside className="hidden bg-[var(--color-grey-0)] md:fixed w-[23rem] absolute border-r border-r-[var(--color-grey-100)] top-0 left-0 h-full md:flex py-[1.2rem] md:py-[3.2rem] md:px-[2.4rem] items-center flex-col gap-16  row-span-2 z-[9999]">
+        <Logo />
+        <Nav />
+      </aside>
+    </>
   );
 }

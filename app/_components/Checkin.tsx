@@ -1,9 +1,7 @@
 "use client";
 import { Box } from "@chakra-ui/react";
-
 import { useRouter } from "next/navigation";
 import Button from "./Button";
-
 import { Settings } from "../utils/types";
 import BookingDataBox from "./BookingDataBox";
 import Input from "./Input";

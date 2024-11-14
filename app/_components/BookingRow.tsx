@@ -68,7 +68,7 @@ export function BookingRow({ booking }: { booking: Booking }) {
       <Tag type={getTagName(status)}>{status.replace("-", " ")}</Tag>
       <Box>{formatCurrency(totalPrice)}</Box>
 
-      <Box className="relative ">
+      <Box className="relative z-[9999]">
         <Menus.Toogle id={bookingId} />
 
         <Menus.Menu id={bookingId}>

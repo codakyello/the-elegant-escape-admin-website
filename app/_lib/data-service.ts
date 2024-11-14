@@ -17,12 +17,9 @@ const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
 
 export async function getSettings() {
   try {
-    const res = await fetch(
-      `https://the-eleganta-escape.vercel.app/api/v1/settings`
-    );
+    const res = await fetch(`${URL}/settings`);
 
     const data = await res.json();
-    console.log(data);
 
     if (!res.ok) throw new Error(data.message || "Settings couldnt load");
 
@@ -34,6 +31,7 @@ export async function getSettings() {
     throw err;
   }
 }
+
 export async function updateSetting(data: Partial<Setting>, token: string) {
   if (!token) return;
   try {
@@ -94,6 +92,7 @@ export async function login(formData: FormData) {
     if (!res.ok) throw new Error(data.message || "Login failed");
 
     // Destructure token and user from response
+
     const {
       token,
       data: { user },
@@ -293,8 +292,6 @@ export async function getAllCabins(searchParams?: {
 }) {
   let statusCode;
   let query = "";
-
-  console.log("fetching");
 
   if (searchParams) {
     const page = searchParams.page || 1;

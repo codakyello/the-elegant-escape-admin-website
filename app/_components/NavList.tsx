@@ -20,28 +20,30 @@ const NavItems = [
 export default function NavList() {
   const pathName = usePathname();
   return (
-    <ul className="flex flex-col gap-2">
-      {NavItems.map((item) => (
-        <li key={item.name}>
-          <Link
-            href={item.to}
-            className={`flex gap-5 text-[var(--color-grey-600)] p-[1.2rem] md:py-[1.2rem] md:px-[2.4rem] font-medium text-[1.6rem] transition-all duration-300 rounded-md ${
-              pathName === item.to ? "bg-[var(--color-grey-50)]" : ""
-            } group hover:bg-[var(--color-grey-50)]`}
-          >
-            <span
-              className={`h-10 w-10 transition-all duration-300  ${
-                pathName === item.to
-                  ? "text-[var(--color-brand-600)]"
-                  : "text-gray-400"
-              } group-hover:text-[var(--color-brand-600)] `}
+    <nav>
+      <ul className="flex flex-col gap-2">
+        {NavItems.map((item) => (
+          <li key={item.name}>
+            <Link
+              href={item.to}
+              className={`flex gap-5 text-[var(--color-grey-600)] p-[1.2rem] md:py-[1.2rem] md:px-[2.4rem] font-medium text-[1.6rem] transition-all duration-300 rounded-md ${
+                pathName === item.to ? "bg-[var(--color-grey-50)]" : ""
+              } group hover:bg-[var(--color-grey-50)]`}
             >
-              {item.icon}
-            </span>
-            <span className="hidden md:flex">{item.name}</span>
-          </Link>
-        </li>
-      ))}
-    </ul>
+              <span
+                className={`h-10 w-10 transition-all duration-300  ${
+                  pathName === item.to
+                    ? "text-[var(--color-brand-600)]"
+                    : "text-gray-400"
+                } group-hover:text-[var(--color-brand-600)] `}
+              >
+                {item.icon}
+              </span>
+              <span>{item.name}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }

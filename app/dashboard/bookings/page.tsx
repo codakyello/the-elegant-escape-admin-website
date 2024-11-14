@@ -11,13 +11,12 @@ export const metadata = {
 function Page() {
   return (
     <Box className="flex flex-col gap-[3.2rem]">
-      <Box className="flex flex-col lg:flex-row gap-8 pt-1 pr-1">
+      <Box className="flex flex-col justify-between  xl:flex-row gap-8 pt-1 pr-1 whitespace-nowrap">
         <h1 className="">All Bookings</h1>
-        <Box className="flex flex-col md:flex-row gap-6 lg:ml-auto">
+        <Box className="flex flex-col md:flex-row flex-wrap gap-6">
           <Filter
             defaultValue="all"
             paramName="status"
-            className="lg:ml-auto w-[39rem]"
             filters={[
               { name: "All", value: "all" },
               { name: "Checked-in", value: "checked-in" },
@@ -27,7 +26,7 @@ function Page() {
           />
 
           <Sort
-            className=" w-[39rem]"
+            className=" max-w-[39rem]"
             defaultValue="startDate-desc"
             options={[
               { name: "Sort by date (recent first)", value: "startDate-desc" },

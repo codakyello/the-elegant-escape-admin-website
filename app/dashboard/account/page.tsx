@@ -11,7 +11,6 @@ export const metadata = {
 async function Page() {
   const token = await getToken();
   const user = await getAdmin(token);
-  console.log(token, user);
   return (
     <Box className="flex flex-col gap-[2rem] md:gap-[3.2rem]">
       <h1>Update your account</h1>
