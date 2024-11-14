@@ -1,4 +1,6 @@
 import { UserIcon } from "@heroicons/react/24/outline";
+// import { CiUser } from "react-icons/ci";
+
 import Link from "next/link";
 import SignOutButton from "./SignOutButton";
 import DarkModeToggle from "./DarkModeToggle";
@@ -10,7 +12,7 @@ function HeaderMenu() {
         className="hover:bg-[var(--color-grey-100)] rounded-md p-2"
         href="/dashboard/account"
       >
-        <UserIcon className="w-9 text-[var(--color-brand-600)] aspect-square" />
+        <UserIcon className="w-9 text-[5rem] font-bold text-[var(--color-brand-600)] aspect-square" />
       </Link>
       <DarkModeToggle />
       <SignOutButton />

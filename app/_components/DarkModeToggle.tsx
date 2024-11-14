@@ -7,7 +7,7 @@ export default function DarkModeToggle() {
 
   return (
     <button
-      className="p-2 hover:bg-[var(--color-grey-100)] rounded-md"
+      className="p-2 hover:bg-[var(--color-grey-100)] font-semibold rounded-md"
       onClick={toggleDarkMode}
     >
       {isDarkMode ? (
