@@ -166,6 +166,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   function setToken(token: string | null) {
     dispatch({ type: "token", payload: token });
+
+    if (token) Cookies.set("token", JSON.parse(token));
   }
 
   function logout() {
