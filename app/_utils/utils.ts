@@ -1,4 +1,4 @@
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 import { useAuth } from "../_contexts/AuthProvider";
 
 export function useHandleUnAuthorisedResponse() {
@@ -19,7 +19,7 @@ export function showToastMessage(
   successMessage: string
 ) {
   if (status === "error") {
-    toast.error(errorMessage);
+    toast.error(new Error(errorMessage!).message);
   } else {
     toast.success(successMessage);
   }

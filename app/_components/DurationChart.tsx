@@ -6,7 +6,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { Booking } from "../utils/types";
+import { Booking } from "../_utils/types";
 import { Box } from "@chakra-ui/react";
 import { useDarkMode } from "../_contexts/DarkModeProvider";
 

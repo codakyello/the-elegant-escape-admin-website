@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
-import { Booking } from "../utils/types";
+import { Booking } from "../_utils/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import SpinnerMini from "./SpinnerMini";
 import Tag from "./Tag";
-import { getTagName } from "../utils/helpers";
-import useCheckOut from "../hooks/useCheckOut";
+import { getTagName } from "../_utils/helpers";
+import useCheckOut from "../_hooks/useCheckOut";
 
 export default function Activity({ activity }: { activity: Booking }) {
   const router = useRouter();

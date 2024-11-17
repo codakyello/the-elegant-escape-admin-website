@@ -1,4 +1,4 @@
-import { Filter } from "../utils/types";
+import { Filter } from "../_utils/types";
 
 export default function FilterButton({
   handleFilter,

@@ -4,9 +4,9 @@ import {
   UseMutateFunction,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useHandleUnAuthorisedResponse } from "../utils/utils";
+import { useHandleUnAuthorisedResponse } from "../_utils/utils";
 import { deleteBooking } from "../_lib/data-service";
-import AppError from "../utils/AppError";
+import AppError from "../_utils/AppError";
 import { useAuth } from "../_contexts/AuthProvider";
 import { useModal } from "../_components/Modal";
 

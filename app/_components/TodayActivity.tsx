@@ -1,6 +1,6 @@
 "use client";
-import useTodayActivity from "../hooks/useTodaysActivity";
-import { Booking } from "../utils/types";
+import useTodayActivity from "../_hooks/useTodaysActivity";
+import { Booking } from "../_utils/types";
 import Activity from "./Activity";
 import Spinner from "./Spinner";
 import { Box } from "@chakra-ui/react";

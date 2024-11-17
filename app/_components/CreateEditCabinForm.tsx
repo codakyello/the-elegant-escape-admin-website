@@ -12,8 +12,8 @@ import supabase from "../supabase";
 import {
   showToastMessage,
   useHandleUnAuthorisedResponse,
-} from "../utils/utils";
-import { Cabin } from "../utils/types";
+} from "../_utils/utils";
+import { Cabin } from "../_utils/types";
 import { IoCloseOutline } from "react-icons/io5";
 import { useModal } from "./Modal";
 

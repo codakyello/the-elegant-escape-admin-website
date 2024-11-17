@@ -1,9 +1,10 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "sonner";
 import AuthProvider from "./_contexts/AuthProvider";
 import QueryProvider from "./_contexts/QueryProvider";
 import { DarkModeProvider } from "./_contexts/DarkModeProvider";
+import { Toaster } from "react-hot-toast";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const poppins = Poppins({
   subsets: ["latin"], // Add other subsets if needed
@@ -30,22 +31,30 @@ export default function RootLayout({
   return (
     <html className="lg:text-[62.5%] md:text-[56.25%] text-[50%]" lang="en">
       <body className={`${poppins.className} `}>
-        <QueryProvider>
-          <DarkModeProvider>
-            <AuthProvider>{children}</AuthProvider>
-          </DarkModeProvider>
-        </QueryProvider>
+        <ChakraProvider>
+          <QueryProvider>
+            <DarkModeProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </DarkModeProvider>
+          </QueryProvider>
+        </ChakraProvider>
       </body>
       <Toaster
-        theme={"light"}
-        richColors
         position="top-center"
-        offset="8px"
-        closeButton={true}
         toastOptions={{
-          duration: 3500,
-          classNames: {
-            title: "text-[16px]",
+          success: {
+            style: {
+              background: "green",
+              color: "white",
+              fontSize: "16px",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+              color: "white",
+              fontSize: "16px",
+            },
           },
         }}
       />

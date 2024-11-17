@@ -8,8 +8,8 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import { authorize } from "@/app/_lib/data-service";
-import { toast } from "sonner";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 type User = {
   token: string;
@@ -167,7 +167,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   function setToken(token: string | null) {
     dispatch({ type: "token", payload: token });
 
-    if (token) Cookies.set("token", JSON.parse(token));
+    if (token) Cookies.set("token", token);
   }
 
   function logout() {

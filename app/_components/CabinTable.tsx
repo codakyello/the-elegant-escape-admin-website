@@ -1,6 +1,6 @@
 "use client";
-import { RESULTS_PER_PAGE } from "../utils/constants";
-import { Cabin } from "../utils/types";
+import { RESULTS_PER_PAGE } from "../_utils/constants";
+import { Cabin } from "../_utils/types";
 import CabinRow from "./CabinRow";
 import Menus from "./Menu";
 import Pagination from "./Pagination";
@@ -14,7 +14,7 @@ export default function CabinTable({
   count: number | null;
 }) {
   return (
-    <Table columns={[".6fr", "1.8fr", "2.2fr", "1fr", "1fr", "1fr"]}>
+    <Table columns={["10rem", "25rem", "30rem", "13.5rem", "13.5rem", "3rem"]}>
       <Header headers={["", "cabin", "capacity", "price", "discount"]} />
       <Menus>
         <Body

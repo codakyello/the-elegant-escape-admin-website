@@ -9,7 +9,7 @@ import {
   useContext,
   useState,
 } from "react";
-import useOutsideClick from "../hooks/useOutsideClick";
+import useOutsideClick from "../_hooks/useOutsideClick";
 
 const ModalContext = createContext<
   | { isOpen: string; open: (name: string) => void; close: () => void }

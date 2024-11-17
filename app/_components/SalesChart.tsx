@@ -9,7 +9,7 @@ import {
 } from "recharts";
 import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 import { Box } from "@chakra-ui/react";
-import { Booking } from "../utils/types";
+import { Booking } from "../_utils/types";
 import { useDarkMode } from "../_contexts/DarkModeProvider";
 
 function SalesChart({

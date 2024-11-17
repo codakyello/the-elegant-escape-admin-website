@@ -1,7 +1,7 @@
 "use client";
 import { Box } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { generateGridTemplateColumns } from "../utils/helpers";
+import { generateGridTemplateColumns } from "../_utils/helpers";
 import { useTable } from "./Table";
 
 export default function Row({ children }: { children: ReactNode }) {

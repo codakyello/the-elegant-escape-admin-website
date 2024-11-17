@@ -3,7 +3,7 @@ import { useAuth } from "../_contexts/AuthProvider";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { isToday } from "date-fns";
-import { Booking } from "../utils/types";
+import { Booking } from "../_utils/types";
 
 export default function useTodayActivity() {
   const searchParams = useSearchParams();

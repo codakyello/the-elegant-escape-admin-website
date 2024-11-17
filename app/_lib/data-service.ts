@@ -4,10 +4,10 @@
 
 import { revalidatePath } from "next/cache";
 import { Setting } from "../_components/UpdateSettingsForm";
-import { RESULTS_PER_PAGE } from "../utils/constants";
+import { RESULTS_PER_PAGE } from "../_utils/constants";
 import { notFound } from "next/navigation";
-import { BookingData, CabinData } from "../utils/types";
-import AppError from "../utils/AppError";
+import { BookingData, CabinData } from "../_utils/types";
+import AppError from "../_utils/AppError";
 
 const URL = "https://the-elegant-escape-4iqb.vercel.app/api/v1";
 // const DEV_URL = "http://localhost:3001/api/v1";

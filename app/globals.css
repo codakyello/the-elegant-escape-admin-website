@@ -127,7 +127,7 @@ html {
 }
 
 body {
-  color: var(--color-grey-700);
+  color: var(--color-grey-700) !important;
   transition: color 0.3s, background-color 0.3s;
   line-height: 1.5;
   font-size: 1.6rem;
@@ -224,7 +224,7 @@ img {
 
 .mobile-nav {
   transform: translateX(-100%);
-  transition: all 0.3s;
+  transition: all 0.3s ease-in-out;
 }
 
 .btn {

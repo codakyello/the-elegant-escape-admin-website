@@ -1,7 +1,7 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent } from "react";
-import { Filter } from "../utils/types";
+import { Filter } from "../_utils/types";
 
 export default function Sort({
   defaultValue,

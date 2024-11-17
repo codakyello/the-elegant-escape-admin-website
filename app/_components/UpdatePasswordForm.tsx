@@ -9,7 +9,7 @@ import { useAuth } from "../_contexts/AuthProvider";
 import {
   useHandleUnAuthorisedResponse,
   showToastMessage,
-} from "@/app/utils/utils";
+} from "@/app/_utils/utils";
 
 export default function UpdatePasswordForm() {
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,6 @@ export default function UpdatePasswordForm() {
     setLoading(true);
 
     const res = await updatePassword(formFields, token);
-    console.log("response is", res);
     if (res.status !== "error") {
       // save token in localstorage
 
@@ -44,6 +43,7 @@ export default function UpdatePasswordForm() {
 
     handleUnAuthorisedResponse(res?.statusCode);
 
+    console.log(res.message);
     showToastMessage(
       res?.status,
       res?.message,

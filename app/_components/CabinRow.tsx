@@ -2,16 +2,16 @@
 import { Box } from "@chakra-ui/react";
 import Row from "./Row";
 import Image from "next/image";
-import { formatCurrency } from "../utils/helpers";
-import { Cabin } from "../utils/types";
+import { formatCurrency } from "../_utils/helpers";
+import { Cabin } from "../_utils/types";
 import Menus, { useMenu } from "./Menu";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
-import { getToken } from "../utils/serverUtils";
+import { getToken } from "../_utils/serverUtils";
 import { createCabin, deleteCabin } from "../_lib/data-service";
 import {
   showToastMessage,
   useHandleUnAuthorisedResponse,
-} from "../utils/utils";
+} from "../_utils/utils";
 import { ModalOpen, ModalWindow } from "./Modal";
 import ConfirmDelete from "./ConfirmDelete";
 import { useState } from "react";

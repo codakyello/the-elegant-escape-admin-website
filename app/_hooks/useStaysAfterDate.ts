@@ -2,7 +2,7 @@ import { getBookingAfterDate } from "../_lib/data-service";
 import { useAuth } from "../_contexts/AuthProvider";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { Booking } from "../utils/types";
+import { Booking } from "../_utils/types";
 
 export default function useStaysAfterDate() {
   const searchParams = useSearchParams();

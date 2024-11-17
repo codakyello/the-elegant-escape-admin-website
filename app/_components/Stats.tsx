@@ -1,8 +1,8 @@
 import { HiOutlineBriefcase, HiOutlineChartBar } from "react-icons/hi";
 import { HiOutlineBanknotes, HiOutlineCalendarDays } from "react-icons/hi2";
 import Stat from "./Stat";
-import { Booking } from "../utils/types";
-import { formatCurrency } from "../utils/helpers";
+import { Booking } from "../_utils/types";
+import { formatCurrency } from "../_utils/helpers";
 
 export default function Stats({
   bookings,

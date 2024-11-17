@@ -3,7 +3,7 @@ import FormRow from "@/app/_components/FormRow";
 import Input from "./Input";
 import { FormEvent, useState } from "react";
 import { login as loginApi } from "../_lib/data-service";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 import { useAuth } from "../_contexts/AuthProvider";
 import SpinnerMini from "@/app/_components/SpinnerMini";
 function LoginForm() {

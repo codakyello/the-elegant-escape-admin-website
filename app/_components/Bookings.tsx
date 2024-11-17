@@ -2,7 +2,7 @@
 import BookingTable from "./BookingTable";
 import SpinnerFull from "./SpinnerFull";
 import { toast } from "sonner";
-import useBookings from "../hooks/useBookings";
+import useBookings from "../_hooks/useBookings";
 
 export default function Bookings() {
   const { data, isLoading, error } = useBookings();

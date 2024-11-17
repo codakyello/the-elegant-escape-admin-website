@@ -2,7 +2,7 @@
 import { Box } from "@chakra-ui/react";
 import { createContext, ReactElement, ReactNode, useContext } from "react";
 // import { Booking, Cabin } from "../utils/types";
-import { generateGridTemplateColumns } from "../utils/helpers";
+import { generateGridTemplateColumns } from "../_utils/helpers";
 
 type TableContextType = { columns: string[] } | undefined;
 
@@ -17,7 +17,7 @@ export default function Table({
 }) {
   return (
     <TableContext.Provider value={{ columns }}>
-      <Box className="overflow-x-hidden no-scrollbar rounded-[var(--border-radius-md)] border border-[var(--color-grey-200)] bg-[var(--color-grey-0)] text-[1.4rem]">
+      <Box className="overflow-x-scroll no-scrollbar rounded-[var(--border-radius-md)] border border-[var(--color-grey-200)] bg-[var(--color-grey-0)] text-[1.4rem]">
         {children}
       </Box>
     </TableContext.Provider>
@@ -41,7 +41,7 @@ export function Header({ headers }: { headers: string[] }) {
         display: "grid",
         gridTemplateColumns: generateGridTemplateColumns(columns),
       }}
-      className="gap-[2.4rem] py-[1.6rem] px-[2.4rem] bg-[var(--color-grey-50)] border-b-[var(--color-grey-100)]"
+      className=" gap-[2.4rem] py-[1.6rem] px-[2.4rem] bg-[var(--color-grey-50)] border-b-[var(--color-grey-100)]"
     >
       {headers.map((header) => (
         <div key={header} className="uppercase font-semibold">
@@ -59,9 +59,7 @@ export function Body<T>({
   data: T[] | null;
   render: (item: T) => ReactNode;
 }) {
-  return (
-    <Box className="no-scrollbar overflow-x-scroll">{data?.map(render)}</Box>
-  );
+  return <Box className="no-scrollbar ">{data?.map(render)}</Box>;
 }
 
 export function Footer({ children }: { children: ReactElement | string }) {

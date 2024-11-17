@@ -1,7 +1,7 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import FilterButton from "./FilterButton";
-import type { Filter } from "../utils/types";
+import type { Filter } from "../_utils/types";
 import { Box } from "@chakra-ui/react";
 
 export default function Filter({

@@ -3,14 +3,14 @@ import {
   formatCurrency,
   formatDistanceFromNow,
   getTagName,
-} from "../utils/helpers";
+} from "../_utils/helpers";
 import Tag from "./Tag";
 import { HomeModernIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import Image from "next/image";
 import { HiOutlineAnnotation, HiOutlineCheckCircle } from "react-icons/hi";
 import { HiOutlineCurrencyDollar } from "react-icons/hi2";
-import { Booking, Settings } from "../utils/types";
+import { Booking, Settings } from "../_utils/types";
 import { useRouter } from "next/navigation";
 
 export default function BookingDataBox({

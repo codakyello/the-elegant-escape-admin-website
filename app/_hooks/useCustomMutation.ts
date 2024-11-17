@@ -4,8 +4,8 @@ import {
   UseMutateFunction,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useHandleUnAuthorisedResponse } from "../utils/utils";
-import AppError from "../utils/AppError";
+import { useHandleUnAuthorisedResponse } from "../_utils/utils";
+import AppError from "../_utils/AppError";
 
 type MutationFunction<TData, TVariables> = (
   variables: TVariables

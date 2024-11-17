@@ -1,5 +1,5 @@
 import NavList from "./NavList";
 
-export default function Nav() {
-  return <NavList />;
+export default function Nav({ closeNav }: { closeNav?: () => void }) {
+  return <NavList closeNav={closeNav} />;
 }

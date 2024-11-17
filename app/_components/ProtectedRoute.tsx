@@ -3,7 +3,7 @@ import React, { ReactNode, useEffect } from "react";
 import SpinnerFull from "./SpinnerFull";
 import { useAuth } from "../_contexts/AuthProvider";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const router = useRouter();

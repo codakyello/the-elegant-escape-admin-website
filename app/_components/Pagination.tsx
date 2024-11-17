@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import Button from "./Button";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import Strong from "./Strong";
-import { RESULTS_PER_PAGE } from "../utils/constants";
+import { RESULTS_PER_PAGE } from "../_utils/constants";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 

@@ -1,11 +1,11 @@
 "use client";
 import { isToday, format } from "date-fns";
-import { Booking } from "../utils/types";
+import { Booking } from "../_utils/types";
 import {
   formatCurrency,
   formatDistanceFromNow,
   getTagName,
-} from "../utils/helpers";
+} from "../_utils/helpers";
 import Tag from "./Tag";
 import Row from "./Row";
 import Menus, { useMenu } from "./Menu";
@@ -20,8 +20,8 @@ import Link from "next/link";
 import ConfirmDelete from "./ConfirmDelete";
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import useDeleteBookings from "../hooks/useDeleteBooking";
-import useCheckOut from "../hooks/useCheckOut";
+import useDeleteBookings from "../_hooks/useDeleteBooking";
+import useCheckOut from "../_hooks/useCheckOut";
 
 export function BookingRow({ booking }: { booking: Booking }) {
   const {

@@ -3,7 +3,7 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useState,
 } from "react";
 
@@ -27,7 +27,7 @@ function DarkModeProvider({ children }: { children: ReactNode }) {
   });
 
   // Update the class on mount and whenever isDarkMode changes
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.classList.toggle("dark-mode", isDarkMode);
     document.documentElement.classList.toggle("light-mode", !isDarkMode);
 

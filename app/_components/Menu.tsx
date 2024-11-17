@@ -8,7 +8,7 @@ import {
   ReactElement,
 } from "react";
 import { Box } from "@chakra-ui/react";
-import useOutsideClick from "../hooks/useOutsideClick";
+import useOutsideClick from "../_hooks/useOutsideClick";
 import { HiEllipsisVertical } from "react-icons/hi2";
 
 type MenuContextType =

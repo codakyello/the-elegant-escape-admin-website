@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation";
 import Button from "./Button";
 import { ModalOpen, ModalWindow } from "./Modal";
 import ConfirmDelete from "./ConfirmDelete";
-import { Settings } from "../utils/types";
+import { Settings } from "../_utils/types";
 import BookingDataBox from "./BookingDataBox";
-import useBooking from "../hooks/useBooking";
+import useBooking from "../_hooks/useBooking";
 import SpinnerFull from "./SpinnerFull";
-import useDeleteBookings from "../hooks/useDeleteBooking";
+import useDeleteBookings from "../_hooks/useDeleteBooking";
 import { useEffect } from "react";
 
 export default function Booking({

@@ -1,12 +1,12 @@
 "use client";
 import { Box } from "@chakra-ui/react";
 import Stats from "./Stats";
-import useBookingsAfterDate from "../hooks/useBookingsAfterDate";
+import useBookingsAfterDate from "../_hooks/useBookingsAfterDate";
 import SpinnerFull from "./SpinnerFull";
 import { useSearchParams } from "next/navigation";
 import TodayActivity from "./TodayActivity";
 import DurationChart from "./DurationChart";
-import useStaysAfterDate from "../hooks/useStaysAfterDate";
+import useStaysAfterDate from "../_hooks/useStaysAfterDate";
 import SalesChart from "./SalesChart";
 
 export default function DashboardLayout({

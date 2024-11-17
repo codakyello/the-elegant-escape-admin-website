@@ -7,7 +7,7 @@ import { useAuth } from "../_contexts/AuthProvider";
 import {
   useHandleUnAuthorisedResponse,
   showToastMessage,
-} from "@/app/utils/utils";
+} from "@/app/_utils/utils";
 
 export type Setting = {
   _id: string;
