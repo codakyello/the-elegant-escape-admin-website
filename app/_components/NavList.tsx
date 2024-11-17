@@ -27,7 +27,7 @@ export default function NavList({ closeNav }: { closeNav?: () => void }) {
             <Link
               href={item.to}
               onClick={() => closeNav?.()}
-              className={`flex gap-5 text-[var(--color-grey-600)] p-[1.2rem] md:py-[1.2rem] md:px-[2.4rem] font-medium text-[1.6rem] transition-all duration-300 rounded-md ${
+              className={`flex gap-5 text-[var(--color-grey-600)] p-[1.7rem] md:py-[1.2rem] md:px-[2.4rem] font-medium text-[1.6rem] transition-all duration-300 rounded-md ${
                 pathName === item.to ? "bg-[var(--color-grey-50)]" : ""
               } group hover:bg-[var(--color-grey-50)]`}
             >
