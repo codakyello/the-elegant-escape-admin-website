@@ -19,14 +19,20 @@ export default function BookingTable({
     <Modal>
       <Table columns={["8rem, 26rem, 33rem, 14rem, 13.5rem, 3rem"]}>
         <Header headers={["Cabin", "Guest", "Dates", "Status", "Amount"]} />
-        <Body
-          data={bookings}
-          render={(booking) => (
-            <Menus>
+        <Menus>
+          <Body
+          // data={bookings}
+          // render={(booking) => (
+          //   <Menus>
+          //     <BookingRow booking={booking} key={booking._id} />
+          //   </Menus>
+          // )}
+          >
+            {bookings.map((booking) => (
               <BookingRow booking={booking} key={booking._id} />
-            </Menus>
-          )}
-        />
+            ))}
+          </Body>
+        </Menus>
         <Footer>
           {Number(count) > RESULTS_PER_PAGE ? <Pagination count={count} /> : ""}
         </Footer>

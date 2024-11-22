@@ -17,11 +17,10 @@ export default function CabinTable({
     <Table columns={["10rem", "25rem", "30rem", "13.5rem", "13.5rem", "3rem"]}>
       <Header headers={["", "cabin", "capacity", "price", "discount"]} />
       <Menus>
-        <Body>
-          {cabins?.map((cabin) => (
-            <CabinRow key={cabin._id} cabin={cabin} />
-          ))}
-        </Body>
+        <Body
+          data={cabins}
+          render={(cabin) => <CabinRow key={cabin._id} cabin={cabin} />}
+        />
       </Menus>
 
       <Footer>
