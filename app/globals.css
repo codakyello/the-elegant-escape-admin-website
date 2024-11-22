@@ -284,7 +284,6 @@ img {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
 @layer components {
   .spinner-mini {
     margin: 0;

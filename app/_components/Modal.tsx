@@ -1,6 +1,5 @@
 "use client";
 import { Box } from "@chakra-ui/react";
-// import useOutsideClick from "@/app/hooks/useOutsideClick";
 import {
   cloneElement,
   createContext,

@@ -55,11 +55,17 @@ export function Header({ headers }: { headers: string[] }) {
 export function Body<T>({
   data,
   render,
+  children,
 }: {
-  data: T[] | null;
-  render: (item: T) => ReactNode;
+  data?: T[] | null;
+  render?: (item: T) => ReactNode;
+  children?: ReactNode;
 }) {
-  return <Box className="no-scrollbar ">{data?.map(render)}</Box>;
+  return (
+    <Box className="no-scrollbar ">
+      {data?.map(render || (() => null)) || children}
+    </Box>
+  );
 }
 
 export function Footer({ children }: { children: ReactElement | string }) {
